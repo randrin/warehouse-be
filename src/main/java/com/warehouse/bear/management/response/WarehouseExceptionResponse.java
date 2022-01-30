@@ -1,4 +1,4 @@
-package com.warehouse.bear.management.exception.handler;
+package com.warehouse.bear.management.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiError {
+public class WarehouseExceptionResponse {
 
     private HttpStatus status;
     private List<String> errors;

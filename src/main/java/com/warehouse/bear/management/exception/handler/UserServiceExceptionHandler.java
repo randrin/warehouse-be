@@ -1,6 +1,7 @@
 package com.warehouse.bear.management.exception.handler;
 
 import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.response.WarehouseExceptionResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class UserServiceExceptionHandler extends ResponseEntityExceptionHandler 
                 .map(err -> err.getField() + ":" + err.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        ApiError apiError = new ApiError();
+        WarehouseExceptionResponse apiError = new WarehouseExceptionResponse();
         apiError.setErrors(errors);
         apiError.setStatus(HttpStatus.BAD_REQUEST);
         apiError.setPath(request.getDescription(false));
@@ -43,7 +44,7 @@ public class UserServiceExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler({UserNotFoundException.class})
     ResponseEntity<?> UserNotFoundHandler(Exception exception, ServletWebRequest request) {
 
-        ApiError apiError = new ApiError();
+        WarehouseExceptionResponse apiError = new WarehouseExceptionResponse();
 
         apiError.setTimestamp(LocalDateTime.now());
         apiError.setStatus(HttpStatus.NOT_FOUND);
