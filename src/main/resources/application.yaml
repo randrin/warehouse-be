@@ -5,9 +5,9 @@ spring:
     active:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/warehouse_management
+    url: jdbc:mysql://localhost:3306/warehouse_management?useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: root
+    password: France84.
   jpa:
     show-sql: true
     hibernate:
@@ -15,3 +15,4 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+

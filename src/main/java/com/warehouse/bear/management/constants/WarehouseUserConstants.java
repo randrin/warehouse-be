@@ -7,6 +7,13 @@ public class WarehouseUserConstants {
 
     public static final String USER_NAME = "User name is required";
     public static final String USER_EMAIL = "User email is required";
+    public static final String ERROR_USERNAME = "Error: Username ";
+    public static final String ERROR_EMAIL = "Error: Email ";
+    public static final String ERROR_ROLE_NOT_FOUND = "Error: Role is not found.";
+    public static final String ERROR_USED = " is already used, please try another one";
+    public static final String LOGIN_SUCCESS = "you are login successfully with username ";
+    public static final String LOGOUT_SUCCESS = "logout successfully!";
+    public static final String REGISTER_SUCCESS = " has been registered successfully!";
     public static final String USER_EMAIL_VALID = "Please enter the valid email";
     public static final String USER_PHONE = "User phone is required";
     public static final String USER_PHONE_VALID = "Please enter the valid phone";
