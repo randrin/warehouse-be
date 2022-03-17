@@ -15,3 +15,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: Warehouse Manager Application
+    description: This is the monitoring dashboard to trace the activities of all requests and responses
+    version: 1.0.0

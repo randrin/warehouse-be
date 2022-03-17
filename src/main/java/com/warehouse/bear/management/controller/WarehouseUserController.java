@@ -21,6 +21,6 @@ public class WarehouseUserController {
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_HOME)
     public String home() {
-        return "HOme page";
+        return "Home page";
     }
 }
