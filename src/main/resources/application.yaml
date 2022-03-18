@@ -2,12 +2,12 @@ server:
   port: 9195
 spring:
   profiles:
-    active:
+    active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/warehouse_management
     username: root
-    password: root
+    password: France84.
   jpa:
     show-sql: true
     hibernate:

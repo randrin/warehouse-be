@@ -1,7 +1,6 @@
 package com.warehouse.bear.management.controller;
 
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
-import com.warehouse.bear.management.service.WarehouseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WarehouseUserController {
 
     @Autowired
-    private WarehouseUserService userService;
+   // private WarehouseUserService userService;
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DASHBOARD)
     public String dashboard() {

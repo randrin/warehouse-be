@@ -2,10 +2,10 @@ package com.warehouse.bear.management.controller;
 
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
-import com.warehouse.bear.management.request.WarehouseLoginRequest;
-import com.warehouse.bear.management.request.WarehouseRegisterRequest;
-import com.warehouse.bear.management.response.WarehouseResponse;
-import com.warehouse.bear.management.service.WarehouseUserService;
+import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
+import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
+import com.warehouse.bear.management.payload.response.WarehouseResponse;
+import com.warehouse.bear.management.services.WarehouseAuthService;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WarehouseAuthController {
 
     @Autowired
-    private WarehouseUserService warehouseUserService;
+    private WarehouseAuthService warehouseAuthService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -51,6 +51,6 @@ public class WarehouseAuthController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     public ResponseEntity<Object> warehouseRegister(@RequestBody WarehouseRegisterRequest request) {
         request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        return warehouseUserService.warehouseRegister(request);
+        return warehouseAuthService.registerUser(request);
     }
 }
