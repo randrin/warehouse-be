@@ -1,4 +1,4 @@
-package com.warehouse.bear.management.response;
+package com.warehouse.bear.management.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
