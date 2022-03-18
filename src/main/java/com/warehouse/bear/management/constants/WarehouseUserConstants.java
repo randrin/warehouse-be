@@ -2,8 +2,10 @@ package com.warehouse.bear.management.constants;
 
 public class WarehouseUserConstants {
 
+    public static final String BEARER = "Bearer";
     public static final String USER_ROLE_ADMIN = "ADMIN";
     public static final String USER_ROLE_USER = "USER";
+    public static final String USER_ROLE_MODERATOR = "MODERATOR";
 
     public static final String USER_NAME = "User name is required";
     public static final String USER_EMAIL = "User email is required";

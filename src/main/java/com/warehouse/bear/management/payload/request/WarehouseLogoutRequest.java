@@ -1,9 +1,13 @@
 package com.warehouse.bear.management.payload.request;
 
-public class WarehouseLogoutRequest {
-  private Long userId;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-  public Long getUserId() {
-    return this.userId;
-  }
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class WarehouseLogoutRequest {
+    private Long userId;
+
 }

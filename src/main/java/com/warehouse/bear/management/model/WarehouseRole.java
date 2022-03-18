@@ -1,7 +1,13 @@
 package com.warehouse.bear.management.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "roles")
 public class WarehouseRole {
@@ -11,29 +17,6 @@ public class WarehouseRole {
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
-	private WarehouseErole name;
+	private WarehouseUserRole name;
 
-	public WarehouseRole() {
-
-	}
-
-	public WarehouseRole(WarehouseErole name) {
-		this.name = name;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public WarehouseErole getName() {
-		return name;
-	}
-
-	public void setName(WarehouseErole name) {
-		this.name = name;
-	}
 }

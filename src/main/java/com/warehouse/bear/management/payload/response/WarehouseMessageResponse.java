@@ -1,17 +1,10 @@
 package com.warehouse.bear.management.payload.response;
 
+import lombok.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class WarehouseMessageResponse {
-	private String message;
-
-	public WarehouseMessageResponse(String message) {
-	    this.message = message;
-	  }
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    private String message;
 }

@@ -1,16 +1,17 @@
 package com.warehouse.bear.management.payload.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class WarehouseTokenRefreshRequest {
-  @NotBlank
-  private String refreshToken;
 
-  public String getRefreshToken() {
-    return refreshToken;
-  }
+    @NotBlank
+    private String refreshToken;
 
-  public void setRefreshToken(String refreshToken) {
-    this.refreshToken = refreshToken;
-  }
 }

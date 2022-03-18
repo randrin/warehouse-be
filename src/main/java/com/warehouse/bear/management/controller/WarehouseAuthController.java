@@ -4,11 +4,12 @@ import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
+import com.warehouse.bear.management.services.WarehouseAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.bear.management.exception.TokenRefreshException;
-import com.warehouse.bear.management.model.WarehouseErole;
+import com.warehouse.bear.management.model.WarehouseUserRole;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
@@ -37,35 +38,33 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT)
 public class WarehouseAuthController {
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    WarehouseUserRepository userRepository;
+    private WarehouseRoleRepository roleRepository;
 
     @Autowired
-    WarehouseRoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    PasswordEncoder encoder;
+    private JwtUtils jwtUtils;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private WarehouseRefreshTokenService refreshTokenService;
 
     @Autowired
-    WarehouseRefreshTokenService refreshTokenService;
+    private WarehouseAuthService warehouseAuthService;
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody WarehouseLoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody WarehouseLoginRequest request) {
 
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -79,61 +78,16 @@ public class WarehouseAuthController {
         WarehouseRefreshToken warehouseRefreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
         return ResponseEntity.ok(new WarehouseJwtResponse(jwt, warehouseRefreshToken.getToken(), userDetails.getId(),
-                userDetails.getUsername(), userDetails.getEmail(), roles, WarehouseUserConstants.LOGIN_SUCCESS + userDetails.getUsername() ));
+                userDetails.getUsername(), userDetails.getEmail(), roles, WarehouseUserConstants.LOGIN_SUCCESS + userDetails.getUsername()));
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody WarehouseRegisterRequest warehouseRegisterRequest) {
-        if (userRepository.existsByUsername(warehouseRegisterRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(WarehouseUserConstants.ERROR_USERNAME + warehouseRegisterRequest.getUsername()+WarehouseUserConstants.ERROR_USED));
-        }
-
-        if (userRepository.existsByEmail(warehouseRegisterRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(WarehouseUserConstants.ERROR_EMAIL +warehouseRegisterRequest.getEmail()+WarehouseUserConstants.ERROR_USED));
-        }
-
-        // Create new user's account
-        WarehouseUser user = new WarehouseUser(warehouseRegisterRequest.getUsername(),warehouseRegisterRequest.getFullname(), warehouseRegisterRequest.getEmail(),
-                encoder.encode(warehouseRegisterRequest.getPassword()));
-
-        Set<String> strRoles = warehouseRegisterRequest.getRole();
-        Set<WarehouseRole> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            WarehouseRole userRole = roleRepository.findByName(WarehouseErole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException(WarehouseUserConstants.ERROR_ROLE_NOT_FOUND));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        WarehouseRole adminRole = roleRepository.findByName(WarehouseErole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserConstants.ERROR_ROLE_NOT_FOUND));
-                        roles.add(adminRole);
-
-                        break;
-                    case "moderator":
-                        WarehouseRole modRole = roleRepository.findByName(WarehouseErole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserConstants.ERROR_ROLE_NOT_FOUND));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        WarehouseRole userRole = roleRepository.findByName(WarehouseErole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserConstants.ERROR_ROLE_NOT_FOUND));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new WarehouseMessageResponse(warehouseRegisterRequest.getUsername() + WarehouseUserConstants.REGISTER_SUCCESS));
+    public ResponseEntity<?> registerUser(@Valid @RequestBody WarehouseRegisterRequest request) {
+        return warehouseAuthService.registerUser(request);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)
-    public ResponseEntity<?> refreshtoken(@Valid @RequestBody WarehouseTokenRefreshRequest request) {
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody WarehouseTokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)

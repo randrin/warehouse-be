@@ -1,13 +1,11 @@
 server:
   port: 9195
 spring:
-  profiles:
-    active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/warehouse_management?useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: France84.
+    password: root
   jpa:
     show-sql: true
     hibernate:
