@@ -1,5 +1,7 @@
 package com.warehouse.bear.management.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,10 +15,11 @@ import javax.persistence.*;
 public class WarehouseRole {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
-	private WarehouseUserRole name;
+	private WarehouseRoleEnum name;
 
 }

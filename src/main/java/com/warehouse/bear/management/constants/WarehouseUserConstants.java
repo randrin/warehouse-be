@@ -9,11 +9,11 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_RANDOM_NUMBERS = "0123456789";
     public static final String WAREHOUSE_AUTHORIZATION = "Authorization";
     public static final String WAREHOUSE_HEADER = "Bearer ";
-    public static final String WAREHOUSE_ROLE_ADMIN = "ADMIN";
-    public static final String WAREHOUSE_ROLE_USER = "USER";
-    public static final String WAREHOUSE_ROLE_MODERATOR = "MODERATOR";
-    public static final String[] WAREHOUSE_ADMIN_ACCESS = {"ADMIN", "MODERATOR"};
-    public static final String[] WAREHOUSE_MODERATOR_ACCESS = {"MODERATOR"};
+    public static final String WAREHOUSE_ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String WAREHOUSE_ROLE_USER = "ROLE_USER";
+    public static final String WAREHOUSE_ROLE_MODERATOR = "ROLE_MODERATOR";
+    public static final String[] WAREHOUSE_ADMIN_ACCESS = {"ROLE_ADMIN", "ROLE_MODERATOR"};
+    public static final String[] WAREHOUSE_MODERATOR_ACCESS = {"ROLE_MODERATOR"};
 
     // MODEL
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
