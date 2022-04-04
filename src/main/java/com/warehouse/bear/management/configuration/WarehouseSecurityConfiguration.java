@@ -3,7 +3,7 @@ package com.warehouse.bear.management.configuration;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.filter.WarehouseFilter;
-import com.warehouse.bear.management.service.WarehouseUserDetailsService;
+import com.warehouse.bear.management.services.WarehouseUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

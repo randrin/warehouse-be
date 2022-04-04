@@ -1,7 +1,7 @@
 package com.warehouse.bear.management.filter;
 
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
-import com.warehouse.bear.management.service.WarehouseUserDetailsService;
+import com.warehouse.bear.management.services.WarehouseUserDetailsService;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

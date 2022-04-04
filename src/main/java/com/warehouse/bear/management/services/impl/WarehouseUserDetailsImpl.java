@@ -1,4 +1,4 @@
-package com.warehouse.bear.management.services;
+package com.warehouse.bear.management.services.impl;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
