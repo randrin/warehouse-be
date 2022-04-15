@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -39,7 +40,9 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .csrf()
+                .disable()
                 .authorizeRequests()
                 .antMatchers(WarehouseUserEndpoints.WAREHOUSE_ROOT,
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER,
@@ -48,11 +51,12 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .antMatchers(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_DASHBOARD)
                 .hasAnyAuthority(WarehouseUserConstants.WAREHOUSE_ROLE_ADMIN)
                 .antMatchers(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_HOME)
-                .hasAnyAuthority(WarehouseUserConstants.WAREHOUSE_ROLE_USER)
+                .hasAnyAuthority(WarehouseUserConstants.WAREHOUSE_ROLE_ADMIN, WarehouseUserConstants.WAREHOUSE_ROLE_MODERATOR, WarehouseUserConstants.WAREHOUSE_ROLE_USER)
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(warehouseFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors();
     }

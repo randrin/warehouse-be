@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin("*")
 @RestController
 @RequestMapping(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT)
 public class WarehouseAuthController {
