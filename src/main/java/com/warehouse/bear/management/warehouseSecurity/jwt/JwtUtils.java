@@ -1,6 +1,6 @@
 package com.warehouse.bear.management.warehouseSecurity.jwt;
 
-import com.warehouse.bear.management.services.WarehouseUserDetailsImpl;
+import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
 package com.warehouse.bear.management.services;
 
-
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
+import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class WarehouseUserDetailsServiceImpl implements UserDetailsService {
-  @Autowired
-  WarehouseUserRepository userRepository;
+public class WarehouseUserDetailsService implements UserDetailsService {
 
-  @Override
-  @Transactional
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    WarehouseUser user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+    @Autowired
+    WarehouseUserRepository userRepository;
 
-    return WarehouseUserDetailsImpl.build(user);
-  }
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        WarehouseUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
+        return WarehouseUserDetailsImpl.build(user);
+    }
 }
