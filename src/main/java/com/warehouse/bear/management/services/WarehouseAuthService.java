@@ -2,6 +2,7 @@ package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
+import com.warehouse.bear.management.exception.RoleNotFoundException;
 import com.warehouse.bear.management.exception.TokenRefreshException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
@@ -71,24 +72,24 @@ public class WarehouseAuthService {
 
         if (strRoles == null) {
             WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                    .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         WarehouseRole adminRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(adminRole);
                         break;
                     case "moderator":
                         WarehouseRole modRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(modRole);
                         break;
                     default:
                         WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(userRole);
                 }
             });
