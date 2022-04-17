@@ -1,12 +1,12 @@
 package com.warehouse.bear.management.services;
 
-
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.TokenRefreshException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.repository.WarehouseRefreshTokenRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +16,6 @@ import java.util.UUID;
 
 @Service
 public class WarehouseRefreshTokenService {
-  @Value("120000")
-  private Long refreshTokenDurationMs;
 
   @Autowired
   private WarehouseRefreshTokenRepository refreshTokenRepository;
@@ -33,7 +31,7 @@ public class WarehouseRefreshTokenService {
     WarehouseRefreshToken refreshToken = new WarehouseRefreshToken();
 
     refreshToken.setUser(userRepository.findById(userId).get());
-    refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+    refreshToken.setExpiryDate(Instant.now().plusMillis(WarehouseUserConstants.WAREHOUSE_EXPIRATION_TOKEN));
     refreshToken.setToken(UUID.randomUUID().toString());
 
     refreshToken = refreshTokenRepository.save(refreshToken);
@@ -43,9 +41,8 @@ public class WarehouseRefreshTokenService {
   public WarehouseRefreshToken verifyExpiration(WarehouseRefreshToken token) {
     if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
       refreshTokenRepository.delete(token);
-      throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
+      throw new TokenRefreshException(token.getToken(), WarehouseUserResponse.WAREHOUSE_USER_REFRESH_TOKEN);
     }
-
     return token;
   }
 

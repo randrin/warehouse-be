@@ -2,6 +2,7 @@ package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
+import com.warehouse.bear.management.exception.RoleNotFoundException;
 import com.warehouse.bear.management.exception.TokenRefreshException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +47,7 @@ public class WarehouseAuthService {
     private WarehouseRoleRepository roleRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private WarehouseRefreshTokenService refreshTokenService;
@@ -71,24 +73,24 @@ public class WarehouseAuthService {
 
         if (strRoles == null) {
             WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                    .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         WarehouseRole adminRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(adminRole);
                         break;
                     case "moderator":
                         WarehouseRole modRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(modRole);
                         break;
                     default:
                         WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
                         roles.add(userRole);
                 }
             });
@@ -96,7 +98,7 @@ public class WarehouseAuthService {
 
         // Create new user's account
         WarehouseUser user = new WarehouseUser(0L, request.getUsername(), request.getFullname(), request.getEmail(),
-                passwordEncoder.encode(request.getPassword()), roles);
+                bCryptPasswordEncoder.encode(request.getPassword()), roles);
 
         userRepository.save(user);
         return ResponseEntity.ok(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED));

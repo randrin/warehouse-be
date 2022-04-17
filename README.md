@@ -1,5 +1,12 @@
-# warehouse-be
-Warehouse Management Microservices
+# Microservice WareHouse
+
+To manualy add roles in system
+
+```bash
+INSERT INTO warehouse_management.roles(name) VALUES('ROLE_USER');
+INSERT INTO warehouse_management.roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO warehouse_management.roles(name) VALUES('ROLE_ADMIN');
+```
 
 ## Introduction
 
@@ -59,6 +66,5 @@ In the end we have to create the role for read the secret using the policy.json 
 ```
 aws --endpoint-url=http://localhost:4566 --region eu-central-1 iam create-role --role-name dummy --assume-role-policy-document file://policy.json
 ```
-
 
 

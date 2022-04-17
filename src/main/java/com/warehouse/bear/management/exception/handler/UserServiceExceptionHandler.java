@@ -1,5 +1,6 @@
 package com.warehouse.bear.management.exception.handler;
 
+import com.warehouse.bear.management.exception.RoleNotFoundException;
 import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.response.WarehouseExceptionResponse;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +42,7 @@ public class UserServiceExceptionHandler extends ResponseEntityExceptionHandler 
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, RoleNotFoundException.class})
     ResponseEntity<?> UserNotFoundHandler(Exception exception, ServletWebRequest request) {
 
         WarehouseExceptionResponse apiError = new WarehouseExceptionResponse();
