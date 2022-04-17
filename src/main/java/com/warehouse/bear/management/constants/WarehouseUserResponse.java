@@ -14,6 +14,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ACTIVATED = "User activated successfully.";
     public static final String WAREHOUSE_USER_DISABLED = "User disabled successfully.";
     public static final String WAREHOUSE_USER_UPDATE_PROFIL = "User Profil update successfully.";
+    public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signin request.";
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFIL_NOT_FOUND = "User Profil can't be update.";

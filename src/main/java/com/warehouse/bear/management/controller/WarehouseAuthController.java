@@ -1,18 +1,15 @@
 package com.warehouse.bear.management.controller;
 
-import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
 import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
 import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
 import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
-import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,9 +21,6 @@ public class WarehouseAuthController {
 
     @Autowired
     private WarehouseAuthService warehouseAuthService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
     public ResponseEntity<Object> warehouseLogin(@Valid @RequestBody WarehouseLoginRequest request) {
@@ -40,7 +34,6 @@ public class WarehouseAuthController {
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     public ResponseEntity<Object> warehouseRegister(@Valid @RequestBody WarehouseRegisterRequest request) {
-        request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         return warehouseAuthService.registerUser(request);
     }
 
