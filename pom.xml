@@ -17,6 +17,7 @@
         <java.version>11</java.version>
         <jsonwebtoken.version>0.9.1</jsonwebtoken.version>
         <swagger.version>2.9.2</swagger.version>
+        <commons.version>3.11</commons.version>
     </properties>
     <dependencies>
         <dependency>
@@ -51,6 +52,11 @@
             <version>${swagger.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
@@ -73,12 +79,6 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
     </dependencies>
 
