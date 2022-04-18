@@ -13,14 +13,13 @@ public class WarehouseBeApplication {
 		SpringApplication.run(WarehouseBeApplication.class, args);
 	}
 
-
 	@Bean
 	WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins("*")
+						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE").allowedOrigins("*")
 						.allowedHeaders("*");
 			}
 		};

@@ -177,7 +177,7 @@ public class WarehouseAuthService {
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND),
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + request.getUserId()),
                     HttpStatus.NOT_FOUND);
         }
     }

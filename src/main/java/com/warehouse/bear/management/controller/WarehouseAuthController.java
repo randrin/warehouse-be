@@ -42,7 +42,7 @@ public class WarehouseAuthController {
         return warehouseAuthService.refreshTokenUser(request);
     }
 
-    @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGOUT_USER)
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_LOGOUT_USER)
     public ResponseEntity<Object> warehouseLogout(@Valid @RequestBody WarehouseLogoutRequest request) {
         return warehouseAuthService.logoutUser(request);
     }
