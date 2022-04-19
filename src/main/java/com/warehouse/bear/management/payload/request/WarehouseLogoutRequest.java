@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WarehouseLogoutRequest {
 
-    private Long userId;
+    private String userId;
 }

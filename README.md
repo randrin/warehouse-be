@@ -1,11 +1,15 @@
-# Microservice WareHouse
+# Warehouse Management System Microservice
 
-To manualy add roles in system
-
+## How to manualy add roles in system
 ```bash
 INSERT INTO warehouse_management.roles(name) VALUES('ROLE_USER');
 INSERT INTO warehouse_management.roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO warehouse_management.roles(name) VALUES('ROLE_ADMIN');
+```
+
+## How to access in swagger documentation
+```bash
+http://localhost:<YOUR_PORT>/swagger-ui.html#/
 ```
 
 ## Introduction
@@ -46,7 +50,13 @@ For specific folder's src/main/java package contains the followings sections:
 * warehouseAdvice: ....
 * WarehouseBeApplication.java: the entry point of the application.
 
-##Test in your local environment
+## Login workflow
+![login.png](images/login.png)
+
+## Registration workflow
+![registration.png](images/registration.png)
+
+## Test in your local environment
 For set up the environement localy, follow the steps belongs.
 
 **Prerequisites**:

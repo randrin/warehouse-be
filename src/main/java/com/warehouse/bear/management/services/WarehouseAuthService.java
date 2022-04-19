@@ -18,6 +18,7 @@ import com.warehouse.bear.management.payload.response.WarehouseTokenRefreshRespo
 import com.warehouse.bear.management.repository.WarehouseRoleRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
+import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -39,6 +39,9 @@ public class WarehouseAuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private WarehouseUserDetailsService warehouseUserDetailsService;
 
     @Autowired
     private WarehouseUserRepository userRepository;
@@ -97,8 +100,18 @@ public class WarehouseAuthService {
         }
 
         // Create new user's account
-        WarehouseUser user = new WarehouseUser(0L, request.getUsername(), request.getFullname(), request.getEmail(),
-                bCryptPasswordEncoder.encode(request.getPassword()), roles);
+        // TODO: Business logic to generate the userId
+        WarehouseUser user = new WarehouseUser(
+                0L,
+                WarehouseCommonUtil.generateUserId(),
+                request.getUsername(),
+                request.getFullname(),
+                request.getEmail(),
+                bCryptPasswordEncoder.encode(request.getPassword()),
+                roles,
+                false,
+                WarehouseCommonUtil.generateCurrentDateUtil(),
+                "");
 
         userRepository.save(user);
         return ResponseEntity.ok(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED));
@@ -111,6 +124,9 @@ public class WarehouseAuthService {
 
         WarehouseUserDetailsImpl userDetails = (WarehouseUserDetailsImpl) authentication.getPrincipal();
 
+        // Call this to another fields non present in security
+        WarehouseUser user = userRepository.findByUsername(request.getUsername()).get();
+
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
@@ -121,10 +137,14 @@ public class WarehouseAuthService {
         return new ResponseEntity<Object>(new WarehouseJwtResponse(
                 jwtToken,
                 warehouseRefreshToken.getToken(),
-                userDetails.getId(),
+                user.getUserId(),
+                user.getFullname(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles,
+                user.isActive(),
+                user.getLastLogin(),
+                user.getDateOfBirth(),
                 WarehouseUserResponse.WAREHOUSE_USER_LOGGED),
                 HttpStatus.OK);
     }
@@ -137,7 +157,10 @@ public class WarehouseAuthService {
                 .map(WarehouseRefreshToken::getUser)
                 .map(user -> {
                     String token = warehouseJwtUtil.generateToken(user.getUsername());
-                    return new ResponseEntity<Object>(new WarehouseTokenRefreshResponse(token, requestRefreshToken), HttpStatus.OK);
+                    return new ResponseEntity<Object>(new WarehouseTokenRefreshResponse(
+                            token,
+                            requestRefreshToken),
+                            HttpStatus.OK);
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
@@ -145,8 +168,17 @@ public class WarehouseAuthService {
 
     public ResponseEntity<Object> logoutUser(WarehouseLogoutRequest request) {
         // TODO: Implement the logout business logic later
-        return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                WarehouseUserResponse.WAREHOUSE_USER_LOGOUT),
-                HttpStatus.OK);
+        try {
+            WarehouseUser user = userRepository.findByUserId(request.getUserId()).get();
+            user.setLastLogin(WarehouseCommonUtil.generateCurrentDateUtil());
+            userRepository.save(user);
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_LOGOUT),
+                    HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + request.getUserId()),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 }

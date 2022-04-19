@@ -1,11 +1,17 @@
 package com.warehouse.bear.management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,22 +32,25 @@ public class WarehouseUser {
     @JsonIgnore
     private Long id;
 
-    @NotBlank
+    private String userId;
+
     @Size(max = 20)
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_USERNAME_REQUIRED)
     private String username;
 
-    @NotBlank
     @Size(max = 20)
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_FULLNAME_REQUIRED)
     private String fullname;
 
-    @NotBlank
     @Size(max = 50)
-    @Email
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_EMAIL_REQUIRED)
+    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
-    @NotBlank
     @Size(max = 120)
-    @JsonIgnore
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
+    @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -49,5 +58,9 @@ public class WarehouseUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles = new HashSet<>();
+
+    private boolean isActive;
+    private String lastLogin;
+    private String dateOfBirth;
 
 }
