@@ -114,7 +114,7 @@ public class WarehouseAuthService {
                 "");
 
         userRepository.save(user);
-        return ResponseEntity.ok(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED));
+        return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
 
     public ResponseEntity<Object> loginUser(WarehouseLoginRequest request) {
