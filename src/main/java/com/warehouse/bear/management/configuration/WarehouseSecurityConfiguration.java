@@ -50,7 +50,9 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER,
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
                 .permitAll()
-                .antMatchers("/**/entreprises/create",
+                .antMatchers(
+                        "/actuator/**",
+                        "/**/entreprises/create",
                         "/v2/api-docs",
                         "/swagger-resources",
                         "/swagger-resources/**",
