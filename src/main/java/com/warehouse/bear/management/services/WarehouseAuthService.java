@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -179,6 +180,30 @@ public class WarehouseAuthService {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + request.getUserId()),
                     HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> verifyTokenUser(String token) {
+        try {
+            String username = warehouseJwtUtil.extractUsername(token);
+            UserDetails userDetails = warehouseUserDetailsService.loadUserByUsername(username);
+            boolean isValidToken = warehouseJwtUtil.validateToken(token, userDetails);
+            if (isValidToken) {
+                return new ResponseEntity<Object>(new WarehouseResponse(
+                        username,
+                        WarehouseUserResponse.WAREHOUSE_USER_VERIFY_TOKEN),
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseResponse(
+                        token,
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_TOKEN),
+                        HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseResponse(
+                    token,
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_TOKEN),
+                    HttpStatus.FORBIDDEN);
         }
     }
 }
