@@ -11,6 +11,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_LOGOUT_USER =  "/logout";
     public static final String WAREHOUSE_REGISTER_USER =  "/register";
     public static final String WAREHOUSE_REFRESH_TOKEN =  "/refreshtoken";
+    public static final String WAREHOUSE_VERIFY_TOKEN =  "/verifytoken";
     public static final String WAREHOUSE_ALL_USERS = "/users";
     public static final String WAREHOUSE_FIND_USER =  "/find";
 }

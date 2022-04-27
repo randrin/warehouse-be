@@ -55,6 +55,12 @@ public class WarehouseAuthController {
         return warehouseAuthService.refreshTokenUser(request);
     }
 
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFY_TOKEN + "/{token}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_TOKEN)
+    public ResponseEntity<Object> warehouseVerifyToken(@PathVariable String token) {
+        return warehouseAuthService.verifyTokenUser(token);
+    }
+
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_LOGOUT_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_LOGOUT)
     public ResponseEntity<Object> warehouseLogout(@Valid @RequestBody WarehouseLogoutRequest request) {
