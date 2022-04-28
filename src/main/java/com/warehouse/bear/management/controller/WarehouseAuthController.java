@@ -60,4 +60,10 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseLogout(@Valid @RequestBody WarehouseLogoutRequest request) {
         return warehouseAuthService.logoutUser(request);
     }
+
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_ALL_USERS)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_USERS)
+    public ResponseEntity<Object> warehouseGetAllUser() {
+            return warehouseAuthService.allUser();
+    }
 }

@@ -7,4 +7,5 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_REGISTER = "Register to warehouse system";
     public static final String WAREHOUSE_OPERATION_LOGOUT = "Logout to warehouse system";
     public static final String WAREHOUSE_OPERATION_REFRESH_TOKEN = "Refresh your token to warehouse system";
+    public static final String WAREHOUSE_OPERATION_GET_ALL_USERS = "get all users registred";
 }

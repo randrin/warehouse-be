@@ -15,6 +15,8 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_DISABLED = "User disabled successfully.";
     public static final String WAREHOUSE_USER_UPDATE_PROFIL = "User Profil update successfully.";
     public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signin request.";
+    public static final String WAREHOUSE_USER_FOUND = "total found user: ";
+
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFIL_NOT_FOUND = "User Profil can't be update.";
@@ -26,4 +28,5 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_PASSWORD = "User password isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_PASSWORD_NOT_MATCH = "User old password isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_DISABLE = "Your account isn't active. Contact your administration department for more information.";
+    public static final String WAREHOUSE_USER_NOT_PRESENT = "we don't have any users registred yet.";
 }

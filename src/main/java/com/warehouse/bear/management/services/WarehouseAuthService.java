@@ -21,6 +21,7 @@ import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -71,6 +72,8 @@ public class WarehouseAuthService {
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
 
+
+
         Set<String> strRoles = request.getRole();
         Set<WarehouseRole> roles = new HashSet<>();
 
@@ -113,6 +116,10 @@ public class WarehouseAuthService {
                 WarehouseCommonUtil.generateCurrentDateUtil(),
                 "");
 
+        String userId;
+        do{
+            userId = WarehouseCommonUtil.generateUserId();
+        }while (userRepository.findByUserId(userId).isPresent());
         userRepository.save(user);
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
@@ -178,6 +185,17 @@ public class WarehouseAuthService {
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + request.getUserId()),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> allUser() {
+        try {
+            List<WarehouseUser> user = userRepository.findAll();
+            return new ResponseEntity<Object>(user, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID),
                     HttpStatus.NOT_FOUND);
         }
     }
