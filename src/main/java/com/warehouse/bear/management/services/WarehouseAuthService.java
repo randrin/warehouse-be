@@ -199,6 +199,8 @@ public class WarehouseAuthService {
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID),
                     HttpStatus.NOT_FOUND);
         }
+    }
+
     public ResponseEntity<Object> verifyTokenUser(String token) {
         try {
             String username = warehouseJwtUtil.extractUsername(token);
