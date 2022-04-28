@@ -200,7 +200,6 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
-
     public ResponseEntity<Object> verifyTokenUser(String token) {
         try {
             String username = warehouseJwtUtil.extractUsername(token);
