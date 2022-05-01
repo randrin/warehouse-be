@@ -3,18 +3,22 @@ package com.warehouse.bear.management.controller;
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
+import com.warehouse.bear.management.model.ImageModel;
 import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
 import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
 import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
 import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
+import com.warehouse.bear.management.repository.ImageRepository;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @CrossOrigin("*")
 @RestController
@@ -71,5 +75,17 @@ public class WarehouseAuthController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_USERS)
     public ResponseEntity<Object> warehouseGetAllUser() {
             return warehouseAuthService.allUser();
+    }
+
+
+    @Autowired
+    ImageRepository imageRepository;
+    @PostMapping("/upload")
+    public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
+
+        ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        final ImageModel savedImage = imageRepository.save(img);
+        System.out.println("Image saved");
+        return savedImage;
     }
 }

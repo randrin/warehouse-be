@@ -8,6 +8,7 @@ public class WarehouseUserEndpoints {
 
     public static final String WAREHOUSE_ROOT_ENDPOINT = "/v1/warehouse";
     public static final String WAREHOUSE_LOGIN_USER =  "/login";
+    public static final String WAREHOUSE_UPLOAD_IMAGE_USER =  "/upload";
     public static final String WAREHOUSE_LOGOUT_USER =  "/logout";
     public static final String WAREHOUSE_REGISTER_USER =  "/register";
     public static final String WAREHOUSE_REFRESH_TOKEN =  "/refreshtoken";

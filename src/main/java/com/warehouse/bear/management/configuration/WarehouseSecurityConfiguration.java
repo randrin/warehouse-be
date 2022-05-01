@@ -49,6 +49,7 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .antMatchers(WarehouseUserEndpoints.WAREHOUSE_ROOT,
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER,
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER,
+                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_UPLOAD_IMAGE_USER,
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_VERIFY_TOKEN + "/**")
                 .permitAll()
                 .antMatchers(
