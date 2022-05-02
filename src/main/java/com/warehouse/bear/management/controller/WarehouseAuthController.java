@@ -29,6 +29,9 @@ public class WarehouseAuthController {
     @Autowired
     private WarehouseAuthService warehouseAuthService;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_LOGIN)
     @ApiResponses(value = {
@@ -78,8 +81,7 @@ public class WarehouseAuthController {
     }
 
 
-    @Autowired
-    ImageRepository imageRepository;
+
     @PostMapping("/upload")
     public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
 
