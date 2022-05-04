@@ -58,6 +58,7 @@ public class WarehouseUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles = new HashSet<>();
+    private String profilePicture;
 
     private boolean isActive;
     private String lastLogin;

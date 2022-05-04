@@ -19,7 +19,9 @@ import com.warehouse.bear.management.repository.WarehouseRoleRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
+import com.warehouse.bear.management.utils.WarehouseImageUserUtils;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
@@ -61,7 +65,8 @@ public class WarehouseAuthService {
     private WarehouseJwtUtil warehouseJwtUtil;
 
 
-    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request) {
+    @SneakyThrows
+    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request, MultipartFile multipartFile) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
@@ -103,8 +108,10 @@ public class WarehouseAuthService {
             });
         }
 
+
         // Create new user's account
         // TODO: Business logic to generate the userId
+        String profilePicture = null;
         WarehouseUser user = new WarehouseUser(
                 0L,
                 WarehouseCommonUtil.generateUserId(),
@@ -113,9 +120,18 @@ public class WarehouseAuthService {
                 request.getEmail(),
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
+                profilePicture,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
                 "");
+
+        String profilePictureFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        user.setProfilePicture(profilePictureFileName);
+    //    Candidate savedCandidate = candidateRepo.save(candidate);
+        String uploadDir = "candidates/" + user.getId();
+
+        WarehouseImageUserUtils.FileUploadUtil.saveFile(uploadDir, profilePictureFileName, multipartFile);
+
 
         String userId;
         do{

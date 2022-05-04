@@ -3,12 +3,12 @@ package com.warehouse.bear.management.controller;
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
-import com.warehouse.bear.management.model.ImageModel;
+import com.warehouse.bear.management.model.WarehouseImageUser;
 import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
 import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
 import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
 import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
-import com.warehouse.bear.management.repository.ImageRepository;
+import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +49,9 @@ public class WarehouseAuthController {
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
-    public ResponseEntity<Object> warehouseRegister(@Valid @RequestBody WarehouseRegisterRequest request) {
-        return warehouseAuthService.registerUser(request);
+    public ResponseEntity<Object> warehouseRegister(@Valid @RequestBody WarehouseRegisterRequest request,
+                                                    @RequestParam("profilePictureFile") MultipartFile multipartFile) {
+        return warehouseAuthService.registerUser(request,multipartFile);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)
@@ -79,12 +80,11 @@ public class WarehouseAuthController {
 
 
     @Autowired
-    ImageRepository imageRepository;
+    WarehouseImageUserRepository imageRepository;
     @PostMapping("/upload")
-    public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
-
-        ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
-        final ImageModel savedImage = imageRepository.save(img);
+    public WarehouseImageUser uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
+        WarehouseImageUser img = new WarehouseImageUser(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        final WarehouseImageUser savedImage = imageRepository.save(img);
         System.out.println("Image saved");
         return savedImage;
     }
