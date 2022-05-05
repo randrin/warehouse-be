@@ -3,18 +3,19 @@ package com.warehouse.bear.management.controller;
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
-import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
-import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
-import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
-import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
+import com.warehouse.bear.management.model.ImageModel;
+import com.warehouse.bear.management.payload.request.*;
+import com.warehouse.bear.management.repository.ImageRepository;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @CrossOrigin("*")
 @RestController
@@ -24,6 +25,9 @@ public class WarehouseAuthController {
 
     @Autowired
     private WarehouseAuthService warehouseAuthService;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_LOGIN)
@@ -65,5 +69,39 @@ public class WarehouseAuthController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_LOGOUT)
     public ResponseEntity<Object> warehouseLogout(@Valid @RequestBody WarehouseLogoutRequest request) {
         return warehouseAuthService.logoutUser(request);
+    }
+
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_ALL_USERS)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_USERS)
+    public ResponseEntity<Object> warehouseGetAllUser() {
+            return warehouseAuthService.allUser();
+    }
+
+    @PostMapping("/upload")
+    public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
+
+        ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        final ImageModel savedImage = imageRepository.save(img);
+        System.out.println("Image saved");
+        return savedImage;
+    }
+
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FORGOT_PASSWORD + "/{email}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FORGOT_PASSWORD)
+    public ResponseEntity<Object> warehouseForgotPassword(@PathVariable String email) {
+        return warehouseAuthService.forgotPasswordUser(email);
+    }
+
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_LINK)
+    public ResponseEntity<Object> warehouseVerifyLink(@RequestParam(value = "link", required = true) String link,
+                                                      @RequestParam(value = "verifyType", required = true) String verifyType) {
+        return warehouseAuthService.verifyLinkUser(link, verifyType);
+    }
+
+    @PostMapping(WarehouseUserEndpoints.WAREHOUSE_RESET_PASSWORD)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_RESET_PASSWORD)
+    public ResponseEntity<Object> warehouseResetPassword(@Valid @RequestBody WarehouseResetPasswordRequest request) {
+        return warehouseAuthService.resetPassword(request);
     }
 }
