@@ -1,6 +1,19 @@
 server:
   port: 9195
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: vanessaandrandrin@gmail.com
+    password: xeswbvtvdbpxkelr
+    default-encoding: UTF-8
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/warehouse_management?useLegacyDatetimeCode=false&serverTimezone=UTC
