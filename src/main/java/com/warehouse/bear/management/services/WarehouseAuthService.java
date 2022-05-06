@@ -1,5 +1,6 @@
 package com.warehouse.bear.management.services;
 
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import com.warehouse.bear.management.exception.RoleNotFoundException;
@@ -7,23 +8,22 @@ import com.warehouse.bear.management.exception.TokenRefreshException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
-import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
-import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
-import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
-import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
+import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
+import com.warehouse.bear.management.payload.request.*;
 import com.warehouse.bear.management.payload.response.WarehouseJwtResponse;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.payload.response.WarehouseTokenRefreshResponse;
 import com.warehouse.bear.management.repository.WarehouseRoleRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
+import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseImageUserUtils;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import lombok.SneakyThrows;
+import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,9 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,10 +57,16 @@ public class WarehouseAuthService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private WarehouseRefreshTokenService refreshTokenService;
+    private WarehouseTokenService warehouseTokenService;
 
     @Autowired
     private WarehouseJwtUtil warehouseJwtUtil;
+
+    @Autowired
+    private WarehouseMailUtil warehouseMailUtil;
+
+    @Autowired
+    private WarehouseVerifyIdentityRepository verifyIdentityRepository;
 
 
     @SneakyThrows
@@ -77,7 +81,6 @@ public class WarehouseAuthService {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
-
 
 
         Set<String> strRoles = request.getRole();
@@ -112,9 +115,13 @@ public class WarehouseAuthService {
         // Create new user's account
         // TODO: Business logic to generate the userId
         String profilePicture = null;
+        String userId = null;
+        do {
+            userId = WarehouseCommonUtil.generateUserId();
+        } while (userRepository.findByUserId(userId).isPresent());
         WarehouseUser user = new WarehouseUser(
                 0L,
-                WarehouseCommonUtil.generateUserId(),
+                userId,
                 request.getUsername(),
                 request.getFullname(),
                 request.getEmail(),
@@ -154,7 +161,7 @@ public class WarehouseAuthService {
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        WarehouseRefreshToken warehouseRefreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        WarehouseRefreshToken warehouseRefreshToken = warehouseTokenService.createRefreshToken(userDetails.getId());
 
         final String jwtToken = warehouseJwtUtil.generateToken(request.getUsername());
 
@@ -176,8 +183,8 @@ public class WarehouseAuthService {
     public ResponseEntity<Object> refreshTokenUser(WarehouseTokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
-        return refreshTokenService.findByToken(requestRefreshToken)
-                .map(refreshTokenService::verifyExpiration)
+        return warehouseTokenService.findByToken(requestRefreshToken)
+                .map(warehouseTokenService::verifyExpiration)
                 .map(WarehouseRefreshToken::getUser)
                 .map(user -> {
                     String token = warehouseJwtUtil.generateToken(user.getUsername());
@@ -187,7 +194,7 @@ public class WarehouseAuthService {
                             HttpStatus.OK);
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                        "Refresh token is not in database!"));
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_REFRESH_TOKEN));
     }
 
     public ResponseEntity<Object> logoutUser(WarehouseLogoutRequest request) {
@@ -216,6 +223,7 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
     public ResponseEntity<Object> verifyTokenUser(String token) {
         try {
             String username = warehouseJwtUtil.extractUsername(token);
@@ -237,6 +245,55 @@ public class WarehouseAuthService {
                     token,
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_TOKEN),
                     HttpStatus.FORBIDDEN);
+        }
+    }
+
+    public ResponseEntity<Object> forgotPasswordUser(String email) {
+
+        Optional<WarehouseUser> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+
+            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createForgotPassowordLink(user.get().getUserId());
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", user.get().getUsername().toUpperCase());
+            model.put("userId", user.get().getUserId().toUpperCase());
+            model.put("link", verifyIdentity.getLink());
+            model.put("verifyType", verifyIdentity.getVerifyType());
+            model.put("expirationLink", verifyIdentity.getExpiryDate());
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+
+            return new ResponseEntity<Object>(response,
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + email),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> verifyLinkUser(String link, String verifyType) {
+        Optional<WarehouseVerifyIdentity> user = verifyIdentityRepository.findByLinkAndVerifyType(link, verifyType);
+        if(user.isPresent()) {
+            return new ResponseEntity<Object>(user,
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_VERIFY_LINK),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> resetPassword(WarehouseResetPasswordRequest request) {
+
+        WarehouseUser user = userRepository.findByEmail(request.getEmail()).get();
+        if(user != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+            return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_PASSWORD_CHANGED), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + request.getEmail()),
+                    HttpStatus.NOT_FOUND);
         }
     }
 }

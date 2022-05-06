@@ -1,0 +1,24 @@
+    .ant-btn-primary {
+        color: #fff;
+        border-color: #1890ff;
+        background: #1890ff;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+        box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+    }
+    .ant-btn {
+        position: relative;
+        font-weight: 400;
+        white-space: nowrap;
+        text-align: center;
+        border: 1px solid #d9d9d9;
+        box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+        cursor: pointer;
+        transition: all .3s cubic-bezier(.645,.045,.355,1);
+        -webkit-user-select: none;
+        user-select: none;
+        height: 32px;
+        padding: 4px 15px;
+        border-radius: 2px;
+        background: #fff;
+        text-decoration: none;
+    }
