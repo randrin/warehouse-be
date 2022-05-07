@@ -17,15 +17,16 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signing request.";
     public static final String WAREHOUSE_USER_VERIFY_TOKEN = "Your token is valid and not expired. Good success in your job.";
     public static final String WAREHOUSE_USER_RESET_PASSWORD = "Confirmation reset link for your password is successfully send to ";
+    public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully";
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
     public static final String WAREHOUSE_USER_ERROR_LOGIN = "Bad Credentials Username/Password incorrect(s).";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID = "User not found with userId ";
-    public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME = "User not found with username/email ";
+    public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME = "User not found with username/email/userID ";
     public static final String WAREHOUSE_ROLE_NOT_FOUND = "Role(s) not found in the system. Contact your administration.";
     public static final String WAREHOUSE_ERROR_ALREADY_USED = " is already used, please try another one";
-    public static final String WAREHOUSE_USER_ERROR_PASSWORD = "User password isn't correct. Try again !!";
+    public static final String WAREHOUSE_USER_ERROR_PASSWORD = "The previous old user password isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_PASSWORD_NOT_MATCH = "User old password isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_DISABLE = "Your account isn't active. Contact your administration department for more information.";
     public static final String WAREHOUSE_USER_NOT_PRESENT = "We don't have any user registered yet.";
