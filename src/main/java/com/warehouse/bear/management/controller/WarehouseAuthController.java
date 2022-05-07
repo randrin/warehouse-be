@@ -104,4 +104,10 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseResetPassword(@Valid @RequestBody WarehouseResetPasswordRequest request) {
         return warehouseAuthService.resetPassword(request);
     }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_CHANGE_PASSWORD)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_PASSWORD)
+    public ResponseEntity<Object> warehouseChangePassword(@RequestBody @Valid WarehouseChangePasswordRequest request) {
+        return warehouseAuthService.changePassword(request);
+    }
 }
