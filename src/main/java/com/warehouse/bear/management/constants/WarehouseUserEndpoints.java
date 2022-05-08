@@ -7,8 +7,10 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_HOME = "/home";
 
     public static final String WAREHOUSE_ROOT_ENDPOINT = "/v1/warehouse";
+    public static final String WAREHOUSE_DOWNLOAD_ENDPOINT = "/v1/warehouse/download";
     public static final String WAREHOUSE_LOGIN_USER =  "/login";
-    public static final String WAREHOUSE_UPLOAD_IMAGE_USER =  "/upload";
+    public static final String WAREHOUSE_UPLOAD_FILE =  "/upload_file";
+    public static final String WAREHOUSE_DOWNLOAD_FILE =  "/download";
     public static final String WAREHOUSE_LOGOUT_USER =  "/logout";
     public static final String WAREHOUSE_REGISTER_USER =  "/register";
     public static final String WAREHOUSE_REFRESH_TOKEN =  "/refreshtoken";

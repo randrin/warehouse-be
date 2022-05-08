@@ -70,7 +70,7 @@ public class WarehouseAuthService {
 
 
     @SneakyThrows
-    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request, MultipartFile multipartFile) {
+    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
@@ -127,23 +127,10 @@ public class WarehouseAuthService {
                 request.getEmail(),
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
-                profilePicture,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
                 "");
 
-        String profilePictureFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        user.setProfilePicture(profilePictureFileName);
-    //    Candidate savedCandidate = candidateRepo.save(candidate);
-        String uploadDir = "candidates/" + user.getId();
-
-        WarehouseImageUserUtils.FileUploadUtil.saveFile(uploadDir, profilePictureFileName, multipartFile);
-
-
-        String userId;
-        do{
-            userId = WarehouseCommonUtil.generateUserId();
-        }while (userRepository.findByUserId(userId).isPresent());
         userRepository.save(user);
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }

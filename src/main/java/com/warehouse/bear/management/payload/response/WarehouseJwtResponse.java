@@ -1,6 +1,5 @@
 package com.warehouse.bear.management.payload.response;
 
-import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import lombok.*;
 
 import java.util.List;

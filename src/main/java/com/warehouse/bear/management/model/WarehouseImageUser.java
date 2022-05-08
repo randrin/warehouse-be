@@ -17,6 +17,29 @@ public class WarehouseImageUser {
     @Id
     @Column(name = "id")
     @GeneratedValue
+    private String id;
+
+    @Column(name = "fileName")
+    private String fileName;
+
+    @Column(name = "fileType")
+    private String fileType;
+
+    @Lob
+    @Column(name = "pic")
+    private byte[] data;
+
+    public WarehouseImageUser(String fileName, String fileType, byte[] data) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.data = data;
+    }
+}
+
+/*public class WarehouseImageUser {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "name")
@@ -34,5 +57,4 @@ public class WarehouseImageUser {
         this.name = name;
         this.type = type;
         this.pic = pic;
-    }
-}
+    }*/
