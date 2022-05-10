@@ -15,7 +15,7 @@ spring:
           starttls:
             enable: true
   profiles:
-    active: prod
+    active:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/warehouse_management
@@ -27,7 +27,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

@@ -18,7 +18,9 @@ import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
+import com.warehouse.bear.management.utils.WarehouseImageUserUtils;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
+import lombok.SneakyThrows;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,8 +109,10 @@ public class WarehouseAuthService {
             });
         }
 
+
         // Create new user's account
         // TODO: Business logic to generate the userId
+        String profilePicture = null;
         String userId = null;
         do {
             userId = WarehouseCommonUtil.generateUserId();
