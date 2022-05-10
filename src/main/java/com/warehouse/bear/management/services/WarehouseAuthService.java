@@ -302,4 +302,23 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Object> activateOrDisabledUser(String userId) {
+        try {
+            WarehouseUser user = userRepository.findByUserId(userId).get();
+            if (user != null) {
+                user.setActive(user.isActive() ? Boolean.FALSE : Boolean.TRUE);
+                userRepository.save(user);
+                return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }

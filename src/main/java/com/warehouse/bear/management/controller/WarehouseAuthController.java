@@ -111,4 +111,10 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseChangePassword(@RequestBody @Valid WarehouseChangePasswordRequest request) {
         return warehouseAuthService.changePassword(request);
     }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_STATUS)
+    public ResponseEntity<Object> warehouseActivateOrDisabledUser(@PathVariable String userId) {
+        return warehouseAuthService.activateOrDisabledUser(userId);
+    }
 }
