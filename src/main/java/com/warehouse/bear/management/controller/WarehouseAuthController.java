@@ -49,8 +49,9 @@ public class WarehouseAuthController {
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
-    public ResponseEntity<Object> warehouseRegister(@Valid @RequestBody WarehouseRegisterRequest request) {
-        return warehouseAuthService.registerUser(request);
+    public ResponseEntity<Object> warehouseRegisterStepOne(@Valid @RequestBody WarehouseRegisterRequest request,
+                                                    @RequestParam(value = "step", required = true) int step) {
+        return warehouseAuthService.registerUserStepOne(request);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)

@@ -64,7 +64,7 @@ public class WarehouseAuthService {
     private WarehouseVerifyIdentityRepository verifyIdentityRepository;
 
 
-    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request) {
+    public ResponseEntity<Object> registerUserStepOne(WarehouseRegisterRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
