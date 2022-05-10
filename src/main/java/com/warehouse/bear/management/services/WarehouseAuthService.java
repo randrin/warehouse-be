@@ -1,6 +1,5 @@
 package com.warehouse.bear.management.services;
 
-import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import com.warehouse.bear.management.exception.RoleNotFoundException;
@@ -69,8 +68,7 @@ public class WarehouseAuthService {
     private WarehouseVerifyIdentityRepository verifyIdentityRepository;
 
 
-    @SneakyThrows
-    public ResponseEntity<Object> registerUser(WarehouseRegisterRequest request) {
+    public ResponseEntity<Object> registerUserStepOne(WarehouseRegisterRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
@@ -260,7 +258,7 @@ public class WarehouseAuthService {
 
     public ResponseEntity<Object> verifyLinkUser(String link, String verifyType) {
         Optional<WarehouseVerifyIdentity> user = verifyIdentityRepository.findByLinkAndVerifyType(link, verifyType);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             return new ResponseEntity<Object>(user,
                     HttpStatus.OK);
         } else {
@@ -272,14 +270,41 @@ public class WarehouseAuthService {
 
     public ResponseEntity<Object> resetPassword(WarehouseResetPasswordRequest request) {
 
-        WarehouseUser user = userRepository.findByEmail(request.getEmail()).get();
-        if(user != null) {
-            user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-            userRepository.save(user);
-            return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_PASSWORD_CHANGED), HttpStatus.OK);
-        } else {
+        try {
+            WarehouseUser user = userRepository.findByEmail(request.getEmail()).get();
+            if (user != null) {
+                user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+                userRepository.save(user);
+                return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_PASSWORD_CHANGED), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + request.getEmail()),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + request.getEmail()),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> changePassword(WarehouseChangePasswordRequest request) {
+        try {
+            WarehouseUser user = userRepository.findByUserId(request.getUserId()).get();
+            if (bCryptPasswordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+                user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+                userRepository.save(user);
+                return new ResponseEntity<Object>(new WarehouseResponse(
+                        user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_PASSWORD),
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_PASSWORD),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + request.getUserId()),
                     HttpStatus.NOT_FOUND);
         }
     }
