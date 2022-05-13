@@ -18,9 +18,7 @@ import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
-import com.warehouse.bear.management.utils.WarehouseImageUserUtils;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
-import lombok.SneakyThrows;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +29,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -134,35 +130,54 @@ public class WarehouseAuthService {
     }
 
     public ResponseEntity<Object> loginUser(WarehouseLoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+        String warehouseUsername = "";
+        try {
+            if (request.getUsername().contains("@")) {
+                // Case where the user logged in with email
+                final WarehouseUser user = userRepository.findByEmail(request.getUsername()).get();
+                warehouseUsername = user.getUsername();
+            } else {
+                // Case where the user logged in with userId or Username
+                if(request.getUsername().length() == 7) {
+                    final WarehouseUser userWithUserID = userRepository.findByUserId(request.getUsername()).get();
+                    warehouseUsername = userWithUserID.getUsername();
+                } else {
+                    final UserDetails userWithUsername = warehouseUserDetailsService.loadUserByUsername(request.getUsername());
+                    warehouseUsername = userWithUsername.getUsername();
+                }
+            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(warehouseUsername, request.getPassword())
+            );
 
-        WarehouseUserDetailsImpl userDetails = (WarehouseUserDetailsImpl) authentication.getPrincipal();
+            WarehouseUserDetailsImpl userDetails = (WarehouseUserDetailsImpl) authentication.getPrincipal();
 
-        // Call this to another fields non present in security
-        WarehouseUser user = userRepository.findByUsername(request.getUsername()).get();
+            // Call this to another fields non present in security
+            WarehouseUser user = userRepository.findByUsername(warehouseUsername).get();
 
-        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+            List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
 
-        WarehouseRefreshToken warehouseRefreshToken = warehouseTokenService.createRefreshToken(userDetails.getId());
+            WarehouseRefreshToken warehouseRefreshToken = warehouseTokenService.createRefreshToken(userDetails.getId());
 
-        final String jwtToken = warehouseJwtUtil.generateToken(request.getUsername());
+            final String jwtToken = warehouseJwtUtil.generateToken(warehouseUsername);
 
-        return new ResponseEntity<Object>(new WarehouseJwtResponse(
-                jwtToken,
-                warehouseRefreshToken.getToken(),
-                user.getUserId(),
-                user.getFullname(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles,
-                user.isActive(),
-                user.getLastLogin(),
-                user.getDateOfBirth(),
-                WarehouseUserResponse.WAREHOUSE_USER_LOGGED),
-                HttpStatus.OK);
+            return new ResponseEntity<Object>(new WarehouseJwtResponse(
+                    jwtToken,
+                    warehouseRefreshToken.getToken(),
+                    user.getUserId(),
+                    user.getFullname(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    roles,
+                    user.isActive(),
+                    user.getLastLogin(),
+                    user.getDateOfBirth(),
+                    WarehouseUserResponse.WAREHOUSE_USER_LOGGED),
+                    HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<Object> refreshTokenUser(WarehouseTokenRefreshRequest request) {
@@ -268,7 +283,7 @@ public class WarehouseAuthService {
         }
     }
 
-    public ResponseEntity<Object> resetPassword(WarehouseResetPasswordRequest request) {
+    public ResponseEntity<Object> resetPasswordUser(WarehouseResetPasswordRequest request) {
 
         try {
             WarehouseUser user = userRepository.findByEmail(request.getEmail()).get();

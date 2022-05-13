@@ -52,13 +52,9 @@ public class WarehouseAuthController {
             @ApiResponse(code = 500, message = "Internal error. Try contact your administration.")
     })
     public ResponseEntity<Object> warehouseLogin(
-            @ApiParam(value ="Username/Password are required", required = true) @Valid @RequestBody WarehouseLoginRequest request) {
-
-        try {
-            return warehouseAuthService.loginUser(request);
-        } catch (Exception ex) {
-            return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);
-        }
+            @ApiParam(value ="Username/Password are required", required = true)
+            @Valid @RequestBody WarehouseLoginRequest request) {
+        return warehouseAuthService.loginUser(request);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
@@ -108,7 +104,7 @@ public class WarehouseAuthController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_RESET_PASSWORD)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_RESET_PASSWORD)
     public ResponseEntity<Object> warehouseResetPassword(@Valid @RequestBody WarehouseResetPasswordRequest request) {
-        return warehouseAuthService.resetPassword(request);
+        return warehouseAuthService.resetPasswordUser(request);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_UPLOAD_FILE)
