@@ -1,7 +1,7 @@
 package com.warehouse.bear.management.controller;
 
 
-import com.warehouse.bear.management.repository.ImageRepository;
+import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +35,6 @@ public class TestController {
 	}
 
 	@Autowired
-	ImageRepository imageRepository;
+	WarehouseImageUserRepository imageRepository;
 
 }
