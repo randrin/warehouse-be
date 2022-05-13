@@ -22,6 +22,7 @@ public class WarehouseUserConstants {
 
     // MODELS
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
+    public static final String WAREHOUSE_GENDER_REQUIRED = "Gender is required";
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
     public static final String WAREHOUSE_EMAIL_REQUIRED = "Email is required";
     public static final String WAREHOUSE_PASSWORD_REQUIRED = "Password is required";

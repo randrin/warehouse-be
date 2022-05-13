@@ -20,6 +20,9 @@ public class WarehouseRegisterRequest {
     private String username;
 
     @NotBlank
+    private String gender;
+
+    @NotBlank
     @Size(max = 50)
     @Email
     private String email;

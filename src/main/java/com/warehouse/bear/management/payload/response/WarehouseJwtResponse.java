@@ -12,6 +12,7 @@ public class WarehouseJwtResponse {
     private String refreshToken;
     private String userId;
     private String fullname;
+    private String gender;
     private String username;
     private String email;
     private List<String> roles;

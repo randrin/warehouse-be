@@ -42,6 +42,10 @@ public class WarehouseUser {
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_FULLNAME_REQUIRED)
     private String fullname;
 
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_GENDER_REQUIRED)
+    private String gender;
+
     @Size(max = 50)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_EMAIL_REQUIRED)
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
