@@ -94,6 +94,12 @@ public class WarehouseAuthController {
         return warehouseAuthService.forgotPasswordUser(email);
     }
 
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_EMAIL + "/{email}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_VERIFY_EMAIL)
+    public ResponseEntity<Object> warehouseVerificationEmail(@PathVariable String email) {
+        return warehouseAuthService.userVerificationEmail(email);
+    }
+
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_LINK)
     public ResponseEntity<Object> warehouseVerifyLink(@RequestParam(value = "link", required = true) String link,

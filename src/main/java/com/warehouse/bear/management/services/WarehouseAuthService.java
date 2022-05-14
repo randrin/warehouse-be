@@ -344,4 +344,27 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Object> userVerificationEmail(String email) {
+
+        Optional<WarehouseUser> user = userRepository.findByEmail(email);
+        try{
+
+            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createForgotPassowordLink(user.get().getUserId());
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", user.get().getUsername().toUpperCase());
+            model.put("userId", user.get().getUserId().toUpperCase());
+            model.put("link", verifyIdentity.getLink());
+            model.put("verifyType", verifyIdentity.getVerifyType());
+            model.put("expirationLink", verifyIdentity.getExpiryDate());
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+
+            return new ResponseEntity<Object>(response,
+                    HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + email),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }
