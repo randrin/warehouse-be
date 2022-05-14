@@ -16,6 +16,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_REFRESH_TOKEN =  "/refreshtoken";
     public static final String WAREHOUSE_VERIFY_TOKEN =  "/verifytoken";
     public static final String WAREHOUSE_FORGOT_PASSWORD =  "/forgot/password";
+    public static final String WAREHOUSE_VERIFICATION_EMAIL =  "/verifyemail";
     public static final String WAREHOUSE_VERIFY_USER_LINK_TYPE =  "/verify/link";
     public static final String WAREHOUSE_RESET_PASSWORD =  "/reset/password";
     public static final String WAREHOUSE_CHANGE_PASSWORD =  "/change/password";

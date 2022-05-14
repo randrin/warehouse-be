@@ -18,6 +18,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_DOWNLOAD = "file download in warehouse system";
     public static final String WAREHOUSE_OPERATION_VERIFY_TOKEN = "Verify if user's token is valid to warehouse system";
     public static final String WAREHOUSE_OPERATION_FORGOT_PASSWORD = "Send email link to user to reset our password in warehouse system";
+    public static final String WAREHOUSE_VERIFY_EMAIL = "Send email link to user to verify his email";
     public static final String WAREHOUSE_OPERATION_VERIFY_LINK = "Verify the user link provided with the verify type";
     public static final String WAREHOUSE_OPERATION_RESET_PASSWORD = "Reset your password to warehouse system";
     public static final String WAREHOUSE_OPERATION_CHANGE_PASSWORD = "Change your password to warehouse system";
