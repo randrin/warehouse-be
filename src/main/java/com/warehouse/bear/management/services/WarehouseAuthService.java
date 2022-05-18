@@ -350,7 +350,7 @@ public class WarehouseAuthService {
         Optional<WarehouseUser> user = userRepository.findByEmail(email);
         try{
 
-            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createForgotPassowordLink(user.get().getUserId());
+            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createVerificationEmailLink(user.get().getUserId());
             Map<String, Object> model = new HashMap<>();
             model.put("name", user.get().getUsername().toUpperCase());
             model.put("userId", user.get().getUserId().toUpperCase());
@@ -363,7 +363,7 @@ public class WarehouseAuthService {
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + email),
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL + email),
                     HttpStatus.NOT_FOUND);
         }
     }

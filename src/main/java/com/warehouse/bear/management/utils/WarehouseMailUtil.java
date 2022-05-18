@@ -47,11 +47,11 @@ public class WarehouseMailUtil {
 
             helper.setTo(user.getEmail());
             helper.setText(html, true);
-            helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_FORGOT_PASSWORD);
+            helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_VERIFICATION);
             helper.setFrom(warehouseEmailSender);
             sender.send(message);
 
-            response.setMessage(WarehouseUserResponse.WAREHOUSE_USER_RESET_PASSWORD + user.getEmail());
+            response.setMessage(WarehouseUserResponse.WAREHOUSE_USER_VERIFICATION_EMAIL + user.getEmail());
             response.setObject(Boolean.TRUE);
 
         } catch (MessagingException | IOException | TemplateException e) {
