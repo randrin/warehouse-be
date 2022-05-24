@@ -42,7 +42,7 @@ public class WarehouseMailUtil {
             // add attachment
             //helper.addAttachment("signature.png", new ClassPathResource("signature.png"));
 
-            Template t = config.getTemplate("reset-password-template.ftl");
+            Template t = config.getTemplate("verify-email-template.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
             helper.setTo(user.getEmail());
