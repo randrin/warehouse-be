@@ -32,7 +32,7 @@ public class WarehouseMailUtil {
     @Autowired
     private Configuration config;
 
-    public WarehouseResponse warehouseSendMail(WarehouseUser user, Map<String, Object> model) {
+    public WarehouseResponse warehouseSendMail(WarehouseUser user, Map<String, Object> model, String verifyType) {
         WarehouseResponse response = new WarehouseResponse();
         MimeMessage message = sender.createMimeMessage();
         try {
@@ -42,8 +42,13 @@ public class WarehouseMailUtil {
             // add attachment
             //helper.addAttachment("signature.png", new ClassPathResource("signature.png"));
 
-            Template t = config.getTemplate("reset-password-template.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+            Template template = null;
+            if(verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_PASSWORD_REMINDER) {
+                template = config.getTemplate("password-reminder-template.ftl");
+            } else if(verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD) {
+                template = config.getTemplate("reset-password-template.ftl");
+            }
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             helper.setTo(user.getEmail());
             helper.setText(html, true);

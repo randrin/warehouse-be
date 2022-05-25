@@ -1,5 +1,6 @@
 package com.warehouse.bear.management.services;
 
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import com.warehouse.bear.management.exception.RoleNotFoundException;
@@ -30,6 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -124,7 +126,8 @@ public class WarehouseAuthService {
                 roles,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
-                "");
+                "",
+                LocalDate.now().plusMonths(1));
 
         userRepository.save(user);
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
@@ -262,7 +265,7 @@ public class WarehouseAuthService {
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);
@@ -357,7 +360,7 @@ public class WarehouseAuthService {
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);

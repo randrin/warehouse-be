@@ -13,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,5 +67,6 @@ public class WarehouseUser {
     private boolean isActive;
     private String lastLogin;
     private String dateOfBirth;
+    private LocalDate passwordReminder;
 
 }

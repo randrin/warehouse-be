@@ -19,6 +19,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_SUBJECT_EMAIL_FORGOT_PASSWORD = "Confirmation send reset your password";
     public static final String WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL = "EMAIL_VERIFICATION";
+    public static final String WAREHOUSE_VERIFY_TYPE_PASSWORD_REMINDER = "PASSWORD_REMINDER";
 
     // MODELS
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
