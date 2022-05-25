@@ -127,6 +127,7 @@ public class WarehouseAuthService {
                 "");
 
         userRepository.save(user);
+        userVerificationEmail(user.getEmail());
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
 
@@ -357,7 +358,7 @@ public class WarehouseAuthService {
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseVerifyEmail(user.get(), model);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);
