@@ -3,9 +3,11 @@ package com.warehouse.bear.management.constants;
 public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_CREATED = "User created successfully.";
     public static final String WAREHOUSE_USER_USERNAME_EXISTS = "User already exists with username ";
+    public static final String WAREHOUSE_EXISTING_USER = "User already exists with user Id:  ";
     public static final String WAREHOUSE_USER_EMAIL_EXISTS = "User already exists with email ";
     public static final String WAREHOUSE_USER_LOGGED = "User logged successfully.";
     public static final String WAREHOUSE_USER_REGISTERED = "User registered successfully.";
+    public static final String WAREHOUSE_USER_UPDATE = "User update successfully.";
     public static final String WAREHOUSE_USER_LOGOUT = "User logout successfully.";
     public static final String WAREHOUSE_USER_DELETED = "User deleted successfully.";
     public static final String WAREHOUSE_USER_UPDATED = "User updated successfully.";

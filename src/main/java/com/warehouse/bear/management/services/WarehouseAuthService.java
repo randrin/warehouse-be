@@ -122,9 +122,12 @@ public class WarehouseAuthService {
                 request.getEmail(),
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
+                null,
+                null,
+                null,
+                null,
                 false,
-                WarehouseCommonUtil.generateCurrentDateUtil(),
-                "");
+                WarehouseCommonUtil.generateCurrentDateUtil());
 
         userRepository.save(user);
         userVerificationEmail(user.getEmail());
@@ -368,4 +371,26 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Object> registerUserStepThree(WarehouseRegisterRequestStepThree requestSTepThree,String username) {
+
+
+            try {
+
+                WarehouseUser user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
+                user.setDateOfBirth(requestSTepThree.getDateOfBirth());
+                user.setPhoneNumber(requestSTepThree.getPhoneNumber());
+                user.setCountry(requestSTepThree.getCountry());
+                userRepository.save(user);
+                return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND),
+                        HttpStatus.NOT_FOUND);
+            }
+        }
+
+
 }
+

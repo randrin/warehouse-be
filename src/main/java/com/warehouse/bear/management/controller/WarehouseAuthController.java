@@ -64,6 +64,14 @@ public class WarehouseAuthController {
         return warehouseAuthService.registerUserStepOne(request);
     }
 
+    @PatchMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER_STEP_THREE + "/{username}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
+    public ResponseEntity<Object> warehouseRegisterStepThree(@Valid @RequestBody WarehouseRegisterRequestStepThree request,
+                                                             @PathVariable String username,
+                                                             @RequestParam(value = "step", required = true) int step) {
+        return warehouseAuthService.registerUserStepThree(request,username);
+    }
+
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REFRESH_TOKEN)
     public ResponseEntity<Object> warehouseRefreshToken(@Valid @RequestBody WarehouseTokenRefreshRequest request) {
