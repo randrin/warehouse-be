@@ -55,6 +55,17 @@ public class WarehouseTokenService {
     return verifyIdentityRepository.save(verifyIdentity);
   }
 
+  public WarehouseVerifyIdentity createVerificationEmailLink(String userId) {
+    WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
+
+    verifyIdentity.setUser(userRepository.findByUserId(userId).get());
+    verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
+    verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
+    verifyIdentity.setLink(UUID.randomUUID().toString());
+
+    return verifyIdentityRepository.save(verifyIdentity);
+  }
+
   public WarehouseRefreshToken verifyExpiration(WarehouseRefreshToken token) {
     if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
       refreshTokenRepository.delete(token);

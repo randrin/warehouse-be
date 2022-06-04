@@ -24,7 +24,7 @@
                         <br/>To verify your email, please click on the button below
                         <br/><br/>
                         <div align="center">
-                            <a href="http://localhost:4200/warehouse/noAuth/resetPassword?idLinkResetPassword=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}"
+                            <a href="http://localhost:4200/warehouse/register/step-two?idLinkVerificationEmail=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}"
                             style="        position: relative;
         font-weight: 400;
         white-space: nowrap;
@@ -44,13 +44,13 @@
         text-decoration: none;
         text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
         box-shadow: 0 2px 0 rgb(0 0 0 / 5%);" target="_blank">
-                               Reset your password
+                               Verify your email
                             </a>
                             <br/>
                         </div>
                         <div>
                             <p> Or if your have any problems, please click on the link below (or copy it into your browser)</p>
-                            <p>http://localhost:4200/warehouse/noAuth/resetPassword?idLinkResetPassword=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}</p>
+                            <p>http://localhost:4200/warehouse/register/step-two?idLinkVerificationEmail=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}</p>
                             <br/>
                             <span><b>Attention, this link is valid for a period of 15 minutes.</b> Beyond that, you will have to start the procedure again on the <a target="_blank" href="http://localhost:4201/warehouse/login">Warehouse System</a> website.</span>
                             <br/>

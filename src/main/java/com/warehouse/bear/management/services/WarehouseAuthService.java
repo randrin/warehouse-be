@@ -122,11 +122,15 @@ public class WarehouseAuthService {
                 request.getEmail(),
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
+                null,
+                null,
+                null,
+                null,
                 false,
-                WarehouseCommonUtil.generateCurrentDateUtil(),
-                "");
+                WarehouseCommonUtil.generateCurrentDateUtil());
 
         userRepository.save(user);
+        userVerificationEmail(user.getEmail());
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
 
@@ -350,21 +354,43 @@ public class WarehouseAuthService {
         Optional<WarehouseUser> user = userRepository.findByEmail(email);
         try{
 
-            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createForgotPassowordLink(user.get().getUserId());
+            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createVerificationEmailLink(user.get().getUserId());
             Map<String, Object> model = new HashMap<>();
             model.put("name", user.get().getUsername().toUpperCase());
             model.put("userId", user.get().getUserId().toUpperCase());
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseVerifyEmail(user.get(), model);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + email),
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL + email),
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Object> registerUserStepThree(WarehouseRegisterRequestStepThree requestSTepThree,String username) {
+
+
+            try {
+
+                WarehouseUser user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
+                user.setDateOfBirth(requestSTepThree.getDateOfBirth());
+                user.setPhoneNumber(requestSTepThree.getPhoneNumber());
+                user.setCountry(requestSTepThree.getCountry());
+                userRepository.save(user);
+                return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND),
+                        HttpStatus.NOT_FOUND);
+            }
+        }
+
+
 }
+
