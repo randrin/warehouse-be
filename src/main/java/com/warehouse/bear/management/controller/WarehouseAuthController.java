@@ -64,6 +64,14 @@ public class WarehouseAuthController {
         return warehouseAuthService.registerUserStepOne(request);
     }
 
+    @PatchMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER_STEP_THREE + "/{username}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
+    public ResponseEntity<Object> warehouseRegisterStepThree(@Valid @RequestBody WarehouseRegisterRequestStepThree request,
+                                                             @PathVariable String username,
+                                                             @RequestParam(value = "step", required = true) int step) {
+        return warehouseAuthService.registerUserStepThree(request,username);
+    }
+
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REFRESH_TOKEN)
     public ResponseEntity<Object> warehouseRefreshToken(@Valid @RequestBody WarehouseTokenRefreshRequest request) {
@@ -92,6 +100,12 @@ public class WarehouseAuthController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FORGOT_PASSWORD)
     public ResponseEntity<Object> warehouseForgotPassword(@PathVariable String email) {
         return warehouseAuthService.forgotPasswordUser(email);
+    }
+
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_EMAIL + "/{email}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_VERIFY_EMAIL)
+    public ResponseEntity<Object> warehouseVerificationEmail(@PathVariable String email) {
+        return warehouseAuthService.userVerificationEmail(email);
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE)
@@ -142,5 +156,11 @@ public class WarehouseAuthController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_STATUS)
     public ResponseEntity<Object> warehouseActivateOrDisabledUser(@PathVariable String userId) {
         return warehouseAuthService.activateOrDisabledUser(userId);
+    }
+
+    @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_USER)
+    public ResponseEntity<Object> warehouseDeleteUser(@PathVariable String userId) {
+        return warehouseAuthService.deleteUser(userId);
     }
 }

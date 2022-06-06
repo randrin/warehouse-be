@@ -42,6 +42,10 @@ public class WarehouseUser {
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_FULLNAME_REQUIRED)
     private String fullname;
 
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_GENDER_REQUIRED)
+    private String gender;
+
     @Size(max = 50)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_EMAIL_REQUIRED)
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
@@ -59,8 +63,13 @@ public class WarehouseUser {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles = new HashSet<>();
 
+    private String dateOfBirth;
+    private String phoneNumber;
+    private String country;
+    private String imageUrl;
     private boolean isActive;
     private String lastLogin;
-    private String dateOfBirth;
+
+
 
 }

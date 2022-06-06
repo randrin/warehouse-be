@@ -17,11 +17,14 @@ public class WarehouseUserConstants {
     public static final String[] WAREHOUSE_ADMIN_ACCESS = {"ROLE_ADMIN", "ROLE_MODERATOR"};
     public static final String[] WAREHOUSE_MODERATOR_ACCESS = {"ROLE_MODERATOR"};
     public static final String WAREHOUSE_SUBJECT_EMAIL_FORGOT_PASSWORD = "Confirmation send reset your password";
+    public static final String WAREHOUSE_SUBJECT_EMAIL_VERIFICATION = "Confirmation send verification email";
     public static final String WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
+
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL = "EMAIL_VERIFICATION";
 
     // MODELS
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
+    public static final String WAREHOUSE_GENDER_REQUIRED = "Gender is required";
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
     public static final String WAREHOUSE_EMAIL_REQUIRED = "Email is required";
     public static final String WAREHOUSE_PASSWORD_REQUIRED = "Password is required";
