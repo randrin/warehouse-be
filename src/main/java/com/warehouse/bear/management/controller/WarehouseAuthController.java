@@ -157,4 +157,10 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseActivateOrDisabledUser(@PathVariable String userId) {
         return warehouseAuthService.activateOrDisabledUser(userId);
     }
+
+    @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_USER)
+    public ResponseEntity<Object> warehouseDeleteUser(@PathVariable String userId) {
+        return warehouseAuthService.deleteUser(userId);
+    }
 }

@@ -383,7 +383,7 @@ public class WarehouseAuthService {
                 user.setPhoneNumber(requestSTepThree.getPhoneNumber());
                 user.setCountry(requestSTepThree.getCountry());
                 userRepository.save(user);
-                return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE), HttpStatus.OK);
+                return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<Object>(new WarehouseMessageResponse(
                         WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND),
@@ -392,5 +392,17 @@ public class WarehouseAuthService {
         }
 
 
+        public ResponseEntity<Object> deleteUser(String userId) {
+        try {
+            WarehouseUser user = userRepository.findByUserId(userId)
+                    .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));
+            userRepository.delete(user);
+            return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_DELETED), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_DELETE_ERROR),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

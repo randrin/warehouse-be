@@ -23,4 +23,5 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_RESET_PASSWORD = "Reset your password to warehouse system";
     public static final String WAREHOUSE_OPERATION_CHANGE_PASSWORD = "Change your password to warehouse system";
     public static final String WAREHOUSE_OPERATION_CHANGE_STATUS = "Activate or disable user in warehouse system";
+    public static final String WAREHOUSE_OPERATION_DELETE_USER = "delete an user registred";
 }
