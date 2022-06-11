@@ -1,6 +1,8 @@
 package com.warehouse.bear.management.model;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -16,7 +18,7 @@ public class WarehouseRefreshToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne(cascade=CascadeType.REMOVE)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private WarehouseUser user;
 
