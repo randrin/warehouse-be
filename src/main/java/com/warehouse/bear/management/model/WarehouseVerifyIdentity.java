@@ -24,8 +24,8 @@ public class WarehouseVerifyIdentity {
     @JsonIgnore
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(cascade=CascadeType.REMOVE)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private WarehouseUser user;
 
     @Column(nullable = false)

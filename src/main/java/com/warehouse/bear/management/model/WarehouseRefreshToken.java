@@ -16,8 +16,8 @@ public class WarehouseRefreshToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(cascade=CascadeType.REMOVE)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private WarehouseUser user;
 
     @Column(nullable = false, unique = true)
