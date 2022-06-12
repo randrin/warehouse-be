@@ -13,7 +13,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_DOWNLOAD_FILE =  "/download";
     public static final String WAREHOUSE_LOGOUT_USER =  "/logout";
     public static final String WAREHOUSE_REGISTER_USER =  "/register";
-    public static final String WAREHOUSE_REGISTER_USER_STEP_THREE =  "/register/stepThree";
+    public static final String WAREHOUSE_REGISTER_USER_STEP_THREE =  "/register/step-three";
     public static final String WAREHOUSE_REFRESH_TOKEN =  "/refreshtoken";
     public static final String WAREHOUSE_VERIFY_TOKEN =  "/verifytoken";
     public static final String WAREHOUSE_FORGOT_PASSWORD =  "/forgot/password";

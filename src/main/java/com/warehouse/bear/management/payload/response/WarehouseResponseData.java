@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseResponseDataImageUser {
+public class WarehouseResponseData {
 
     private String fileName;
     private String downloadURL;
