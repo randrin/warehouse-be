@@ -3,8 +3,10 @@ package com.warehouse.bear.management.services;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.TokenRefreshException;
+import com.warehouse.bear.management.model.WarehouseImageUser;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
+import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseRefreshTokenRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
@@ -34,6 +36,7 @@ public class WarehouseTokenService {
   }
 
   public WarehouseRefreshToken createRefreshToken(Long userId) {
+    // TODO: Check if the user already existed in DB with user_id, then cancel and update with the new one
     WarehouseRefreshToken refreshToken = new WarehouseRefreshToken();
 
     refreshToken.setUser(userRepository.findById(userId).get());
@@ -45,6 +48,7 @@ public class WarehouseTokenService {
   }
 
   public WarehouseVerifyIdentity createForgotPassowordLink(String userId) {
+    // TODO: Check if the user already existed in DB with user_id, then cancel and update with the new one
     WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
 
     verifyIdentity.setUser(userRepository.findByUserId(userId).get());
@@ -56,6 +60,7 @@ public class WarehouseTokenService {
   }
 
   public WarehouseVerifyIdentity createVerificationEmailLink(String userId) {
+    // TODO: Check if the user already existed in DB with user_id, then cancel and update with the new one
     WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
 
     verifyIdentity.setUser(userRepository.findByUserId(userId).get());

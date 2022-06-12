@@ -2,31 +2,17 @@ package com.warehouse.bear.management.controller;
 
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
-import com.warehouse.bear.management.constants.WarehouseUserResponse;
-import com.warehouse.bear.management.model.WarehouseImageUser;
-import com.warehouse.bear.management.payload.request.WarehouseLoginRequest;
-import com.warehouse.bear.management.payload.request.WarehouseLogoutRequest;
-import com.warehouse.bear.management.payload.request.WarehouseRegisterRequest;
-import com.warehouse.bear.management.payload.request.WarehouseTokenRefreshRequest;
-import com.warehouse.bear.management.payload.response.WarehouseResponseDataImageUser;
-import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.payload.request.*;
+import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import com.warehouse.bear.management.services.WarehouseImageUserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @CrossOrigin("*")
 @RestController
@@ -52,7 +38,7 @@ public class WarehouseAuthController {
             @ApiResponse(code = 500, message = "Internal error. Try contact your administration.")
     })
     public ResponseEntity<Object> warehouseLogin(
-            @ApiParam(value ="Username/Password are required", required = true)
+            @ApiParam(value = "Username/Password are required", required = true)
             @Valid @RequestBody WarehouseLoginRequest request) {
         return warehouseAuthService.loginUser(request);
     }
@@ -60,7 +46,7 @@ public class WarehouseAuthController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
     public ResponseEntity<Object> warehouseRegisterStepOne(@Valid @RequestBody WarehouseRegisterRequest request,
-                                                    @RequestParam(value = "step", required = true) int step) {
+                                                           @RequestParam(value = "step", required = true) int step) {
         return warehouseAuthService.registerUserStepOne(request);
     }
 
@@ -69,7 +55,7 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseRegisterStepThree(@Valid @RequestBody WarehouseRegisterRequestStepThree request,
                                                              @PathVariable String username,
                                                              @RequestParam(value = "step", required = true) int step) {
-        return warehouseAuthService.registerUserStepThree(request,username);
+        return warehouseAuthService.registerUserStepThree(request, username);
     }
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REFRESH_TOKEN)
@@ -93,7 +79,7 @@ public class WarehouseAuthController {
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_ALL_USERS)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_USERS)
     public ResponseEntity<Object> warehouseGetAllUser() {
-            return warehouseAuthService.allUser();
+        return warehouseAuthService.allUser();
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FORGOT_PASSWORD + "/{email}")
@@ -123,33 +109,15 @@ public class WarehouseAuthController {
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_UPLOAD_FILE)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPLOAD)
-    public WarehouseResponseDataImageUser uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-        WarehouseImageUser warehouseImageUser = null;
-        String downloadURl = "";
-        warehouseImageUser = warehouseImageUserService.saveAttachment(file);
-        downloadURl = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_ENDPOINT)
-                .path(warehouseImageUser.getId())
-                .toUriString();
-        return new WarehouseResponseDataImageUser(
-                warehouseImageUser.getFileName(),
-                downloadURl,
-                warehouseImageUser.getFileType(),
-                file.getSize()
-        );
+    public ResponseEntity<Object> warehouseUploadFile(@RequestParam("file") MultipartFile file,
+                                                      @RequestParam("userId") String userId) {
+        return warehouseImageUserService.saveAttachment(file, userId);
     }
 
-    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_FILE + "/{fileId}")
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_FILE + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DOWNLOAD)
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
-        WarehouseImageUser warehouseImageUser = null;
-        warehouseImageUser = warehouseImageUserService.getAttachment(fileId);
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.parseMediaType(warehouseImageUser.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + warehouseImageUser.getFileName() + "\"")
-                .body(new ByteArrayResource(warehouseImageUser.getData()));
+    public ResponseEntity<Object> warehouseDownloadFile(@PathVariable String userId) {
+        return warehouseImageUserService.getAttachment(userId);
     }
 
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/{userId}")

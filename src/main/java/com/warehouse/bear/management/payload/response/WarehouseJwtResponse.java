@@ -1,5 +1,6 @@
 package com.warehouse.bear.management.payload.response;
 
+import com.warehouse.bear.management.model.WarehouseImageUser;
 import lombok.*;
 
 import java.util.List;
@@ -20,5 +21,8 @@ public class WarehouseJwtResponse {
     private String lastLogin;
     private String dateOfBirth;
     private String message;
-
+    private String phonePrefix;
+    private String phoneNumber;
+    private String country;
+    private String profileUrl;
 }

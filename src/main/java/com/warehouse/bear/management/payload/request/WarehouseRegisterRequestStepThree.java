@@ -23,4 +23,7 @@ public class WarehouseRegisterRequestStepThree {
     @NotBlank
     private String phoneNumber;
 
+    @NotBlank
+    private String phonePrefix;
+
 }
