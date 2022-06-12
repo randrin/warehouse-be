@@ -14,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-@CrossOrigin("*")
 @RestController
 @Api(value = WarehouseDocumentationConstants.WAREHOUSE_AUTH_API_NAME)
 @RequestMapping(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT)
+@CrossOrigin("*")
 public class WarehouseAuthController {
 
     @Autowired
@@ -32,13 +32,13 @@ public class WarehouseAuthController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_LOGIN)
     @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Username/Password are not corrects."),
-            @ApiResponse(code = 403, message = "User isn't authorized to perform operation."),
-            @ApiResponse(code = 401, message = "Forbidden user to perform operation."),
-            @ApiResponse(code = 500, message = "Internal error. Try contact your administration.")
+            @ApiResponse(code = 400, message = WarehouseDocumentationConstants.WAREHOUSE_API_RESPONSE_400),
+            @ApiResponse(code = 403, message = WarehouseDocumentationConstants.WAREHOUSE_API_RESPONSE_403),
+            @ApiResponse(code = 401, message = WarehouseDocumentationConstants.WAREHOUSE_API_RESPONSE_401),
+            @ApiResponse(code = 500, message = WarehouseDocumentationConstants.WAREHOUSE_API_RESPONSE_500)
     })
     public ResponseEntity<Object> warehouseLogin(
-            @ApiParam(value = "Username/Password are required", required = true)
+            @ApiParam(value = WarehouseDocumentationConstants.WAREHOUSE_PARAM_USER_LOGIN, required = true)
             @Valid @RequestBody WarehouseLoginRequest request) {
         return warehouseAuthService.loginUser(request);
     }
@@ -89,7 +89,7 @@ public class WarehouseAuthController {
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_EMAIL + "/{email}")
-    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_VERIFY_EMAIL)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_EMAIL)
     public ResponseEntity<Object> warehouseVerificationEmail(@PathVariable String email) {
         return warehouseAuthService.userVerificationEmail(email);
     }
