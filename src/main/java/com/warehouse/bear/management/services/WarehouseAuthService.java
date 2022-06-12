@@ -1,9 +1,12 @@
 package com.warehouse.bear.management.services;
 
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import com.warehouse.bear.management.exception.RoleNotFoundException;
 import com.warehouse.bear.management.exception.TokenRefreshException;
+import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
@@ -29,6 +32,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,7 +80,6 @@ public class WarehouseAuthService {
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
 
-
         Set<String> strRoles = request.getRole();
         Set<WarehouseRole> roles = new HashSet<>();
 
@@ -105,7 +108,6 @@ public class WarehouseAuthService {
             });
         }
 
-
         // Create new user's account
         // TODO: Business logic to generate the userId
         String profilePicture = null;
@@ -130,6 +132,8 @@ public class WarehouseAuthService {
                 WarehouseCommonUtil.generateCurrentDateUtil());
 
         userRepository.save(user);
+
+        // Send verification email to user
         userVerificationEmail(user.getEmail());
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
@@ -143,7 +147,7 @@ public class WarehouseAuthService {
                 warehouseUsername = user.getUsername();
             } else {
                 // Case where the user logged in with userId or Username
-                if(request.getUsername().length() == 7) {
+                if (request.getUsername().length() == 7) {
                     final WarehouseUser userWithUserID = userRepository.findByUserId(request.getUsername()).get();
                     warehouseUsername = userWithUserID.getUsername();
                 } else {
@@ -167,6 +171,12 @@ public class WarehouseAuthService {
 
             final String jwtToken = warehouseJwtUtil.generateToken(warehouseUsername);
 
+            String downloadURl = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_ENDPOINT + "/")
+                    .path(user.getUserId())
+                    .toUriString();
+
             return new ResponseEntity<Object>(new WarehouseJwtResponse(
                     jwtToken,
                     warehouseRefreshToken.getToken(),
@@ -179,7 +189,11 @@ public class WarehouseAuthService {
                     user.isActive(),
                     user.getLastLogin(),
                     user.getDateOfBirth(),
-                    WarehouseUserResponse.WAREHOUSE_USER_LOGGED),
+                    WarehouseUserResponse.WAREHOUSE_USER_LOGGED,
+                    user.getPhonePrefix(),
+                    user.getPhoneNumber(),
+                    user.getCountry(),
+                    downloadURl),
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);
@@ -266,7 +280,7 @@ public class WarehouseAuthService {
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);
@@ -352,7 +366,7 @@ public class WarehouseAuthService {
     public ResponseEntity<Object> userVerificationEmail(String email) {
 
         Optional<WarehouseUser> user = userRepository.findByEmail(email);
-        try{
+        try {
 
             WarehouseVerifyIdentity verifyIdentity = warehouseTokenService.createVerificationEmailLink(user.get().getUserId());
             Map<String, Object> model = new HashMap<>();
@@ -361,7 +375,7 @@ public class WarehouseAuthService {
             model.put("link", verifyIdentity.getLink());
             model.put("verifyType", verifyIdentity.getVerifyType());
             model.put("expirationLink", verifyIdentity.getExpiryDate());
-            WarehouseResponse response = warehouseMailUtil.warehouseVerifyEmail(user.get(), model);
+            WarehouseResponse response = warehouseMailUtil.warehouseSendMail(user.get(), model, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
 
             return new ResponseEntity<Object>(response,
                     HttpStatus.OK);
@@ -372,27 +386,26 @@ public class WarehouseAuthService {
         }
     }
 
-    public ResponseEntity<Object> registerUserStepThree(WarehouseRegisterRequestStepThree requestSTepThree,String username) {
-
-
-            try {
-
-                WarehouseUser user = userRepository.findByUsername(username)
-                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
-                user.setDateOfBirth(requestSTepThree.getDateOfBirth());
-                user.setPhoneNumber(requestSTepThree.getPhoneNumber());
-                user.setCountry(requestSTepThree.getCountry());
-                userRepository.save(user);
-                return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.OK);
-            } catch (Exception e) {
-                return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                        WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND),
-                        HttpStatus.NOT_FOUND);
-            }
+    public ResponseEntity<Object> registerUserStepThree(WarehouseRegisterRequestStepThree request, String username) {
+        try {
+            WarehouseUser user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UserNotFoundException(
+                            WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
+            user.setDateOfBirth(request.getDateOfBirth());
+            user.setPhoneNumber(request.getPhoneNumber());
+            user.setCountry(request.getCountry());
+            user.setPhonePrefix(request.getPhonePrefix());
+            userRepository.save(user);
+            return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND),
+                    HttpStatus.NOT_FOUND);
         }
+    }
 
 
-        public ResponseEntity<Object> deleteUser(String userId) {
+    public ResponseEntity<Object> deleteUser(String userId) {
         try {
             WarehouseUser user = userRepository.findByUserId(userId)
                     .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));

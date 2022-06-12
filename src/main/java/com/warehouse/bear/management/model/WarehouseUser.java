@@ -7,12 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +29,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class WarehouseUser {
+public class WarehouseUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -42,7 +45,6 @@ public class WarehouseUser {
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_FULLNAME_REQUIRED)
     private String fullname;
 
-
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_GENDER_REQUIRED)
     private String gender;
 
@@ -57,19 +59,16 @@ public class WarehouseUser {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL})
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles = new HashSet<>();
 
     private String dateOfBirth;
+    private String phonePrefix;
     private String phoneNumber;
     private String country;
-    private String imageUrl;
     private boolean isActive;
     private String lastLogin;
-
-
-
 }

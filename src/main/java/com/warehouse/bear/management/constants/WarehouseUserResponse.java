@@ -20,8 +20,9 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_VERIFY_TOKEN = "Your token is valid and not expired. Good success in your job.";
     public static final String WAREHOUSE_USER_RESET_PASSWORD = "Confirmation reset link for your password is successfully send to ";
     public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation confirmation  link for verify your email was send to ";
-    public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully";
-    public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully";
+    public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully.";
+    public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
+    public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
@@ -39,4 +40,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_TOKEN = "Your token is expired or not valid. Please try login again.";
     public static final String WAREHOUSE_USER_ERROR_REFRESH_TOKEN = "The refresh token that you sending isn't not present in database. Try again";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_VERIFY_LINK = "Link and verify type that you are provided aren't corrects. Try resend the new link to complete the operation";
+    public static final String WAREHOUSE_USER_ERROR_WRONG_ATTACHMENT = "Could not save this attachment ";
+    public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
+    public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
 }

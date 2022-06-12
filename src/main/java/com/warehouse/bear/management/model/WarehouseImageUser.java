@@ -1,60 +1,44 @@
 package com.warehouse.bear.management.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name="users_images")
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class WarehouseImageUser {
+@Entity
+@Table(name="images")
+public class WarehouseImageUser implements Serializable {
     @Id
-    @Column(name = "id")
-    @GeneratedValue
-    private String id;
-
-    @Column(name = "fileName")
-    private String fileName;
-
-    @Column(name = "fileType")
-    private String fileType;
-
-    @Lob
-    @Column(name = "pic")
-    private byte[] data;
-
-    public WarehouseImageUser(String fileName, String fileType, byte[] data) {
-        this.fileName = fileName;
-        this.fileType = fileType;
-        this.data = data;
-    }
-}
-
-/*public class WarehouseImageUser {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    private String fileName;
 
-    @Column(name = "type")
-    private String type;
+    private String fileType;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private WarehouseUser user;
 
     @Lob
-    @Column(name = "pic")
-    private byte[] pic;
+    private byte[] data;
 
-    //Custom Construtor
-    public WarehouseImageUser(String name, String type, byte[] pic) {
-        this.name = name;
-        this.type = type;
-        this.pic = pic;
-    }*/
+    private String lastUploadDate;
+
+    public WarehouseImageUser(String fileName, String fileType, WarehouseUser user, byte[] data, String lastUploadDate) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.user = user;
+        this.data = data;
+        this.lastUploadDate = lastUploadDate;
+    }
+}
