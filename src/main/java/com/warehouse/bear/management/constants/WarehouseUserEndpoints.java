@@ -2,12 +2,17 @@ package com.warehouse.bear.management.constants;
 
 public class WarehouseUserEndpoints {
 
+    // ROOT
     public static final String WAREHOUSE_ROOT = "/";
     public static final String WAREHOUSE_DASHBOARD = "/dashboard";
     public static final String WAREHOUSE_HOME = "/home";
-
     public static final String WAREHOUSE_ROOT_ENDPOINT = "/v1/warehouse";
     public static final String WAREHOUSE_DOWNLOAD_ENDPOINT = "/v1/warehouse/download";
+
+    // ADMIN DASHBOARD
+    public static final String WAREHOUSE_ADMIN_INSERT_USER =  "/admin/insert/user";
+
+    // AUTHENTICATION / AUTHORIZATION
     public static final String WAREHOUSE_LOGIN_USER =  "/login";
     public static final String WAREHOUSE_UPLOAD_FILE =  "/upload_file";
     public static final String WAREHOUSE_DOWNLOAD_FILE =  "/download";

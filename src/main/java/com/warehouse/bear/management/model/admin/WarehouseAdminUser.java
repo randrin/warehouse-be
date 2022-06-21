@@ -1,8 +1,9 @@
-package com.warehouse.bear.management.model;
+package com.warehouse.bear.management.model.admin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import com.warehouse.bear.management.model.WarehouseRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,12 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "users",
+@Table(name = "users_tmp",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class WarehouseUser implements Serializable {
+public class WarehouseAdminUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -50,14 +51,19 @@ public class WarehouseUser implements Serializable {
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
+    @Size(max = 50)
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PEC_EMAIL_REQUIRED)
+    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
+    private String secondEmail;
+
     @Size(max = 120)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
     @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private String temporaryPassword;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_tmp_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles;

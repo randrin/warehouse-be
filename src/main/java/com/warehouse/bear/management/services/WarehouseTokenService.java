@@ -3,13 +3,14 @@ package com.warehouse.bear.management.services;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.TokenRefreshException;
-import com.warehouse.bear.management.model.WarehouseImageUser;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
+import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
-import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
+import com.warehouse.bear.management.model.admin.WarehouseAdminUser;
 import com.warehouse.bear.management.repository.WarehouseRefreshTokenRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
+import com.warehouse.bear.management.repository.admin.WarehouseAdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ public class WarehouseTokenService {
 
   @Autowired
   private WarehouseUserRepository userRepository;
+
+  @Autowired
+  private WarehouseAdminUserRepository adminUserRepository;
 
   @Autowired
   private WarehouseVerifyIdentityRepository verifyIdentityRepository;
@@ -52,6 +56,7 @@ public class WarehouseTokenService {
     WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
 
     verifyIdentity.setUser(userRepository.findByUserId(userId).get());
+    verifyIdentity.setUserId(userId);
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
     verifyIdentity.setLink(UUID.randomUUID().toString());
@@ -63,12 +68,30 @@ public class WarehouseTokenService {
     // TODO: Check if the user already existed in DB with user_id, then cancel and update with the new one
     WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
 
-    verifyIdentity.setUser(userRepository.findByUserId(userId).get());
+    Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+    Optional<WarehouseAdminUser> adminUser = adminUserRepository.findByUserId(userId);
+
+    verifyIdentity.setUser(user.isPresent() ? user.get() : getTransformAdminUserToUser(adminUser));
+    verifyIdentity.setUserId(userId);
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
     verifyIdentity.setLink(UUID.randomUUID().toString());
 
     return verifyIdentityRepository.save(verifyIdentity);
+  }
+
+  private WarehouseUser getTransformAdminUserToUser(Optional<WarehouseAdminUser> adminUser) {
+    WarehouseUser user = new WarehouseUser();
+    user.setId(adminUser.get().getId());
+    user.setUserId(adminUser.get().getUserId());
+    user.setGender(adminUser.get().getGender());
+    user.setEmail(adminUser.get().getEmail());
+    user.setActive(adminUser.get().isActive());
+    user.setFullname(adminUser.get().getFullname());
+    user.setUsername(adminUser.get().getUsername());
+    user.setPassword(adminUser.get().getTemporaryPassword());
+    user.setRoles(adminUser.get().getRoles());
+    return user;
   }
 
   public WarehouseRefreshToken verifyExpiration(WarehouseRefreshToken token) {

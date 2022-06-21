@@ -1,0 +1,39 @@
+package com.warehouse.bear.management.model.utils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
+@Table(name = "address")
+public class WarehouseAddress {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    private Long id;
+
+    private String userId;
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_COUNTRY_REQUIRED)
+    private String country;
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_STATE_REQUIRED)
+    private String state;
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_ADDRESS_REQUIRED)
+    private String addressLine;
+
+    private int zipCode;
+
+}

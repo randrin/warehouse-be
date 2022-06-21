@@ -19,7 +19,7 @@ public class WarehouseRefreshToken {
     private long id;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private WarehouseUser user;
 
     @Column(nullable = false, unique = true)
