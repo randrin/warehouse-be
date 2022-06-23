@@ -25,6 +25,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_CHANGE_PASSWORD = "Change your password to warehouse system.";
     public static final String WAREHOUSE_OPERATION_CHANGE_STATUS = "Activate or disable user in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DELETE_USER = "Delete user registered in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_UPDATE_USER = "Update user in warehouse system.";
 
     // API PARAMS
     public static final String WAREHOUSE_PARAM_USER_LOGIN = "Username/Password are required";

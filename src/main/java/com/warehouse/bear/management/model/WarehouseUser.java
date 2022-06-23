@@ -51,6 +51,10 @@ public class WarehouseUser implements Serializable {
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
+    @Size(max = 50)
+    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
+    private String emailPec;
+
     @Size(max = 120)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
     @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)
@@ -63,10 +67,29 @@ public class WarehouseUser implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles = new HashSet<>();
 
-    private String dateOfBirth;
-    private String phonePrefix;
+    @NotBlank
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_CITY_REQUIRED)
+    private String state;
+
+    @NotBlank
+    private String address;
+
+    @NotBlank
+    private String zipCode;
+
+    private String landlinePrefix;
+
+    @NotBlank
+    private String landlineNumber;
+
+    @NotBlank
     private String phoneNumber;
+
+    private String dateOfBirth;
     private String country;
     private boolean isActive;
     private String lastLogin;
+
+
+
 }

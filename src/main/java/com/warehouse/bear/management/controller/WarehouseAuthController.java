@@ -131,4 +131,11 @@ public class WarehouseAuthController {
     public ResponseEntity<Object> warehouseDeleteUser(@PathVariable String userId) {
         return warehouseAuthService.deleteUser(userId);
     }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPDATE_USER)
+    public ResponseEntity<Object> warehouseUpdateUser(@Valid @RequestBody WarehouseRegisterRequestUpdateUser updateRequest,
+                                                      @PathVariable String userId) {
+        return warehouseAuthService.updateUser(updateRequest,userId);
+    }
 }

@@ -27,6 +27,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
     public static final String WAREHOUSE_EMAIL_REQUIRED = "Email is required";
     public static final String WAREHOUSE_PASSWORD_REQUIRED = "Password is required";
+    public static final String WAREHOUSE_CITY_REQUIRED = "City is required";
 
     public static final String WAREHOUSE_USER_NAME = "User name is required";
     public static final String WAREHOUSE_USER_EMAIL = "User email is required";

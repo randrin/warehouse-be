@@ -122,14 +122,19 @@ public class WarehouseAuthService {
                 request.getFullname(),
                 request.getGender(),
                 request.getEmail(),
+                null,
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
                 null,
                 null,
                 null,
                 null,
+                null,
+                null,
+                null,
+                null,
                 false,
-                WarehouseCommonUtil.generateCurrentDateUtil());
+                 WarehouseCommonUtil.generateCurrentDateUtil());
 
         userRepository.save(user);
 
@@ -190,7 +195,7 @@ public class WarehouseAuthService {
                     user.getLastLogin(),
                     user.getDateOfBirth(),
                     WarehouseUserResponse.WAREHOUSE_USER_LOGGED,
-                    user.getPhonePrefix(),
+                    user.getLandlinePrefix(),
                     user.getPhoneNumber(),
                     user.getCountry(),
                     downloadURl),
@@ -394,7 +399,7 @@ public class WarehouseAuthService {
             user.setDateOfBirth(request.getDateOfBirth());
             user.setPhoneNumber(request.getPhoneNumber());
             user.setCountry(request.getCountry());
-            user.setPhonePrefix(request.getPhonePrefix());
+            user.setLandlinePrefix(request.getLandlinePrefix());
             userRepository.save(user);
             return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.OK);
         } catch (Exception e) {
@@ -417,5 +422,41 @@ public class WarehouseAuthService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<Object> updateUser(WarehouseRegisterRequestUpdateUser updateRequest,String userId) {
+
+        try {
+            WarehouseUser user = userRepository.findByUserId(userId).get();
+            if (user != null) {
+                user.setFullname(updateRequest.getFullname());
+                user.setUsername(updateRequest.getUsername());
+                user.setEmail(updateRequest.getEmail());
+                user.setEmailPec(updateRequest.getEmailPec());
+                user.setDateOfBirth(updateRequest.getDateOfBirth());
+                user.setCountry(updateRequest.getCountry());
+                user.setState(updateRequest.getState());
+                user.setAddress(updateRequest.getAddress());
+                user.setZipCode(updateRequest.getZipCode());
+                user.setLandlinePrefix(updateRequest.getLandlinePrefix());
+                user.setLandlineNumber(updateRequest.getLandlineNumber());
+                user.setPhoneNumber(updateRequest.getPhoneNumber());
+              //  user.setRoles(updateRequest.getRole());
+                user.setGender((updateRequest.getGender()));
+
+                userRepository.save(user);
+                return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND + userId),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }
+
+
 

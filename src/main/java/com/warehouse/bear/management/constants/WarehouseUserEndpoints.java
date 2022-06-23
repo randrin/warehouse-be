@@ -25,4 +25,5 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_ALL_USERS = "/users";
     public static final String WAREHOUSE_FIND_USER =  "/find";
     public static final String WAREHOUSE_DELETE_USER =  "/delete";
+    public static final String WAREHOUSE_UPDATE_USER =  "/update";
 }
