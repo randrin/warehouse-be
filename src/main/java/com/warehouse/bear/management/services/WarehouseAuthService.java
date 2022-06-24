@@ -428,6 +428,35 @@ public class WarehouseAuthService {
         try {
             WarehouseUser user = userRepository.findByUserId(userId).get();
             if (user != null) {
+                Set<String> strRoles = updateRequest.getRole();
+                Set<WarehouseRole> roles = new HashSet<>();
+
+                if (strRoles == null) {
+                    WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
+                            .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                    roles.add(userRole);
+                } else {
+                    strRoles.forEach(role -> {
+                        switch (role) {
+                            case "admin":
+                                WarehouseRole adminRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_ADMIN)
+                                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                roles.add(adminRole);
+                                break;
+                            case "moderator":
+                                WarehouseRole modRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_MODERATOR)
+                                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                roles.add(modRole);
+                                break;
+                            default:
+                                WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
+                                        .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+                                roles.add(userRole);
+                        }
+                    });
+                }
+
+
                 user.setFullname(updateRequest.getFullname());
                 user.setUsername(updateRequest.getUsername());
                 user.setEmail(updateRequest.getEmail());
@@ -435,12 +464,12 @@ public class WarehouseAuthService {
                 user.setDateOfBirth(updateRequest.getDateOfBirth());
                 user.setCountry(updateRequest.getCountry());
                 user.setState(updateRequest.getState());
-                user.setAddress(updateRequest.getAddress());
+               // user.setAddress(updateRequest.getAddress());
                 user.setZipCode(updateRequest.getZipCode());
                 user.setLandlinePrefix(updateRequest.getLandlinePrefix());
                 user.setLandlineNumber(updateRequest.getLandlineNumber());
                 user.setPhoneNumber(updateRequest.getPhoneNumber());
-              //  user.setRoles(updateRequest.getRole());
+                user.setRoles(roles);
                 user.setGender((updateRequest.getGender()));
 
                 userRepository.save(user);
