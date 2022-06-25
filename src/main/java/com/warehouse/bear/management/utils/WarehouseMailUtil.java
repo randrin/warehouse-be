@@ -4,11 +4,9 @@ import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
-import com.warehouse.bear.management.model.admin.WarehouseAdminUser;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
-import com.warehouse.bear.management.repository.admin.WarehouseAdminUserRepository;
 import com.warehouse.bear.management.services.WarehouseTokenService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -45,9 +43,6 @@ public class WarehouseMailUtil {
 
     @Autowired
     private WarehouseUserRepository userRepository;
-
-    @Autowired
-    private WarehouseAdminUserRepository adminUserRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -99,28 +94,25 @@ public class WarehouseMailUtil {
     public ResponseEntity<Object> warehouseVerificationEmail(String email, String password, String verifyType) {
 
         Optional<WarehouseUser> user = null;
-        Optional<WarehouseAdminUser> adminUser = null;
         Map<String, Object> model = new HashMap<>();
+        WarehouseResponse response = null;
 
         try {
             user = userRepository.findByEmail(email);
-            if (!user.isPresent()) {
-                adminUser = adminUserRepository.findByEmail(email);
+
+            if (user.isPresent()) {
+                WarehouseVerifyIdentity verifyIdentity = warehouseTokenService
+                        .createVerificationEmailLink(user.get().getUserId());
+                model.put("link", verifyIdentity.getLink());
+                model.put("verifyType", verifyIdentity.getVerifyType());
+                model.put("expirationLink", verifyIdentity.getExpiryDate());
+                model.put("name", user.get().getUsername().toUpperCase());
+                model.put("userId", user.get().getUserId().toUpperCase());
+                model.put("temporalPassword", password);
+                response = warehouseSendMail(user.get().getEmail(), model, verifyType);
             }
 
-            WarehouseVerifyIdentity verifyIdentity = warehouseTokenService
-                    .createVerificationEmailLink(user.isPresent() ? user.get().getUserId() : adminUser.get().getUserId());
-            model.put("link", verifyIdentity.getLink());
-            model.put("verifyType", verifyIdentity.getVerifyType());
-            model.put("expirationLink", verifyIdentity.getExpiryDate());
-            model.put("name", user.isPresent() ? user.get().getUsername().toUpperCase() : adminUser.get().getUsername().toUpperCase());
-            model.put("userId", user.isPresent() ? user.get().getUserId().toUpperCase() : adminUser.get().getUserId().toUpperCase());
-            model.put("temporalPassword", password);
-
-            WarehouseResponse response = warehouseSendMail(user.isPresent() ? user.get().getEmail() : adminUser.get().getEmail(), model, verifyType);
-
-            return new ResponseEntity<Object>(response,
-                    HttpStatus.OK);
+            return new ResponseEntity<Object>(response, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL + email),

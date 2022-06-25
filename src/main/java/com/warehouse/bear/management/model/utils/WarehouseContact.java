@@ -1,6 +1,7 @@
 package com.warehouse.bear.management.model.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class WarehouseContact {
     @JsonIgnore
     private Long id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PREFIX_PHONE_REQUIRED)

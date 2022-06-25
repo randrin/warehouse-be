@@ -8,7 +8,7 @@ import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
-import com.warehouse.bear.management.model.admin.WarehouseAdminUser;
+import com.warehouse.bear.management.model.WarehouseUserInfo;
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
 import com.warehouse.bear.management.model.utils.WarehouseContact;
 import com.warehouse.bear.management.payload.request.*;
@@ -16,8 +16,8 @@ import com.warehouse.bear.management.payload.response.WarehouseJwtResponse;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.payload.response.WarehouseTokenRefreshResponse;
+import com.warehouse.bear.management.repository.WarehouseUserInfoRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
-import com.warehouse.bear.management.repository.admin.WarehouseAdminUserRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseAddressRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseContactRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
@@ -53,13 +53,13 @@ public class WarehouseAuthService {
     private WarehouseUserRepository userRepository;
 
     @Autowired
-    private WarehouseAdminUserRepository adminUserRepository;
-
-    @Autowired
     private WarehouseAddressRepository addressRepository;
 
     @Autowired
     private WarehouseContactRepository contactRepository;
+
+    @Autowired
+    private WarehouseUserInfoRepository userInfoRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -123,14 +123,12 @@ public class WarehouseAuthService {
             if (request.getUsername().contains("@")) {
                 // Case where the user logged in with email
                 final Optional<WarehouseUser> user = userRepository.findByEmail(request.getUsername());
-                final Optional<WarehouseAdminUser> adminUser = adminUserRepository.findByEmail(request.getUsername());
-                warehouseUsername = user.isPresent() ? user.get().getUsername() : adminUser.get().getUsername();
+                warehouseUsername = user.get().getUsername();
             } else {
                 // Case where the user logged in with userId or Username
                 if (request.getUsername().length() == 7) {
                     final Optional<WarehouseUser> userWithUserID = userRepository.findByUserId(request.getUsername());
-                    final Optional<WarehouseAdminUser> adminUserWithUserID = adminUserRepository.findByUserId(request.getUsername());
-                    warehouseUsername = userWithUserID.isPresent() ? userWithUserID.get().getUsername() : adminUserWithUserID.get().getUsername();
+                    warehouseUsername = userWithUserID.get().getUsername();
                 } else {
                     final UserDetails userWithUsername = warehouseUserDetailsService.loadUserByUsername(request.getUsername());
                     warehouseUsername = userWithUsername.getUsername();
@@ -145,38 +143,42 @@ public class WarehouseAuthService {
 
             // Call this to another fields non present in security
             Optional<WarehouseUser> user = userRepository.findByUsername(warehouseUsername);
-            Optional<WarehouseAdminUser> adminUser = adminUserRepository.findByUsername(warehouseUsername);
 
             List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
-            WarehouseRefreshToken warehouseRefreshToken = warehouseTokenService.createRefreshToken(userDetails.getId());
+            WarehouseRefreshToken warehouseRefreshToken = warehouseTokenService.createRefreshToken(user.get().getId());
 
             final String jwtToken = warehouseJwtUtil.generateToken(warehouseUsername);
 
             String downloadURl = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
                     .path(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_ENDPOINT + "/")
-                    .path(user.isPresent() ? user.get().getUserId() : adminUser.get().getUserId())
+                    .path(user.get().getUserId())
                     .toUriString();
+
+            Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
+            Optional<WarehouseAddress> address = addressRepository.findByUserId(user.get().getUserId());
+            Optional<WarehouseContact> contact = contactRepository.findByUserId(user.get().getUserId());
 
             return new ResponseEntity<Object>(new WarehouseJwtResponse(
                     jwtToken,
                     warehouseRefreshToken.getToken(),
-                    user.isPresent() ? user.get().getUserId() : adminUser.get().getUserId(),
-                    user.isPresent() ? user.get().getFullname() : adminUser.get().getUserId(),
-                    user.isPresent() ? user.get().getGender() : adminUser.get().getGender(),
+                    user.get().getUserId(),
+                    user.get().getFullname(),
+                    user.get().getGender(),
                     userDetails.getUsername(),
                     userDetails.getEmail(),
                     roles,
-                    user.isPresent() ? user.get().isActive() : adminUser.get().isActive(),
-                    user.isPresent() ? user.get().getLastLogin() : adminUser.get().getLastLogin(),
-                    user.isPresent() ? user.get().getDateOfBirth() : adminUser.get().getDateOfBirth(),
+                    user.get().isActive(),
+                    user.get().getLastLogin(),
+                    user.get().getDateOfBirth(),
                     WarehouseUserResponse.WAREHOUSE_USER_LOGGED,
-                    addressRepository.findByUserId(user.isPresent() ? user.get().getUserId() : adminUser.get().getUserId()).get(),
-                    contactRepository.findByUserId(user.isPresent() ? user.get().getUserId() : adminUser.get().getUserId()).get(),
+                    userInfo.isPresent() ? userInfo.get() : null,
+                    address.isPresent() ? address.get() : null,
+                    contact.isPresent() ? contact.get() : null,
                     downloadURl,
-                    user.isPresent() ? user.get().getCreatedAt() : adminUser.get().getCreatedAt()),
+                    user.get().getCreatedAt()),
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);
@@ -243,11 +245,17 @@ public class WarehouseAuthService {
     public ResponseEntity<Object> registerUserStepThree(WarehouseRegisterRequestStepThree request, String username) {
         WarehouseAddress address = new WarehouseAddress();
         WarehouseContact contact = new WarehouseContact();
+        WarehouseUserInfo userInfo = new WarehouseUserInfo();
         try {
             WarehouseUser user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException(
                             WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
             user.setDateOfBirth(request.getDateOfBirth());
+
+            // Set user userInfos
+            userInfo.setUser(user);
+            userInfo.setTemporalPassword(Boolean.FALSE);
+            userInfo.setAdminUser(Boolean.FALSE);
 
             // Set user address
             address.setUserId(user.getUserId());
@@ -258,7 +266,9 @@ public class WarehouseAuthService {
             contact.setPhoneNumber(request.getPhoneNumber());
             contact.setPhonePrefix(request.getPhonePrefix());
 
+            // Save all data in different tables
             userRepository.save(user);
+            userInfoRepository.save(userInfo);
             addressRepository.save(address);
             contactRepository.save(contact);
             return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.OK);

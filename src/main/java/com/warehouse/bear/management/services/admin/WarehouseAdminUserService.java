@@ -3,14 +3,15 @@ package com.warehouse.bear.management.services.admin;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.model.WarehouseRole;
-import com.warehouse.bear.management.model.admin.WarehouseAdminUser;
+import com.warehouse.bear.management.model.WarehouseUser;
+import com.warehouse.bear.management.model.WarehouseUserInfo;
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
 import com.warehouse.bear.management.model.utils.WarehouseContact;
 import com.warehouse.bear.management.payload.request.admin.WarehouseAdminUserRequest;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
+import com.warehouse.bear.management.repository.WarehouseUserInfoRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
-import com.warehouse.bear.management.repository.admin.WarehouseAdminUserRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseAddressRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseContactRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
@@ -27,13 +28,13 @@ import java.util.Set;
 public class WarehouseAdminUserService {
 
     @Autowired
-    private WarehouseAdminUserRepository adminUserRepository;
-
-    @Autowired
     private WarehouseAddressRepository addressRepository;
 
     @Autowired
     private WarehouseContactRepository contactRepository;
+
+    @Autowired
+    private WarehouseUserInfoRepository userInfoRepository;
 
     @Autowired
     private WarehouseUserRepository userRepository;
@@ -49,12 +50,12 @@ public class WarehouseAdminUserService {
 
     public ResponseEntity<Object> adminInsertUser(WarehouseAdminUserRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername()) || adminUserRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_USERNAME_EXISTS + request.getUsername()));
         }
 
-        if (userRepository.existsByEmail(request.getEmail()) || adminUserRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
@@ -67,24 +68,32 @@ public class WarehouseAdminUserService {
         String temporalPassword = WarehouseCommonUtil.generateTemporalPassword();
         do {
             userId = WarehouseCommonUtil.generateUserId();
-        } while (userRepository.findByUserId(userId).isPresent() && adminUserRepository.findByUserId(userId).isPresent());
+        } while (userRepository.findByUserId(userId).isPresent());
 
-        // First save user added by admin in user_tmp table
-        WarehouseAdminUser adminUser = new WarehouseAdminUser(
+        // First save user added by admin in users table
+        WarehouseUser adminUser = new WarehouseUser(
                 0L,
                 userId,
                 request.getUsername(),
                 request.getFullname(),
                 request.getGender(),
                 request.getEmail(),
-                request.getSecondEmail(),
                 bCryptPasswordEncoder.encode(temporalPassword),
                 roles,
                 request.getDateOfBirth(),
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
                 WarehouseCommonUtil.generateCurrentDateUtil());
-        WarehouseAdminUser adminUserSaved = adminUserRepository.save(adminUser);
+        userRepository.save(adminUser);
+
+        // Then save user information in user_info table
+        WarehouseUserInfo userInfo = new WarehouseUserInfo(
+                0L,
+                adminUser,
+                Boolean.TRUE,
+                Boolean.TRUE
+        );
+        userInfoRepository.save(userInfo);
 
         // Then save user address information in address table
         WarehouseAddress userAddress = new WarehouseAddress(

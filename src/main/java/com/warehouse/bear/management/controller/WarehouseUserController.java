@@ -61,6 +61,15 @@ public class WarehouseUserController {
         return warehouseUserService.verifyLinkUser(link, verifyType);
     }
 
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FIND_USER_BY_LINK_TYPE)
+    public ResponseEntity<Object> warehouseFindUserByVerifyLinkAndType(
+            @PathVariable String userId,
+            @RequestParam(value = "link", required = true) String link,
+            @RequestParam(value = "verifyType", required = true) String verifyType) {
+        return warehouseUserService.findUserByVerifyLinkAndType(link, verifyType, userId);
+    }
+
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_RESET_PASSWORD)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_RESET_PASSWORD)
     public ResponseEntity<Object> warehouseResetPassword(@Valid @RequestBody WarehouseResetPasswordRequest request) {
@@ -79,9 +88,9 @@ public class WarehouseUserController {
         return warehouseUserService.deleteUser(userId);
     }
 
-    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER + "/{userId}")
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER_INFORMATION + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FIND_USER)
-    public ResponseEntity<Object> warehouseFindUserByUserId(@PathVariable String userId) {
-        return warehouseUserService.findUserByUserId(userId);
+    public ResponseEntity<Object> warehouseFindUserInfoByUserId(@PathVariable String userId) {
+        return warehouseUserService.findUserInfoByUserId(userId);
     }
 }

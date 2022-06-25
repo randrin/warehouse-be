@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WarehouseResponse {
-
     private Object object;
     private String message;
-
 }

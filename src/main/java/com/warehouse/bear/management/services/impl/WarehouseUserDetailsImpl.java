@@ -3,7 +3,6 @@ package com.warehouse.bear.management.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.warehouse.bear.management.model.WarehouseUser;
-import com.warehouse.bear.management.model.admin.WarehouseAdminUser;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,19 +49,6 @@ public class WarehouseUserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(),
-				authorities);
-	}
-
-	public static WarehouseUserDetailsImpl build(WarehouseAdminUser user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
-				.collect(Collectors.toList());
-
-		return new WarehouseUserDetailsImpl(
-				user.getId(),
-				user.getUsername(),
-				user.getEmail(),
-				user.getTemporaryPassword(),
 				authorities);
 	}
 
