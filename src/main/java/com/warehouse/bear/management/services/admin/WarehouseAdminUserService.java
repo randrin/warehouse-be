@@ -60,6 +60,11 @@ public class WarehouseAdminUserService {
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
 
+        if (userRepository.existsByEmail(request.getEmailPec())) {
+            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmailPec()));
+        }
+
         // Generate user roles
         Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 

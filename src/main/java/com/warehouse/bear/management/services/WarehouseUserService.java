@@ -104,7 +104,7 @@ public class WarehouseUserService {
         }
     }
 
-    public ResponseEntity<Object> changePassword(WarehouseChangePasswordRequest request) {
+    public ResponseEntity<Object> changePasswordUser(WarehouseChangePasswordRequest request) {
         try {
             WarehouseUser user = userRepository.findByUserId(request.getUserId()).get();
             if (bCryptPasswordEncoder.matches(request.getOldPassword(), user.getPassword())) {

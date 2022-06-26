@@ -19,7 +19,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signing request.";
     public static final String WAREHOUSE_USER_VERIFY_TOKEN = "Your token is valid and not expired. Good success in your job.";
     public static final String WAREHOUSE_USER_RESET_PASSWORD = "Confirmation reset link for your password is successfully send to ";
-    public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation confirmation  link for verify your email was send to ";
+    public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation link for verify your email was send to ";
     public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully.";
     public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
     public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
