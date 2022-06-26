@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -65,31 +64,10 @@ public class WarehouseUser implements Serializable {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<WarehouseRole> roles = new HashSet<>();
-
-    @NotBlank
-    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_CITY_REQUIRED)
-    private String state;
-
-    @NotBlank
-    private String address;
-
-    @NotBlank
-    private String zipCode;
-
-    private String landlinePrefix;
-
-    @NotBlank
-    private String landlineNumber;
-
-    @NotBlank
-    private String phoneNumber;
+    private Set<WarehouseRole> roles;
 
     private String dateOfBirth;
-    private String country;
     private boolean isActive;
     private String lastLogin;
-
-
-
+    private String createdAt;
 }

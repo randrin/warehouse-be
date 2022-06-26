@@ -3,15 +3,19 @@ package com.warehouse.bear.management.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.warehouse.bear.management.model.WarehouseUser;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Service
+@NoArgsConstructor
 public class WarehouseUserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 

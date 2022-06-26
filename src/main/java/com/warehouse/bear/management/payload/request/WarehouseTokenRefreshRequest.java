@@ -10,8 +10,5 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WarehouseTokenRefreshRequest {
-
-    @NotBlank
     private String refreshToken;
-
 }
