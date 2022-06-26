@@ -19,7 +19,6 @@ public class WarehouseAdminUserRequest {
     private String email;
     private String emailPec;
     private String temporaryPassword;
-    private String secondEmail;
     private Set<String> role;
     private WarehouseAddress address;
     private WarehouseContact contact;

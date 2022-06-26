@@ -3,6 +3,7 @@ package com.warehouse.bear.management.controller;
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
+import com.warehouse.bear.management.payload.request.WarehouseChangePasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
 import com.warehouse.bear.management.services.WarehouseUserService;
@@ -75,6 +76,12 @@ public class WarehouseUserController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_RESET_PASSWORD)
     public ResponseEntity<Object> warehouseResetPassword(@Valid @RequestBody WarehouseResetPasswordRequest request) {
         return warehouseUserService.resetPasswordUser(request);
+    }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_CHANGE_PASSWORD)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_PASSWORD)
+    public ResponseEntity<Object> warehouseChangePassword(@Valid @RequestBody WarehouseChangePasswordRequest request) {
+        return warehouseUserService.changePasswordUser(request);
     }
 
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/{userId}")
