@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -51,6 +50,10 @@ public class WarehouseUser implements Serializable {
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
+    @Size(max = 50)
+    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
+    private String emailPec;
+
     @Size(max = 120)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
     @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)
@@ -61,12 +64,10 @@ public class WarehouseUser implements Serializable {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<WarehouseRole> roles = new HashSet<>();
+    private Set<WarehouseRole> roles;
 
     private String dateOfBirth;
-    private String phonePrefix;
-    private String phoneNumber;
-    private String country;
     private boolean isActive;
     private String lastLogin;
+    private String createdAt;
 }

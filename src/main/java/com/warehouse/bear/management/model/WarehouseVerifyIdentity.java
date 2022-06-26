@@ -20,13 +20,16 @@ import java.time.LocalDateTime;
 public class WarehouseVerifyIdentity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private long id;
 
     @OneToOne(cascade=CascadeType.REMOVE)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "userId")
     private WarehouseUser user;
+
+    @Column(nullable = false)
+    private String userId;
 
     @Column(nullable = false)
     private String verifyType;

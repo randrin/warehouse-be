@@ -10,7 +10,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_UPDATE = "User update successfully.";
     public static final String WAREHOUSE_USER_LOGOUT = "User logout successfully.";
     public static final String WAREHOUSE_USER_DELETED = "User deleted successfully.";
-    public static final String WAREHOUSE_USER_UPDATED = "User updated successfully.";
+    public static final String WAREHOUSE_USER_FOUND = "User found successfully.";
     public static final String WAREHOUSE_USER_PASSWORD_GENERATED = "User Password generated successfully.";
     public static final String WAREHOUSE_USER_PASSWORD_CHANGED = "User Password changed successfully.";
     public static final String WAREHOUSE_USER_ACTIVATED = "User activated successfully.";
@@ -19,7 +19,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signing request.";
     public static final String WAREHOUSE_USER_VERIFY_TOKEN = "Your token is valid and not expired. Good success in your job.";
     public static final String WAREHOUSE_USER_RESET_PASSWORD = "Confirmation reset link for your password is successfully send to ";
-    public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation confirmation  link for verify your email was send to ";
+    public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation link for verify your email was send to ";
     public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully.";
     public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
     public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
@@ -27,10 +27,11 @@ public class WarehouseUserResponse {
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
     public static final String WAREHOUSE_USER_DELETE_ERROR = "Something wrong bad. User hasn't deleted successfully.";
+    public static final String WAREHOUSE_USER_GENERIC_ERROR = "Generic Error. Something wrong/happen bad on the system. Please, try again later.";
     public static final String WAREHOUSE_USER_ERROR_LOGIN = "Bad Credentials Username/Email/UserID and (or) Password incorrect(s).";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID = "User not found with userId ";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME = "User not found with username/email/userID ";
-    public static final String WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL = "we have some problems for the verification email ";
+    public static final String WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL = "We have some problems for the verification email ";
     public static final String WAREHOUSE_ROLE_NOT_FOUND = "Role(s) not found in the system. Contact your administration.";
     public static final String WAREHOUSE_ERROR_ALREADY_USED = " is already used, please try another one";
     public static final String WAREHOUSE_USER_ERROR_PASSWORD = "The previous old user password isn't correct. Try again !!";

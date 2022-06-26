@@ -4,6 +4,7 @@ import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.filter.WarehouseFilter;
 import com.warehouse.bear.management.services.WarehouseUserDetailsService;
+import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +57,8 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_VERIFY_TOKEN + "/**",
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_FORGOT_PASSWORD + "/**",
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE + "/**",
-                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/**")
+                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/**",
+                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_FIND_USER + "/**")
                 .permitAll()
                 .antMatchers(
                         "/actuator/**",
@@ -87,5 +89,10 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WarehouseCommonUtil warehouseCommonUtil() {
+        return new WarehouseCommonUtil();
     }
 }

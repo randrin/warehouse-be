@@ -15,11 +15,11 @@ import java.time.Instant;
 @Table(name = "refreshToken")
 public class WarehouseRefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private WarehouseUser user;
 
     @Column(nullable = false, unique = true)

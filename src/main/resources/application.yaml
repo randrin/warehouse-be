@@ -22,6 +22,7 @@ spring:
     username: root
     password: France84.
   jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
       ddl-auto: update

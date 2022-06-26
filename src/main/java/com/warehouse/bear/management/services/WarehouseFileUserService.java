@@ -6,7 +6,7 @@ import com.warehouse.bear.management.model.WarehouseImageUser;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
-import com.warehouse.bear.management.payload.response.WarehouseResponseData;
+import com.warehouse.bear.management.payload.response.WarehouseDataResponse;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Optional;
 
 @Service
-public class WarehouseImageUserService {
+public class WarehouseFileUserService {
     @Autowired
     private WarehouseImageUserRepository warehouseImageUserRepository;
 
@@ -48,10 +48,17 @@ public class WarehouseImageUserService {
                 imageUser.setFileName(fileName);
                 imageUser.setFileType(file.getContentType());
                 imageUser.setData(file.getBytes());
+                imageUser.setFileSize(file.getSize());
                 imageUser.setLastUploadDate(WarehouseCommonUtil.generateCurrentDateUtil());
                 warehouseImageUserRepository.save(imageUser);
             } else {
-                imageUser = new WarehouseImageUser(fileName, file.getContentType(), user, file.getBytes(), WarehouseCommonUtil.generateCurrentDateUtil());
+                imageUser = new WarehouseImageUser(
+                        fileName,
+                        file.getContentType(),
+                        file.getSize(),
+                        user,
+                        file.getBytes(),
+                        WarehouseCommonUtil.generateCurrentDateUtil());
                 warehouseImageUserRepository.save(imageUser);
             }
 
@@ -60,7 +67,7 @@ public class WarehouseImageUserService {
                     .path(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_ENDPOINT + "/")
                     .path(user.getUserId())
                     .toUriString();
-            WarehouseResponseData responseData = new WarehouseResponseData(fileName,
+            WarehouseDataResponse responseData = new WarehouseDataResponse(fileName,
                     downloadURl,
                     file.getContentType(),
                     file.getSize());
