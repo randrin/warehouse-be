@@ -4,6 +4,7 @@ import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
+import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
 import com.warehouse.bear.management.services.WarehouseUserService;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import io.swagger.annotations.Api;
@@ -88,9 +89,16 @@ public class WarehouseUserController {
         return warehouseUserService.deleteUser(userId);
     }
 
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPDATE_USER)
+    public ResponseEntity<Object> warehouseUpdateUser(@Valid @RequestBody WarehouseUpdateUserRequest request,
+                                                      @PathVariable String userId) {
+        return warehouseUserService.updateUser(request, userId);
+    }
+
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER_INFORMATION + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FIND_USER)
-    public ResponseEntity<Object> warehouseFindUserInfoByUserId(@PathVariable String userId) {
-        return warehouseUserService.findUserInfoByUserId(userId);
+    public ResponseEntity<Object> warehouseFindUserByUserId(@PathVariable String userId) {
+        return warehouseUserService.findUserByUserId(userId);
     }
 }

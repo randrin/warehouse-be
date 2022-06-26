@@ -1,4 +1,4 @@
-package com.warehouse.bear.management.payload.request.admin;
+package com.warehouse.bear.management.payload.request;
 
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
 import com.warehouse.bear.management.model.utils.WarehouseContact;
@@ -11,18 +11,19 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseAdminUserRequest {
+public class WarehouseUpdateUserRequest {
 
-    private String username;
     private String fullname;
+    private String username;
     private String gender;
     private String email;
     private String emailPec;
-    private String temporaryPassword;
-    private String secondEmail;
     private Set<String> role;
+    private String dateOfBirth;
     private WarehouseAddress address;
     private WarehouseContact contact;
-    private String dateOfBirth;
-
 }
+
+
+
+

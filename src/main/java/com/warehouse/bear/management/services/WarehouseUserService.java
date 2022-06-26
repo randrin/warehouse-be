@@ -3,18 +3,22 @@ package com.warehouse.bear.management.services;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.UserNotFoundException;
-import com.warehouse.bear.management.model.WarehouseUser;
-import com.warehouse.bear.management.model.WarehouseUserInfo;
-import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
+import com.warehouse.bear.management.model.*;
+import com.warehouse.bear.management.model.utils.WarehouseAddress;
+import com.warehouse.bear.management.model.utils.WarehouseContact;
 import com.warehouse.bear.management.payload.request.WarehouseChangePasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
+import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
+import com.warehouse.bear.management.payload.response.WarehouseUserInfoResponse;
+import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserInfoRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseAddressRepository;
 import com.warehouse.bear.management.repository.utils.WarehouseContactRepository;
+import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class WarehouseUserService {
@@ -53,6 +54,12 @@ public class WarehouseUserService {
 
     @Autowired
     private WarehouseVerifyIdentityRepository verifyIdentityRepository;
+
+    @Autowired
+    private WarehouseCommonUtil warehouseCommonUtil;
+
+    @Autowired
+    private WarehouseImageUserRepository imageUserRepository;
 
     public ResponseEntity<Object> resetPasswordUser(WarehouseResetPasswordRequest request) {
         try {
@@ -184,15 +191,102 @@ public class WarehouseUserService {
         }
     }
 
-    public ResponseEntity<Object> findUserInfoByUserId(String userId) {
-        Optional<WarehouseUser> user = null;
-        Optional<WarehouseUserInfo> userInfo = null;
+//    public ResponseEntity<Object> findUserInfoByUserId(String userId) {
+//        Optional<WarehouseUser> user = null;
+//        Optional<WarehouseUserInfo> userInfo = null;
+//        try {
+//            user = userRepository.findByUserId(userId);
+//            userInfo = userInfoRepository.findByUser(user.get());
+//
+//            return new ResponseEntity<Object>(
+//                    new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_FOUND), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+//                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId),
+//                    HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+    public ResponseEntity<Object> updateUser(WarehouseUpdateUserRequest request, String userId) {
+
+        WarehouseContact contact = null;
+        WarehouseAddress address = null;
         try {
-            user = userRepository.findByUserId(userId);
-            userInfo = userInfoRepository.findByUser(user.get());
+            WarehouseUser user = userRepository.findByUserId(userId).get();
+            contact = contactRepository.findByUserId(userId).get();
+            address = addressRepository.findByUserId(userId).get();
+            if (user != null) {
+                Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
+
+                // Set user model
+                user.setFullname(request.getFullname());
+                user.setUsername(request.getUsername());
+                user.setEmail(request.getEmail());
+                user.setEmailPec(request.getEmailPec());
+                user.setDateOfBirth(request.getDateOfBirth());
+                user.setRoles(roles);
+                user.setGender((request.getGender()));
+
+                // Set address model
+                address.setCountry(request.getAddress().getCountry());
+                address.setAddressLine(request.getAddress().getAddressLine());
+                address.setState(request.getAddress().getState());
+                address.setZipCode(request.getAddress().getZipCode());
+
+                // Set contact model
+                contact.setPhoneNumber(request.getContact().getPhoneNumber());
+                contact.setPhonePrefix(request.getContact().getPhonePrefix());
+                contact.setLandlineNumber(request.getContact().getLandlineNumber());
+                contact.setLandlinePrefix(request.getContact().getLandlinePrefix());
+
+                // Update all data in different databases
+                userRepository.save(user);
+                addressRepository.save(address);
+                contactRepository.save(contact);
+                return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND + userId),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> findUserByUserId(String userId) {
+        Optional<WarehouseContact> contact = null;
+        Optional<WarehouseAddress> address = null;
+        WarehouseUser user = null;
+        Optional<WarehouseUserInfo> userInfo = null;
+        Optional<WarehouseImageUser> profileImage = null;
+        try {
+            user = userRepository.findByUserId(userId).get();
+            contact = contactRepository.findByUserId(userId);
+            address = addressRepository.findByUserId(userId);
+            userInfo = userInfoRepository.findByUser(user);
+            profileImage = imageUserRepository.findByUser(user);
 
             return new ResponseEntity<Object>(
-                    new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_FOUND), HttpStatus.OK);
+                    new WarehouseUserInfoResponse(
+                            userId,
+                            user.getFullname(),
+                            user.getGender(),
+                            user.getUsername(),
+                            user.getEmail(),
+                            user.getEmailPec(),
+                            user.getRoles(),
+                            user.isActive(),
+                            user.getLastLogin(),
+                            user.getDateOfBirth(),
+                            user.getCreatedAt(),
+                            userInfo.isPresent() ? userInfo.get() : null,
+                            address.isPresent() ? address.get() : null,
+                            contact.isPresent() ? contact.get() : null,
+                            profileImage.isPresent() ? profileImage.get() : null),
+                    HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId),

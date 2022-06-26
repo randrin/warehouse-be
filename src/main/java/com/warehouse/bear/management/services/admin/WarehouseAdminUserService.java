@@ -78,6 +78,7 @@ public class WarehouseAdminUserService {
                 request.getFullname(),
                 request.getGender(),
                 request.getEmail(),
+                request.getEmailPec(),
                 bCryptPasswordEncoder.encode(temporalPassword),
                 roles,
                 request.getDateOfBirth(),

@@ -35,6 +35,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_COUNTRY_REQUIRED = "Country is required";
     public static final String WAREHOUSE_STATE_REQUIRED = "State is required";
     public static final String WAREHOUSE_ADDRESS_REQUIRED = "Complementary address is required";
+    public static final String WAREHOUSE_CITY_REQUIRED = "City is required";
 
     public static final String WAREHOUSE_USER_PHONE_VALID = "Please enter the valid phone";
     public static final String WAREHOUSE_USER_PASSWORD = "User password is required";

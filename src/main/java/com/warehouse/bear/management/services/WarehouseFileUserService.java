@@ -48,10 +48,17 @@ public class WarehouseFileUserService {
                 imageUser.setFileName(fileName);
                 imageUser.setFileType(file.getContentType());
                 imageUser.setData(file.getBytes());
+                imageUser.setFileSize(file.getSize());
                 imageUser.setLastUploadDate(WarehouseCommonUtil.generateCurrentDateUtil());
                 warehouseImageUserRepository.save(imageUser);
             } else {
-                imageUser = new WarehouseImageUser(fileName, file.getContentType(), user, file.getBytes(), WarehouseCommonUtil.generateCurrentDateUtil());
+                imageUser = new WarehouseImageUser(
+                        fileName,
+                        file.getContentType(),
+                        file.getSize(),
+                        user,
+                        file.getBytes(),
+                        WarehouseCommonUtil.generateCurrentDateUtil());
                 warehouseImageUserRepository.save(imageUser);
             }
 

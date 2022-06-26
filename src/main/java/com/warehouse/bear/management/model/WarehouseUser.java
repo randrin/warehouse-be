@@ -50,6 +50,10 @@ public class WarehouseUser implements Serializable {
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
+    @Size(max = 50)
+    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
+    private String emailPec;
+
     @Size(max = 120)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
     @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)

@@ -103,6 +103,7 @@ public class WarehouseAuthService {
                 request.getFullname(),
                 request.getGender(),
                 request.getEmail(),
+                null,
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
                 null,
@@ -169,6 +170,7 @@ public class WarehouseAuthService {
                     user.get().getGender(),
                     userDetails.getUsername(),
                     userDetails.getEmail(),
+                    user.get().getEmailPec(),
                     roles,
                     user.get().isActive(),
                     user.get().getLastLogin(),
@@ -279,4 +281,6 @@ public class WarehouseAuthService {
         }
     }
 }
+
+
 
