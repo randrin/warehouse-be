@@ -216,6 +216,28 @@ public class WarehouseUserService {
             contact = contactRepository.findByUserId(userId).get();
             address = addressRepository.findByUserId(userId).get();
             if (user != null) {
+
+                if (userRepository.existsByUsername(request.getUsername())) {
+                    return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_USERNAME_EXISTS + request.getUsername()));
+                }
+
+                if (userRepository.existsByEmailPec(request.getEmailPec())) {
+                    return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_EMAIL_PEC + request.getEmailPec()));
+                }
+
+                if (contactRepository.existsByPhoneNumber(request.getContact().getPhoneNumber())) {
+                    return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_PHONE_NUMBER_EXISTS + request.getContact().getPhoneNumber()));
+                }
+                if (contactRepository.existsByLandlineNumber(request.getContact().getLandlineNumber())) {
+                    return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_LANDLINENUMBER + request.getContact().getLandlineNumber()));
+                }
+
+
+
                 Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 
                 // Set user model
@@ -240,7 +262,11 @@ public class WarehouseUserService {
                 contact.setLandlinePrefix(request.getContact().getLandlinePrefix());
 
                 // Update all data in different databases
+
+                //before saving user send the email to verify email pec
+
                 userRepository.save(user);
+                warehouseMailUtil.warehouseVerificationEmail(user.getEmailPec(), "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
                 addressRepository.save(address);
                 contactRepository.save(contact);
                 return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE), HttpStatus.OK);

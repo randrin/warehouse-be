@@ -11,7 +11,12 @@ public interface WarehouseUserRepository extends JpaRepository<WarehouseUser, Lo
 
     Optional<WarehouseUser> findByUsername(String username);
     Optional<WarehouseUser> findByEmail(String email);
+    Optional<WarehouseUser> findByUserId(String userId);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
-    Optional<WarehouseUser> findByUserId(String userId);
+    boolean existsByEmailPec(String emailPec);
+
+
+
+
 }

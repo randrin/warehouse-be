@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface WarehouseContactRepository extends JpaRepository<WarehouseContact, Long> {
 
     Optional<WarehouseContact> findByUserId(String userId);
+    
+    boolean existsByPhoneNumber(String phoneNumber);
+
+    boolean existsByLandlineNumber(String landlineNumber);
 }
