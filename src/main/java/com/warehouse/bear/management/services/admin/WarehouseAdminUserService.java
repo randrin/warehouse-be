@@ -86,6 +86,8 @@ public class WarehouseAdminUserService {
                 request.getEmailPec(),
                 bCryptPasswordEncoder.encode(temporalPassword),
                 roles,
+                null,
+                null,
                 request.getDateOfBirth(),
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
