@@ -12,6 +12,7 @@ public interface WarehouseContactRepository extends JpaRepository<WarehouseConta
     Optional<WarehouseContact> findByUserId(String userId);
     
     boolean existsByPhoneNumber(String phoneNumber);
-
+    boolean existsByPhonePrefix(String phonePrefix);
     boolean existsByLandlineNumber(String landlineNumber);
+    boolean existsByLandlinePrefix(String landlinePrefix);
 }

@@ -86,8 +86,6 @@ public class WarehouseAdminUserService {
                 request.getEmailPec(),
                 bCryptPasswordEncoder.encode(temporalPassword),
                 roles,
-                null,
-                null,
                 request.getDateOfBirth(),
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
@@ -127,6 +125,5 @@ public class WarehouseAdminUserService {
         warehouseMailUtil.warehouseVerificationEmail(adminUser.getEmail(), temporalPassword, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER);
         // TODO: Send the verification email to user if the secondEmail (PEC Email Address) is populated
         return new ResponseEntity(new WarehouseResponse(adminUser, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
-
     }
 }

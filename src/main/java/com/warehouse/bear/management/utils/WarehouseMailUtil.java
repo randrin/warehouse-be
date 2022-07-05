@@ -113,7 +113,7 @@ public class WarehouseMailUtil {
                 model.put("name", user.get().getUsername().toUpperCase());
                 model.put("userId", user.get().getUserId().toUpperCase());
                 model.put("temporalPassword", password);
-                response = user.get().isActive()? warehouseSendMail(user.get().getEmailPec(), model, verifyType):warehouseSendMail(user.get().getEmail(), model, verifyType);
+                response = warehouseSendMail(user.get().getEmail(), model, verifyType);
             }
 
             return new ResponseEntity<Object>(response, HttpStatus.OK);

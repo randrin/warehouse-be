@@ -3,8 +3,6 @@ package com.warehouse.bear.management.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
-import com.warehouse.bear.management.model.utils.WarehouseAddress;
-import com.warehouse.bear.management.model.utils.WarehouseContact;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -67,14 +65,6 @@ public class WarehouseUser implements Serializable {
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<WarehouseRole> roles;
-
-    @JoinTable(name = "address",
-            joinColumns = @JoinColumn(name = "userId"))
-    private Set<WarehouseAddress> address;
-
-    @JoinTable(name = "contacts",
-            joinColumns = @JoinColumn(name = "userId"))
-    private Set<WarehouseContact> contacts;
 
     private String dateOfBirth;
     private boolean isActive;

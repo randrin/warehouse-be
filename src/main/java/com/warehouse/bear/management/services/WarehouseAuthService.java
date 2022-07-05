@@ -91,10 +91,6 @@ public class WarehouseAuthService {
         // Generate user roles
         Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 
-        // initialise contact and address
-        Set<WarehouseAddress> address = null;
-        Set<WarehouseContact> contacts = null;
-
         // Create new user's account
         String userId = null;
         do {
@@ -110,8 +106,6 @@ public class WarehouseAuthService {
                 null,
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 roles,
-                address,
-                contacts,
                 null,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),

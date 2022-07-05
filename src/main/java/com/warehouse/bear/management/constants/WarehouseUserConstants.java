@@ -21,7 +21,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_SUBJECT_EMAIL_NEW_USER = "New user in WareHouse System - Identify your profile";
     public static final String WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL = "EMAIL_VERIFICATION";
-    public static final String WAREHOUSE_VERIFY_TYPE_EMAIL_PEC = "EMAIL PEC VERIFICATION";
+    public static final String WAREHOUSE_VERIFY_TYPE_EMAIL_PEC = "EMAIL_PEC_VERIFICATION";
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER = "EMAIL_ADMIN_USER_VERIFICATION";
 
     // MODELS

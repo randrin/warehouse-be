@@ -16,7 +16,4 @@ public interface WarehouseUserRepository extends JpaRepository<WarehouseUser, Lo
     Boolean existsByEmail(String email);
     boolean existsByEmailPec(String emailPec);
 
-
-
-
 }
