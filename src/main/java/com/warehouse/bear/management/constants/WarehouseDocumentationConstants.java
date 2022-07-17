@@ -23,6 +23,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_GET_ALL_USERS = "Get all users registered in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPLOAD = "File upload in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DOWNLOAD = "File download in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_DELETE_FILE = "File delete in warehouse system.";
     public static final String WAREHOUSE_OPERATION_VERIFY_TOKEN = "Verify if user's token is valid to warehouse system.";
     public static final String WAREHOUSE_OPERATION_FORGOT_PASSWORD = "Send email link to user to reset our password in warehouse system.";
     public static final String WAREHOUSE_OPERATION_VERIFY_EMAIL = "Send email link to user to verify his email.";

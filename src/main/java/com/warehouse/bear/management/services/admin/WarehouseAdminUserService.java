@@ -55,14 +55,25 @@ public class WarehouseAdminUserService {
                     WarehouseUserResponse.WAREHOUSE_USER_USERNAME_EXISTS + request.getUsername()));
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail()) || userRepository.existsByEmailPec(request.getEmail())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
 
-        if (userRepository.existsByEmail(request.getEmailPec())) {
+        if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmailPec()));
+        }
+
+        if (request.getEmailPec().compareToIgnoreCase(request.getEmail()) == 0) {
+            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_BOTH_EMAIL));
+        }
+
+        if ((request.getContact().getPhonePrefix() + request.getContact().getPhoneNumber())
+                .compareToIgnoreCase(request.getContact().getLandlinePrefix() + request.getContact().getLandlineNumber()) == 0) {
+            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_BOTH_PHONE_NUMBER));
         }
 
         // Generate user roles
