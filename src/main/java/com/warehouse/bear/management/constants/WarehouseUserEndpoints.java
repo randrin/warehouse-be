@@ -16,6 +16,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_LOGIN_USER = "/login";
     public static final String WAREHOUSE_UPLOAD_FILE = "/upload_file";
     public static final String WAREHOUSE_DOWNLOAD_FILE = "/download";
+    public static final String WAREHOUSE_DELETE_FILE = "/delete_file";
     public static final String WAREHOUSE_LOGOUT_USER = "/logout";
     public static final String WAREHOUSE_REGISTER_USER = "/register";
     public static final String WAREHOUSE_REGISTER_USER_STEP_THREE = "/register/step-three";

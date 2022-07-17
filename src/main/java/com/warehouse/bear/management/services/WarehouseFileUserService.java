@@ -4,9 +4,9 @@ import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.model.WarehouseImageUser;
 import com.warehouse.bear.management.model.WarehouseUser;
+import com.warehouse.bear.management.payload.response.WarehouseDataResponse;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
-import com.warehouse.bear.management.payload.response.WarehouseDataResponse;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
@@ -92,6 +92,19 @@ public class WarehouseFileUserService {
 //                .body(new ByteArrayResource(warehouseImageUser.getData()));
         } else {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT + userId), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> deleteAttachment(String userId) {
+        WarehouseUser user = userRepository.findByUserId(userId).get();
+        Optional<WarehouseImageUser> warehouseImageUser = warehouseImageUserRepository.findByUser(user);
+        if (warehouseImageUser.isPresent()) {
+            warehouseImageUserRepository.delete(warehouseImageUser.get());
+            return new ResponseEntity<Object>(new WarehouseResponse(warehouseImageUser,
+                    WarehouseUserResponse.WAREHOUSE_USER_DELETE_PROFILE), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT + userId), HttpStatus.NOT_FOUND);
         }
     }
 }

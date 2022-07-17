@@ -69,6 +69,10 @@ public class WarehouseMailUtil {
                 helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_VERIFICATION);
                 t = config.getTemplate("verify-email-template.ftl");
             }
+            if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC) {
+                helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_VERIFICATION);
+                t = config.getTemplate("verify-email-pec-template.ftl");
+            }
             if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER) {
                 helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_NEW_USER);
                 t = config.getTemplate("temporal-password-template.ftl");

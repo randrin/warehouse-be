@@ -5,6 +5,12 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_USERNAME_EXISTS = "User already exists with username ";
     public static final String WAREHOUSE_EXISTING_USER = "User already exists with user Id:  ";
     public static final String WAREHOUSE_USER_EMAIL_EXISTS = "User already exists with email ";
+    public static final String WAREHOUSE_USER_PHONE_NUMBER_EXISTS = "User already exists with this phone number ";
+    public static final String WAREHOUSE_USER_BOTH_EMAIL = "Email and Pec Email are the same. Please, Change another one and try again.";
+    public static final String WAREHOUSE_USER_BOTH_PHONE_NUMBER = "The Phone and Landline are the same. Please, Change another one and try again.";
+    public static final String WAREHOUSE_USER_LANDLINE_NUMBER_EXISTS = "User already exists with this landline number ";
+    public static final String WAREHOUSE_USER_EMAIL_PEC = "User already exists with this email pec ";
+    public static final String WAREHOUSE_USER_EMAIL_PEC_VERIFICATION = "Your email pec is not verify,please check your email and provide it.";
     public static final String WAREHOUSE_USER_LOGGED = "User logged successfully.";
     public static final String WAREHOUSE_USER_REGISTERED = "User registered successfully.";
     public static final String WAREHOUSE_USER_UPDATE = "User update successfully.";
@@ -23,6 +29,8 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully.";
     public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
     public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
+    public static final String WAREHOUSE_USER_DELETE_PROFILE = "Profile file is deleted successfully.";
+
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";

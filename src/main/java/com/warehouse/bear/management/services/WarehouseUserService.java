@@ -216,6 +216,42 @@ public class WarehouseUserService {
             contact = contactRepository.findByUserId(userId).get();
             address = addressRepository.findByUserId(userId).get();
             if (user != null) {
+                if (user.getUsername().compareToIgnoreCase(request.getUsername()) != 0) {
+                    if (userRepository.existsByUsername(request.getUsername())) {
+                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                WarehouseUserResponse.WAREHOUSE_USER_USERNAME_EXISTS + request.getUsername()));
+                    }
+                }
+                if (user.getEmailPec().compareToIgnoreCase(request.getEmailPec()) != 0) {
+                    if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
+                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                WarehouseUserResponse.WAREHOUSE_USER_EMAIL_PEC + request.getEmailPec()));
+                    }
+                }
+                if (contact.getPhoneNumber().compareToIgnoreCase(request.getContact().getPhoneNumber()) != 0 &&
+                        contact.getPhonePrefix().compareToIgnoreCase(request.getContact().getPhonePrefix()) != 0) {
+                    if (contactRepository.existsByPhoneNumber(request.getContact().getPhoneNumber()) &&
+                            contactRepository.existsByPhonePrefix(request.getContact().getPhonePrefix())) {
+                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                WarehouseUserResponse.WAREHOUSE_USER_PHONE_NUMBER_EXISTS + request.getContact().getPhonePrefix()
+                                        + " " + request.getContact().getPhoneNumber()));
+                    }
+                }
+                if (contact.getLandlineNumber().compareToIgnoreCase(request.getContact().getLandlineNumber()) != 0 &&
+                        contact.getLandlinePrefix().compareToIgnoreCase(request.getContact().getLandlinePrefix()) != 0) {
+                    if (contactRepository.existsByLandlineNumber(request.getContact().getLandlineNumber()) &&
+                            contactRepository.existsByLandlinePrefix(request.getContact().getLandlinePrefix())) {
+                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                WarehouseUserResponse.WAREHOUSE_USER_LANDLINE_NUMBER_EXISTS + request.getContact().getLandlinePrefix()
+                                        + " " + request.getContact().getLandlineNumber()));
+                    }
+                }
+                if ((request.getContact().getPhonePrefix() + request.getContact().getPhoneNumber())
+                        .compareToIgnoreCase(request.getContact().getLandlinePrefix() + request.getContact().getLandlineNumber()) == 0) {
+                    return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_BOTH_PHONE_NUMBER));
+                }
+
                 Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 
                 // Set user model
@@ -238,6 +274,11 @@ public class WarehouseUserService {
                 contact.setPhonePrefix(request.getContact().getPhonePrefix());
                 contact.setLandlineNumber(request.getContact().getLandlineNumber());
                 contact.setLandlinePrefix(request.getContact().getLandlinePrefix());
+
+                // Before saving user and information, send the verification email to email pec if populated
+                if (!user.getEmailPec().isEmpty()) {
+                    warehouseMailUtil.warehouseVerificationEmail(user.getEmailPec(), "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
+                }
 
                 // Update all data in different databases
                 userRepository.save(user);
