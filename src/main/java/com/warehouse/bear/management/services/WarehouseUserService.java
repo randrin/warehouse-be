@@ -222,12 +222,14 @@ public class WarehouseUserService {
                                 WarehouseUserResponse.WAREHOUSE_USER_USERNAME_EXISTS + request.getUsername()));
                     }
                 }
+
                 if (user.getEmailPec().compareToIgnoreCase(request.getEmailPec()) != 0) {
                     if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
                         return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
                                 WarehouseUserResponse.WAREHOUSE_USER_EMAIL_PEC + request.getEmailPec()));
                     }
                 }
+
                 if (contact.getPhoneNumber().compareToIgnoreCase(request.getContact().getPhoneNumber()) != 0 &&
                         contact.getPhonePrefix().compareToIgnoreCase(request.getContact().getPhonePrefix()) != 0) {
                     if (contactRepository.existsByPhoneNumber(request.getContact().getPhoneNumber()) &&
@@ -237,15 +239,19 @@ public class WarehouseUserService {
                                         + " " + request.getContact().getPhoneNumber()));
                     }
                 }
-                if (contact.getLandlineNumber().compareToIgnoreCase(request.getContact().getLandlineNumber()) != 0 &&
-                        contact.getLandlinePrefix().compareToIgnoreCase(request.getContact().getLandlinePrefix()) != 0) {
-                    if (contactRepository.existsByLandlineNumber(request.getContact().getLandlineNumber()) &&
-                            contactRepository.existsByLandlinePrefix(request.getContact().getLandlinePrefix())) {
-                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
-                                WarehouseUserResponse.WAREHOUSE_USER_LANDLINE_NUMBER_EXISTS + request.getContact().getLandlinePrefix()
-                                        + " " + request.getContact().getLandlineNumber()));
+
+                if (request.getContact().getLandlineNumber() != null && request.getContact().getLandlinePrefix() != null) {
+                    if (contact.getLandlineNumber().compareToIgnoreCase(request.getContact().getLandlineNumber()) != 0 &&
+                            contact.getLandlinePrefix().compareToIgnoreCase(request.getContact().getLandlinePrefix()) != 0) {
+                        if (contactRepository.existsByLandlineNumber(request.getContact().getLandlineNumber()) &&
+                                contactRepository.existsByLandlinePrefix(request.getContact().getLandlinePrefix())) {
+                            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                    WarehouseUserResponse.WAREHOUSE_USER_LANDLINE_NUMBER_EXISTS + request.getContact().getLandlinePrefix()
+                                            + " " + request.getContact().getLandlineNumber()));
+                        }
                     }
                 }
+
                 if ((request.getContact().getPhonePrefix() + request.getContact().getPhoneNumber())
                         .compareToIgnoreCase(request.getContact().getLandlinePrefix() + request.getContact().getLandlineNumber()) == 0) {
                     return ResponseEntity.badRequest().body(new WarehouseMessageResponse(

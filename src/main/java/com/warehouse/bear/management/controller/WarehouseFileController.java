@@ -32,7 +32,7 @@ public class WarehouseFileController {
         return warehouseFileUserService.getAttachment(userId);
     }
 
-    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_FILE + "/{userId}")
+    @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_FILE + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_FILE)
     public ResponseEntity<Object> warehouseDeleteFile(@PathVariable String userId) {
         return warehouseFileUserService.deleteAttachment(userId);
