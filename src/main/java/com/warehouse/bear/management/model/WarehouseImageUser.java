@@ -24,6 +24,7 @@ public class WarehouseImageUser implements Serializable {
 
     private String fileName;
     private String fileType;
+    private String imageType;
     private long fileSize;
 
     @OneToOne
@@ -36,10 +37,11 @@ public class WarehouseImageUser implements Serializable {
 
     private String lastUploadDate;
 
-    public WarehouseImageUser(String fileName, String fileType, long fileSize, WarehouseUser user, byte[] data, String lastUploadDate) {
+    public WarehouseImageUser(String fileName, String fileType, String imageType, long fileSize, WarehouseUser user, byte[] data, String lastUploadDate) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileSize = fileSize;
+        this.imageType = imageType;
         this.user = user;
         this.data = data;
         this.lastUploadDate = lastUploadDate;
