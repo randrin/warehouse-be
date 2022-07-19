@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,5 +31,5 @@ public class WarehouseUserInfoResponse {
     private WarehouseUserInfo userInfo;
     private WarehouseAddress address;
     private WarehouseContact contact;
-    private WarehouseImageUser profileImage;
+    private List<WarehouseImageUser> profileImage;
 }

@@ -240,7 +240,7 @@ public class WarehouseUserService {
                     }
                 }
 
-                if (request.getContact().getLandlineNumber() != null && request.getContact().getLandlinePrefix() != null) {
+                if (!request.getContact().getLandlineNumber().isEmpty() && !request.getContact().getLandlinePrefix().isEmpty()) {
                     if (contact.getLandlineNumber().compareToIgnoreCase(request.getContact().getLandlineNumber()) != 0 &&
                             contact.getLandlinePrefix().compareToIgnoreCase(request.getContact().getLandlinePrefix()) != 0) {
                         if (contactRepository.existsByLandlineNumber(request.getContact().getLandlineNumber()) &&
@@ -308,13 +308,13 @@ public class WarehouseUserService {
         Optional<WarehouseAddress> address = null;
         WarehouseUser user = null;
         Optional<WarehouseUserInfo> userInfo = null;
-        Optional<WarehouseImageUser> profileImage = null;
+        Optional<List<WarehouseImageUser>> profileImage = null;
         try {
             user = userRepository.findByUserId(userId).get();
             contact = contactRepository.findByUserId(userId);
             address = addressRepository.findByUserId(userId);
             userInfo = userInfoRepository.findByUser(user);
-            profileImage = imageUserRepository.findByUser(user);
+            profileImage = imageUserRepository.findProfileUser(user);
 
             return new ResponseEntity<Object>(
                     new WarehouseUserInfoResponse(

@@ -22,8 +22,9 @@ public class WarehouseFileController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_UPLOAD_FILE)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPLOAD)
     public ResponseEntity<Object> warehouseUploadFile(@RequestParam("file") MultipartFile file,
-                                                      @RequestParam("userId") String userId) {
-        return warehouseFileUserService.saveAttachment(file, userId);
+                                                      @RequestParam("userId") String userId,
+                                                      @RequestParam("imageType") String imageType) {
+        return warehouseFileUserService.saveAttachment(file, userId, imageType);
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DOWNLOAD_FILE + "/{userId}")

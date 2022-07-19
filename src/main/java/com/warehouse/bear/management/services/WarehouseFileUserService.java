@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,7 @@ public class WarehouseFileUserService {
     @Autowired
     private WarehouseUserRepository userRepository;
 
-    public ResponseEntity<Object> saveAttachment(MultipartFile file, String userId) {
+    public ResponseEntity<Object> saveAttachment(MultipartFile file, String userId, String imageType) {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String downloadURl = "";
@@ -41,26 +42,28 @@ public class WarehouseFileUserService {
                         HttpStatus.BAD_REQUEST);
             }
             WarehouseUser user = userRepository.findByUserId(userId).get();
-            Optional<WarehouseImageUser> userImageFound = warehouseImageUserRepository.findByUser(user);
+            Optional<WarehouseImageUser> userImageFound = warehouseImageUserRepository.findByUserAndImageType(user, imageType);
 
+            // If present, update the current element, otherwise add new one
             if (userImageFound.isPresent()) {
                 imageUser = userImageFound.get();
                 imageUser.setFileName(fileName);
                 imageUser.setFileType(file.getContentType());
+                imageUser.setImageType(imageType.toUpperCase(Locale.ROOT));
                 imageUser.setData(file.getBytes());
                 imageUser.setFileSize(file.getSize());
                 imageUser.setLastUploadDate(WarehouseCommonUtil.generateCurrentDateUtil());
-                warehouseImageUserRepository.save(imageUser);
             } else {
                 imageUser = new WarehouseImageUser(
                         fileName,
                         file.getContentType(),
+                        imageType.toUpperCase(Locale.ROOT),
                         file.getSize(),
                         user,
                         file.getBytes(),
                         WarehouseCommonUtil.generateCurrentDateUtil());
-                warehouseImageUserRepository.save(imageUser);
             }
+            warehouseImageUserRepository.save(imageUser);
 
             downloadURl = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -70,6 +73,7 @@ public class WarehouseFileUserService {
             WarehouseDataResponse responseData = new WarehouseDataResponse(fileName,
                     downloadURl,
                     file.getContentType(),
+                    imageType.toUpperCase(Locale.ROOT),
                     file.getSize());
             return new ResponseEntity<Object>(new WarehouseResponse(responseData, WarehouseUserResponse.WAREHOUSE_USER_UPLOAD_PROFILE), HttpStatus.OK);
         } catch (Exception ex) {
