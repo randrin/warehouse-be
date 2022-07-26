@@ -99,9 +99,9 @@ public class WarehouseFileUserService {
         }
     }
 
-    public ResponseEntity<Object> deleteAttachment(String userId) {
+    public ResponseEntity<Object> deleteAttachment(String userId, String imageType) {
         WarehouseUser user = userRepository.findByUserId(userId).get();
-        Optional<WarehouseImageUser> warehouseImageUser = warehouseImageUserRepository.findByUser(user);
+        Optional<WarehouseImageUser> warehouseImageUser = warehouseImageUserRepository.findByUserAndImageType(user, imageType);
         if (warehouseImageUser.isPresent()) {
             warehouseImageUserRepository.delete(warehouseImageUser.get());
             return new ResponseEntity<Object>(new WarehouseResponse(warehouseImageUser,

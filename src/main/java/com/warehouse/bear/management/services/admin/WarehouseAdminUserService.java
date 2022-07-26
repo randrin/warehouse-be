@@ -60,14 +60,18 @@ public class WarehouseAdminUserService {
                     WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmail()));
         }
 
-        if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
-            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmailPec()));
+        if (request.getEmailPec() != null) {
+            if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
+                return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_EMAIL_EXISTS + request.getEmailPec()));
+            }
         }
 
-        if (request.getEmailPec().compareToIgnoreCase(request.getEmail()) == 0) {
-            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_BOTH_EMAIL));
+        if (request.getEmailPec() != null) {
+            if (request.getEmailPec().compareToIgnoreCase(request.getEmail()) == 0) {
+                return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_BOTH_EMAIL));
+            }
         }
 
         if ((request.getContact().getPhonePrefix() + request.getContact().getPhoneNumber())

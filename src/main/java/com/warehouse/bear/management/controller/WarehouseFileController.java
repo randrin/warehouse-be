@@ -35,7 +35,7 @@ public class WarehouseFileController {
 
     @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_FILE + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_FILE)
-    public ResponseEntity<Object> warehouseDeleteFile(@PathVariable String userId) {
-        return warehouseFileUserService.deleteAttachment(userId);
+    public ResponseEntity<Object> warehouseDeleteFile(@PathVariable String userId, @RequestParam("imageType") String imageType) {
+        return warehouseFileUserService.deleteAttachment(userId, imageType);
     }
 }
