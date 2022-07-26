@@ -7,6 +7,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_API_FILES_NAME = "Warehouse Upload/Download Files API.";
     public static final String WAREHOUSE_API_USER_NAME = "Warehouse User Operations API.";
     public static final String WAREHOUSE_API_ADMIN_NAME = "Warehouse Admin Operations API.";
+    public static final String WAREHOUSE_API_ROLE_NAME = "Warehouse Roles Operations API.";
     public static final String WAREHOUSE_API_RESPONSE_400 = "User request isn't corrects.";
     public static final String WAREHOUSE_API_RESPONSE_401 = "User isn't authorized to perform this operation.";
     public static final String WAREHOUSE_API_RESPONSE_403 = "Forbidden user to perform this operation.";
@@ -35,6 +36,10 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_FIND_USER = "Find user by userID in warehouse system.";
     public static final String WAREHOUSE_OPERATION_FIND_USER_BY_LINK_TYPE = "Find user by userID, verify link and verify type in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPDATE_USER = "Update user in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_GET_ALL_ROLES = "Get all profile roles in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_INSERT_ROLE = "Add new role in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_UPDATE_ROLE = "Update role in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_DELETE_ROLE = "Delete role in warehouse system.";
 
     // API PARAMS
     public static final String WAREHOUSE_PARAM_USER_LOGIN = "Username/Password are required";

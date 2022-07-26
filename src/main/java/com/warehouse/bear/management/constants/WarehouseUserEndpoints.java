@@ -15,7 +15,7 @@ public class WarehouseUserEndpoints {
     // AUTHENTICATION / AUTHORIZATION
     public static final String WAREHOUSE_LOGIN_USER = "/login";
     public static final String WAREHOUSE_UPLOAD_FILE = "/upload_file";
-    public static final String WAREHOUSE_DOWNLOAD_FILE = "/download";
+    public static final String WAREHOUSE_DOWNLOAD_FILE = "/download_file";
     public static final String WAREHOUSE_DELETE_FILE = "/delete_file";
     public static final String WAREHOUSE_LOGOUT_USER = "/logout";
     public static final String WAREHOUSE_REGISTER_USER = "/register";
@@ -33,4 +33,8 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
     public static final String WAREHOUSE_DELETE_USER = "/delete";
     public static final String WAREHOUSE_UPDATE_USER = "/update";
+    public static final String WAREHOUSE_ALL_ROLES = "/roles";
+    public static final String WAREHOUSE_ADD_ROLE = "/role/insert";
+    public static final String WAREHOUSE_UPDATE_ROLE = "/role/update";
+    public static final String WAREHOUSE_DELETE_ROLE = "/role/delete";
 }

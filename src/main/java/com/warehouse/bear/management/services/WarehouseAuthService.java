@@ -35,9 +35,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,7 +87,9 @@ public class WarehouseAuthService {
         }
 
         // Generate user roles
-        Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
+        // Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
+        Set<WarehouseRole> roles = new LinkedHashSet<WarehouseRole>();
+        roles.add(new WarehouseRole(0L, WarehouseUserConstants.WAREHOUSE_ROLE_USER, "User role"));
 
         // Create new user's account
         String userId = null;
@@ -105,7 +105,7 @@ public class WarehouseAuthService {
                 request.getEmail(),
                 null,
                 bCryptPasswordEncoder.encode(request.getPassword()),
-                roles,
+                new ArrayList<WarehouseRole>(),
                 null,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
@@ -126,11 +126,12 @@ public class WarehouseAuthService {
                 final Optional<WarehouseUser> user = userRepository.findByEmail(request.getUsername());
                 warehouseUsername = user.get().getUsername();
             } else {
-                // Case where the user logged in with userId or Username
+                // Case where the user logged in with userId
                 if (request.getUsername().length() == 7) {
                     final Optional<WarehouseUser> userWithUserID = userRepository.findByUserId(request.getUsername());
                     warehouseUsername = userWithUserID.get().getUsername();
                 } else {
+                    // Case where the user logged in with Username
                     final UserDetails userWithUsername = warehouseUserDetailsService.loadUserByUsername(request.getUsername());
                     warehouseUsername = userWithUsername.getUsername();
                 }

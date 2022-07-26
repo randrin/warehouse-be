@@ -1,6 +1,8 @@
 server:
   port: 9195
 spring:
+  main:
+    allow-circular-references: true
   mail:
     host: smtp.gmail.com
     port: 587

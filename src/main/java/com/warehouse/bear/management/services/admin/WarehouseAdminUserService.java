@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -77,7 +78,7 @@ public class WarehouseAdminUserService {
         }
 
         // Generate user roles
-        Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
+        List<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 
         // Generate userId
         String userId = null;

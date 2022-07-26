@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WarehouseCommonUtil {
@@ -38,32 +40,33 @@ public class WarehouseCommonUtil {
                 + RandomStringUtils.random(1, WarehouseUserConstants.WAREHOUSE_RANDOM_CHARS);
     }
 
-    public Set<WarehouseRole> generateUserRoles(Set<String> userRoles) {
-        Set<String> strRoles = userRoles;
-        Set<WarehouseRole> roles = new HashSet<>();
+    public List<WarehouseRole> generateUserRoles(List<String> userRoles) {
+        List<String> strRoles = userRoles;
+        List<WarehouseRole> roles = new ArrayList<>();
 
         if (strRoles == null) {
-            WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
+            WarehouseRole userRole = roleRepository.findByCode(WarehouseUserConstants.WAREHOUSE_ROLE_USER)
                     .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        WarehouseRole adminRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
-                        roles.add(adminRole);
-                        break;
-                    case "moderator":
-                        WarehouseRole modRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        WarehouseRole userRole = roleRepository.findByName(WarehouseRoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
-                        roles.add(userRole);
-                }
+                roles.add(roleRepository.findByCode(role).get());
+//                switch (role) {
+//                    case "admin":
+//                        WarehouseRole adminRole = roleRepository.findByCode(WarehouseRoleEnum.ROLE_ADMIN)
+//                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+//                        roles.add(adminRole);
+//                        break;
+//                    case "moderator":
+//                        WarehouseRole modRole = roleRepository.findByCode(WarehouseRoleEnum.ROLE_MODERATOR)
+//                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+//                        roles.add(modRole);
+//                        break;
+//                    default:
+//                        WarehouseRole userRole = roleRepository.findByCode(WarehouseRoleEnum.ROLE_USER)
+//                                .orElseThrow(() -> new RoleNotFoundException(WarehouseUserResponse.WAREHOUSE_ROLE_NOT_FOUND));
+//                        roles.add(userRole);
+//                }
             });
         }
         return roles;

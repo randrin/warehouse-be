@@ -3,9 +3,14 @@ package com.warehouse.bear.management.configuration;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.filter.WarehouseFilter;
+import com.warehouse.bear.management.model.WarehouseRole;
+import com.warehouse.bear.management.model.WarehouseUser;
+import com.warehouse.bear.management.repository.WarehouseRoleRepository;
+import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.services.WarehouseUserDetailsService;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +24,22 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.PostConstruct;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private WarehouseUserRepository userRepository;
+
+    @Autowired
+    private WarehouseRoleRepository roleRepository;
 
     @Autowired
     private WarehouseUserDetailsService warehouseUserDetailsService;
@@ -33,6 +50,29 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(warehouseUserDetailsService);
+    }
+
+    @Value("${spring.profiles.active}")
+    private String production;
+
+
+    @PostConstruct
+    public void initUsers() {
+        System.out.println("production: " + production);
+        if (production.compareToIgnoreCase("dev") == 0) {
+            List<WarehouseRole> roles = Stream.of(
+                    new WarehouseRole(0L, WarehouseUserConstants.WAREHOUSE_ROLE_ADMIN, "Admin role"),
+                    new WarehouseRole(0L, WarehouseUserConstants.WAREHOUSE_ROLE_MODERATOR, "Moderator role"),
+                    new WarehouseRole(0L, WarehouseUserConstants.WAREHOUSE_ROLE_USER, "User role")
+            ).collect(Collectors.toList());
+            roleRepository.saveAll(roles);
+
+            List<WarehouseUser> users = Stream.of(
+                    new WarehouseUser(0L, WarehouseCommonUtil.generateUserId(), "randrino17", "Nzeukang Randrin", "Male", "nzeukangrandrin@gmail.com", "", bCryptPasswordEncoder().encode("123456789"), Stream.of(new WarehouseRole(1L, WarehouseUserConstants.WAREHOUSE_ROLE_ADMIN, "Admin role")).collect(Collectors.toList()), "", true, WarehouseCommonUtil.generateCurrentDateUtil(), WarehouseCommonUtil.generateCurrentDateUtil()),
+                    new WarehouseUser(0L, WarehouseCommonUtil.generateUserId(), "rodrigo", "Djomou Rodrigue", "Male", "djomoutresor1@hotmail.fr", "", bCryptPasswordEncoder().encode("123456789"), Stream.of(new WarehouseRole(1L, WarehouseUserConstants.WAREHOUSE_ROLE_ADMIN, "Admin role")).collect(Collectors.toList()), "", true, WarehouseCommonUtil.generateCurrentDateUtil(), WarehouseCommonUtil.generateCurrentDateUtil())
+            ).collect(Collectors.toList());
+            userRepository.saveAll(users);
+        }
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)

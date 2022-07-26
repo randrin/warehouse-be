@@ -258,7 +258,7 @@ public class WarehouseUserService {
                             WarehouseUserResponse.WAREHOUSE_USER_BOTH_PHONE_NUMBER));
                 }
 
-                Set<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
+                List<WarehouseRole> roles = warehouseCommonUtil.generateUserRoles(request.getRole());
 
                 // Set user model
                 user.setFullname(request.getFullname());

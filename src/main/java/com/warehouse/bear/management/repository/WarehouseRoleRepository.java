@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface WarehouseRoleRepository extends JpaRepository<WarehouseRole, Long> {
-  Optional<WarehouseRole> findByName(WarehouseRoleEnum name);
+  Optional<WarehouseRole> findByCode(String code);
 }

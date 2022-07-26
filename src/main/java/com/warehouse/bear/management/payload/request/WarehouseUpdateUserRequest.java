@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -18,7 +19,7 @@ public class WarehouseUpdateUserRequest {
     private String gender;
     private String email;
     private String emailPec;
-    private Set<String> role;
+    private List<String> role;
     private String dateOfBirth;
     private WarehouseAddress address;
     private WarehouseContact contact;

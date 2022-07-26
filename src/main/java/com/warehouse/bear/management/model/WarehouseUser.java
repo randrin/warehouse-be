@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -64,7 +65,7 @@ public class WarehouseUser implements Serializable {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<WarehouseRole> roles;
+    private List<WarehouseRole> roles;
 
     private String dateOfBirth;
     private boolean isActive;

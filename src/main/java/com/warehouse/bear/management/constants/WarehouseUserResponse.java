@@ -52,4 +52,6 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_WRONG_ATTACHMENT = "Could not save this attachment ";
     public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
+    public static final String WAREHOUSE_INSERT_ROLE_ERROR = "Error inserting role in DB. Try again.";
+    public static final String WAREHOUSE_INSERT_ROLE_SUCCESS = "Role created successfully.";
 }

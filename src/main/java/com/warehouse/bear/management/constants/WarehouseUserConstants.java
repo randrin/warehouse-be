@@ -11,6 +11,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_RANDOM_NUMBERS = "0123456789";
     public static final String WAREHOUSE_AUTHORIZATION = "Authorization";
     public static final String WAREHOUSE_HEADER = "Bearer ";
+    public static final String WAREHOUSE_PREFIX_ROLE = "ROLE_";
     public static final String WAREHOUSE_ROLE_ADMIN = "ROLE_ADMIN";
     public static final String WAREHOUSE_ROLE_USER = "ROLE_USER";
     public static final String WAREHOUSE_ROLE_MODERATOR = "ROLE_MODERATOR";

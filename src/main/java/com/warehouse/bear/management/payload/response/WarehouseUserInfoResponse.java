@@ -23,7 +23,7 @@ public class WarehouseUserInfoResponse {
     private String username;
     private String email;
     private String emailPec;
-    private Set<WarehouseRole> roles;
+    private List<WarehouseRole> roles;
     private boolean isActive;
     private String lastLogin;
     private String dateOfBirth;
