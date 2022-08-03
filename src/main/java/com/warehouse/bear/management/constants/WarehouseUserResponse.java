@@ -32,7 +32,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_DELETE_PROFILE = "Profile file is deleted successfully.";
 
 
-    // ERRORS
+    // ERRORS USER
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
     public static final String WAREHOUSE_USER_DELETE_ERROR = "Something wrong bad. User hasn't deleted successfully.";
     public static final String WAREHOUSE_USER_GENERIC_ERROR = "Generic Error. Something wrong/happen bad on the system. Please, try again later.";
@@ -52,4 +52,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_WRONG_ATTACHMENT = "Could not save this attachment ";
     public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
+
+    // ERRORS ADMIN
+    public static final String WAREHOUSE_ADMIN_ERROR_DISABLE  = "Admin role isn't active. Contact your administration head department for more information.";
 }

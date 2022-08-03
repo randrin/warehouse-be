@@ -11,6 +11,7 @@ import com.warehouse.bear.management.payload.request.WarehouseResetPasswordReque
 import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
+import com.warehouse.bear.management.payload.response.WarehouseUserData;
 import com.warehouse.bear.management.payload.response.WarehouseUserInfoResponse;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserInfoRepository;
@@ -27,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WarehouseUserService {
@@ -146,7 +148,10 @@ public class WarehouseUserService {
 
     public ResponseEntity<Object> getAllUsers() {
         try {
-            List<WarehouseUser> users = userRepository.findAll();
+            List<WarehouseUserData> users = userRepository.findAll()
+                    .stream().map(user -> new WarehouseUserData(user,
+                            userInfoRepository.findByUser(user).get())
+                    ).collect(Collectors.toList());
             return new ResponseEntity<Object>(users, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
