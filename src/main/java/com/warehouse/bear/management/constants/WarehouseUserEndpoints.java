@@ -11,6 +11,7 @@ public class WarehouseUserEndpoints {
 
     // ADMIN DASHBOARD
     public static final String WAREHOUSE_ADMIN_INSERT_USER = "/admin/insert/user";
+    public static final String WAREHOUSE_ADMIN_ACTIVATE_OR_DISABLED_USER = "/admin/permission/user";
 
     // AUTHENTICATION / AUTHORIZATION
     public static final String WAREHOUSE_LOGIN_USER = "/login";

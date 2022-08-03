@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -112,7 +113,8 @@ public class WarehouseAdminUserService {
                 0L,
                 adminUser,
                 Boolean.TRUE,
-                Boolean.TRUE
+                Boolean.TRUE,
+                Boolean.FALSE
         );
         userInfoRepository.save(userInfo);
 
@@ -140,5 +142,32 @@ public class WarehouseAdminUserService {
         warehouseMailUtil.warehouseVerificationEmail(adminUser.getEmail(), temporalPassword, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER);
         // TODO: Send the verification email to user if the secondEmail (PEC Email Address) is populated
         return new ResponseEntity(new WarehouseResponse(adminUser, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Object> adminActivateOrDisabledUser(String adminId, String userId) {
+        try {
+            Optional<WarehouseUser> admin = userRepository.findByUserId(adminId);
+            if (admin.get().isActive()) {
+                Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+                Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
+                if (userInfo.isPresent()) {
+                    userInfo.get().setActiveUserByAdmin(userInfo.get().isActiveUserByAdmin() ? Boolean.FALSE : Boolean.TRUE);
+                    userInfoRepository.save(userInfo.get());
+                    return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                            WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                            HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_ADMIN_ERROR_DISABLE),
+                        HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 }

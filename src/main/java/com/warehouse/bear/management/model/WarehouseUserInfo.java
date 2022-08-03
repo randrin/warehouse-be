@@ -30,4 +30,5 @@ public class WarehouseUserInfo implements Serializable {
 
     private boolean isTemporalPassword;
     private boolean isAdminUser;
+    private boolean isActiveUserByAdmin;
 }

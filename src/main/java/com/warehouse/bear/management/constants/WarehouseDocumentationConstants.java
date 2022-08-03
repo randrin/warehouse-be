@@ -14,6 +14,7 @@ public class WarehouseDocumentationConstants {
 
     // API ADMIN OPERATIONS
     public static final String WAREHOUSE_ADMIN_OPERATION_INSERT_USER = "Admin insert new user in warehouse system.";
+    public static final String WAREHOUSE_ADMIN_OPERATION_ACTIVE_OR_DISABLE_USER = "Admin activated or disabled new user in warehouse system.";
 
     // API OPERATIONS
     public static final String WAREHOUSE_OPERATION_LOGIN = "Login to warehouse system.";

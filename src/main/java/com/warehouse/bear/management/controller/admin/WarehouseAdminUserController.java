@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,5 +26,12 @@ public class WarehouseAdminUserController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_ADMIN_OPERATION_INSERT_USER)
     public ResponseEntity<Object> warehouseAdminInsertUser(@Valid @RequestBody WarehouseAdminUserRequest request) {
         return adminUserService.adminInsertUser(request);
+    }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ADMIN_ACTIVATE_OR_DISABLED_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_ADMIN_OPERATION_ACTIVE_OR_DISABLE_USER)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Object> warehouseAdminActivateOrDisabledUser(@PathVariable String userId, @RequestParam(value = "adminId", required = true) String adminId) {
+        return adminUserService.adminActivateOrDisabledUser(adminId, userId);
     }
 }
