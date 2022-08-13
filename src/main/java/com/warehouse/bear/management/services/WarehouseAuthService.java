@@ -3,6 +3,7 @@ package com.warehouse.bear.management.services;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.exception.TokenRefreshException;
 import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
@@ -258,6 +259,7 @@ public class WarehouseAuthService {
             userInfo.setUser(user);
             userInfo.setTemporalPassword(Boolean.FALSE);
             userInfo.setAdminUser(Boolean.FALSE);
+            userInfo.setStatus(WarehouseStatusEnum.PENDING.getStatus());
 
             // Set user address
             address.setUserId(user.getUserId());

@@ -2,6 +2,7 @@ package com.warehouse.bear.management.controller.admin;
 
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.payload.request.admin.WarehouseAdminUserRequest;
 import com.warehouse.bear.management.services.admin.WarehouseAdminUserService;
 import io.swagger.annotations.Api;
@@ -28,10 +29,13 @@ public class WarehouseAdminUserController {
         return adminUserService.adminInsertUser(request);
     }
 
-    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ADMIN_ACTIVATE_OR_DISABLED_USER + "/{userId}")
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ADMIN_ACTIVATE_OR_DISABLED_USER + "/{status}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_ADMIN_OPERATION_ACTIVE_OR_DISABLE_USER)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> warehouseAdminActivateOrDisabledUser(@PathVariable String userId, @RequestParam(value = "adminId", required = true) String adminId) {
-        return adminUserService.adminActivateOrDisabledUser(adminId, userId);
+    public ResponseEntity<Object> warehouseAdminChangeStatusUser(
+            @RequestParam(value = "adminId", required = true) String adminId,
+            @RequestParam(value = "userId", required = true) String userId,
+            @PathVariable String status) {
+        return adminUserService.adminChangeStatusUser(adminId, userId, status);
     }
 }
