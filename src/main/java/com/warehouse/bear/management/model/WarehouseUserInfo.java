@@ -2,6 +2,7 @@ package com.warehouse.bear.management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,5 @@ public class WarehouseUserInfo implements Serializable {
 
     private boolean isTemporalPassword;
     private boolean isAdminUser;
-    private boolean isActiveUserByAdmin;
+    private String status;
 }

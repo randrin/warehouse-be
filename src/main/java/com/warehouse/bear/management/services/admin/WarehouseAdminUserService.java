@@ -2,6 +2,7 @@ package com.warehouse.bear.management.services.admin;
 
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.WarehouseUserInfo;
@@ -109,12 +110,13 @@ public class WarehouseAdminUserService {
         userRepository.save(adminUser);
 
         // Then save user information in user_info table
+        WarehouseStatusEnum status = WarehouseStatusEnum.PENDING;
         WarehouseUserInfo userInfo = new WarehouseUserInfo(
                 0L,
                 adminUser,
                 Boolean.TRUE,
                 Boolean.TRUE,
-                Boolean.FALSE
+                status.getStatus()
         );
         userInfoRepository.save(userInfo);
 
@@ -144,14 +146,14 @@ public class WarehouseAdminUserService {
         return new ResponseEntity(new WarehouseResponse(adminUser, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> adminActivateOrDisabledUser(String adminId, String userId) {
+    public ResponseEntity<Object> adminChangeStatusUser(String adminId, String userId, String status) {
         try {
             Optional<WarehouseUser> admin = userRepository.findByUserId(adminId);
             if (admin.get().isActive()) {
                 Optional<WarehouseUser> user = userRepository.findByUserId(userId);
                 Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
                 if (userInfo.isPresent()) {
-                    userInfo.get().setActiveUserByAdmin(userInfo.get().isActiveUserByAdmin() ? Boolean.FALSE : Boolean.TRUE);
+                    userInfo.get().setStatus(status);
                     userInfoRepository.save(userInfo.get());
                     return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
                 } else {
