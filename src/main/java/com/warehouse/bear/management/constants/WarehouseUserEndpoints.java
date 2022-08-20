@@ -34,4 +34,8 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
     public static final String WAREHOUSE_DELETE_USER = "/delete";
     public static final String WAREHOUSE_UPDATE_USER = "/update";
+    public static final String WAREHOUSE_PDF_VIEWER = "/view_pdf";
+    public static final String WAREHOUSE_USERS_EXPORTS = "/export_excel_file";
+
+
 }

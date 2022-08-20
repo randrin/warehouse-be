@@ -10,14 +10,27 @@ import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -109,6 +122,48 @@ public class WarehouseFileUserService {
         } else {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT + userId), HttpStatus.NOT_FOUND);
+        }
+    }
+    public void getExcelUsersData(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HHmm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+
+        List<WarehouseUser> listUsers = userRepository.findAll(Sort.by("email").ascending());
+
+
+        StringWriter writer = new StringWriter();
+        CsvBeanWriter beanWriter = new CsvBeanWriter(writer, CsvPreference.EXCEL_PREFERENCE);
+        final String[] csvHeader = {"id", "user Id", "username", "full name", "sex", "email", "emailPec","password", "roles", "date Of Birth", "last Login", "created"};
+        final String[] nameMapping = {"id", "userId", "username", "fullname", "gender", "email", "emailPec","password", "roles", "dateOfBirth", "lastLogin", "createdAt"};
+
+        beanWriter.writeHeader(csvHeader);
+        beanWriter.flush();
+        if (listUsers != null && !listUsers.isEmpty()) {
+            for (WarehouseUser user : listUsers) {
+                beanWriter.write(user, nameMapping);
+            }
+        }
+
+        beanWriter.close();
+        return;
+    }
+
+    public Object getPdfUserData(HttpServletResponse response) {
+        try {
+            DefaultResourceLoader loader = new DefaultResourceLoader();
+            InputStream is = loader.getResource("classpath:META-INF/resources/Accepted.pdf").getInputStream();
+            IOUtils.copy(is, response.getOutputStream());
+            response.setHeader("Content-Disposition", "attachment; filename=Accepted.pdf");
+            response.flushBuffer();
+            return new ResponseEntity<Object>(new WarehouseResponse(null,WarehouseUserResponse.WAREHOUSE_USER_VIEW_PDF), HttpStatus.OK);
+        } catch (IOException ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_VIEW_PDF), HttpStatus.NOT_FOUND);
         }
     }
 }

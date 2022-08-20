@@ -36,6 +36,9 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_FIND_USER = "Find user by userID in warehouse system.";
     public static final String WAREHOUSE_OPERATION_FIND_USER_BY_LINK_TYPE = "Find user by userID, verify link and verify type in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPDATE_USER = "Update user in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_VIEW_PDF = "Operation to display pdf view on browser.";
+    public static final String WAREHOUSE_OPERATION_EXPORT_USERS = "Operation on export users data execl on warehouse system.";
+
 
     // API PARAMS
     public static final String WAREHOUSE_PARAM_USER_LOGIN = "Username/Password are required";
