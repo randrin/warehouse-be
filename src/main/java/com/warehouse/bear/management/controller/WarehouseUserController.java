@@ -6,6 +6,7 @@ import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.payload.request.WarehouseChangePasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
+import com.warehouse.bear.management.services.WarehouseFileUserService;
 import com.warehouse.bear.management.services.WarehouseUserService;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import io.swagger.annotations.Api;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @Api(value = WarehouseDocumentationConstants.WAREHOUSE_API_USER_NAME)
@@ -24,6 +27,10 @@ public class WarehouseUserController {
 
     @Autowired
     private WarehouseUserService warehouseUserService;
+
+
+    @Autowired
+    private WarehouseFileUserService warehouseFileUserService;
 
     @Autowired
     private WarehouseMailUtil warehouseMailUtil;
@@ -107,5 +114,17 @@ public class WarehouseUserController {
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_FIND_USER)
     public ResponseEntity<Object> warehouseFindUserByUserId(@PathVariable String userId) {
         return warehouseUserService.findUserByUserId(userId);
+    }
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_PDF_VIEWER)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VIEW_PDF)
+    public void warehouseGetPdfView(HttpServletResponse response) throws IOException {
+        warehouseFileUserService.getPdfUserData(response);
+
+    }
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_USERS_EXPORTS)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_EXPORT_USERS)
+    public void exportToPDF(HttpServletResponse response) throws IOException, IOException {
+
+        warehouseFileUserService.getExcelUsersData(response);
     }
 }
