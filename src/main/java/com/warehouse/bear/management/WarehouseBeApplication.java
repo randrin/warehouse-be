@@ -13,6 +13,7 @@ public class WarehouseBeApplication {
 		SpringApplication.run(WarehouseBeApplication.class, args);
 	}
 
+<<<<<<< Updated upstream
 	@Bean
 	WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -24,4 +25,32 @@ public class WarehouseBeApplication {
 			}
 		};
 	}
+=======
+    @Bean
+    WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/v1/warehouse/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+
+            }
+        };
+    }
+
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry
+//                        .addMapping("/v1/warehouse/**")
+//                        .allowedOrigins("*")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+//            }
+//        };
+//    }
+>>>>>>> Stashed changes
 }

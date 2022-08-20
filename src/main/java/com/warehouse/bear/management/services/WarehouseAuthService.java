@@ -176,10 +176,22 @@ public class WarehouseAuthService {
                     userDetails.getUsername(),
                     userDetails.getEmail(),
                     roles,
+<<<<<<< Updated upstream
                     user.isActive(),
                     user.getLastLogin(),
                     user.getDateOfBirth(),
                     WarehouseUserResponse.WAREHOUSE_USER_LOGGED),
+=======
+                    user.get().getIsActive(),
+                    user.get().getLastLogin(),
+                    user.get().getDateOfBirth(),
+                    WarehouseUserResponse.WAREHOUSE_USER_LOGGED,
+                    userInfo.isPresent() ? userInfo.get() : null,
+                    address.isPresent() ? address.get() : null,
+                    contact.isPresent() ? contact.get() : null,
+                    downloadURl,
+                    user.get().getCreatedAt()),
+>>>>>>> Stashed changes
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);

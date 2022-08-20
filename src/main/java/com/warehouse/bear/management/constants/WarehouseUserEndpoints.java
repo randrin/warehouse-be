@@ -23,5 +23,14 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_CHANGE_PASSWORD =  "/change/password";
     public static final String WAREHOUSE_ACTIVATE_OR_DISABLED =  "/change/status";
     public static final String WAREHOUSE_ALL_USERS = "/users";
+<<<<<<< Updated upstream
     public static final String WAREHOUSE_FIND_USER =  "/find";
+=======
+    public static final String WAREHOUSE_FIND_USER = "/find";
+    public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
+    public static final String WAREHOUSE_DELETE_USER = "/delete";
+    public static final String WAREHOUSE_UPDATE_USER = "/update";
+    public static final String WAREHOUSE_PDF_VIEWER = "/view_pdf";
+    public static final String WAREHOUSE_USERS_EXPORTS = "/users/export";
+>>>>>>> Stashed changes
 }

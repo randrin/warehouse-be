@@ -64,10 +64,14 @@ public class WarehouseUser {
     private Set<WarehouseRole> roles = new HashSet<>();
 
     private String dateOfBirth;
+<<<<<<< Updated upstream
     private String phoneNumber;
     private String country;
     private String imageUrl;
     private boolean isActive;
+=======
+    private Boolean isActive;
+>>>>>>> Stashed changes
     private String lastLogin;
 
 

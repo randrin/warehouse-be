@@ -19,9 +19,19 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_REFRESH_TOKEN = "Refresh token was expired. Please make a new signing request.";
     public static final String WAREHOUSE_USER_VERIFY_TOKEN = "Your token is valid and not expired. Good success in your job.";
     public static final String WAREHOUSE_USER_RESET_PASSWORD = "Confirmation reset link for your password is successfully send to ";
+<<<<<<< Updated upstream
     public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation confirmation  link for verify your email was send to ";
     public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully";
     public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully";
+=======
+    public static final String WAREHOUSE_USER_VERIFICATION_EMAIL = "Confirmation link for verify your email was send to ";
+    public static final String WAREHOUSE_USER_CHANGE_PASSWORD = "User Password changed successfully.";
+    public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
+    public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
+    public static final String WAREHOUSE_USER_EXPORT_FILE = "users file excell was exported  successfully.";
+    public static final String WAREHOUSE_USER_EXPORT_PDF = "users file pdf was exported  successfully.";
+    public static final String WAREHOUSE_USER_DELETE_PROFILE = "Profile file is deleted successfully.";
+>>>>>>> Stashed changes
 
     // ERRORS
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
@@ -38,4 +48,14 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_TOKEN = "Your token is expired or not valid. Please try login again.";
     public static final String WAREHOUSE_USER_ERROR_REFRESH_TOKEN = "The refresh token that you sending isn't not present in database. Try again";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_VERIFY_LINK = "Link and verify type that you are provided aren't corrects. Try resend the new link to complete the operation";
+<<<<<<< Updated upstream
+=======
+    public static final String WAREHOUSE_USER_ERROR_WRONG_ATTACHMENT = "Could not save this attachment ";
+    public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
+    public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
+    public static final String WAREHOUSE_USER_ERROR_EXPORT_PDF = " error to export pdf view.";
+
+    // ERRORS ADMIN
+    public static final String WAREHOUSE_ADMIN_ERROR_DISABLE  = "Admin role isn't active. Contact your administration head department for more information.";
+>>>>>>> Stashed changes
 }
