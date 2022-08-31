@@ -150,7 +150,9 @@ public class WarehouseUserService {
         try {
             List<WarehouseUserData> users = userRepository.findAll()
                     .stream().map(user -> new WarehouseUserData(user,
-                            userInfoRepository.findByUser(user).get())
+                            userInfoRepository.findByUser(user).get(),
+                            addressRepository.findByUserId(user.getUserId()).get(),
+                            contactRepository.findByUserId(user.getUserId()).get())
                     ).collect(Collectors.toList());
             return new ResponseEntity<Object>(users, HttpStatus.OK);
         } catch (Exception ex) {
