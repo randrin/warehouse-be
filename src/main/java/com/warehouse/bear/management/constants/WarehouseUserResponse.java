@@ -30,6 +30,8 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_CHANGE_STATUS = "User status changed successfully.";
     public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
     public static final String WAREHOUSE_USER_DELETE_PROFILE = "Profile file is deleted successfully.";
+    public static final String WAREHOUSE_USER_VIEW_PDF = "data view pdf";
+
 
 
     // ERRORS USER
@@ -52,6 +54,8 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_WRONG_ATTACHMENT = "Could not save this attachment ";
     public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
+    public static final String WAREHOUSE_USER_ERROR_VIEW_PDF = "error on view pdf";
+
 
     // ERRORS ADMIN
     public static final String WAREHOUSE_ADMIN_ERROR_DISABLE  = "Admin role isn't active. Contact your administration head department for more information.";
