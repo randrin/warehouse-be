@@ -18,6 +18,7 @@ public class WarehouseUserConstants {
     public static final String[] WAREHOUSE_MODERATOR_ACCESS = {"ROLE_MODERATOR"};
     public static final String WAREHOUSE_SUBJECT_EMAIL_FORGOT_PASSWORD = "Confirmation email reset your password";
     public static final String WAREHOUSE_SUBJECT_EMAIL_VERIFICATION = "Confirmation send verification email";
+    public static final String WAREHOUSE_SUBJECT_EMAIL_PEC_VERIFICATION = "Email PEC Verification code: ";
     public static final String WAREHOUSE_SUBJECT_EMAIL_NEW_USER = "New user in WareHouse System - Identify your profile";
     public static final String WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD = "RESET_PASSWORD";
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL = "EMAIL_VERIFICATION";

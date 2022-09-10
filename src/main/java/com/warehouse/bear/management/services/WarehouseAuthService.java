@@ -115,7 +115,7 @@ public class WarehouseAuthService {
         userRepository.save(user);
 
         // Send verification email to user
-        warehouseMailUtil.warehouseVerificationEmail(user.getEmail(), "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
+        warehouseMailUtil.verificationEmail(user.getEmail(), "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
         return new ResponseEntity(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }
 

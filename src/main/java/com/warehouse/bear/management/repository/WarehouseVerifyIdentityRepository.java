@@ -11,6 +11,7 @@ public interface WarehouseVerifyIdentityRepository extends JpaRepository<Warehou
 
     Optional<WarehouseVerifyIdentity> findByLink(String link);
 
+    Optional<WarehouseVerifyIdentity> findByCodeAndVerifyType(String code, String verifyType);
     Optional<WarehouseVerifyIdentity> findByLinkAndVerifyType(String link, String verifyType);
     Optional<WarehouseVerifyIdentity> findByLinkAndVerifyTypeAndUserId(String link, String verifyType, String userId);
 }

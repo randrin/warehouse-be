@@ -21,38 +21,14 @@
                         <div style="font-size: 18px; color: #555100;">
                             <br/> Hello ${name} (Matriculate: ${userId})<br/>
                         </div>
-                        <br/>To verify your email, please click on the button below
-                        <br/><br/>
-                        <div align="center">
-                            <a href="http://localhost:4200/warehouse/register/step-two?idLinkVerificationEmail=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}"
-                               style="        position: relative;
-        font-weight: 400;
-        white-space: nowrap;
-        text-align: center;
-        border: 1px solid #d9d9d9;
-        box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
-        cursor: pointer;
-        transition: all .3s cubic-bezier(.645,.045,.355,1);
-        -webkit-user-select: none;
-        user-select: none;
-        height: 32px;
-        padding: 4px 15px;
-        border-radius: 2px;
-        background: #fff;         color: #fff;
-        border-color: #1890ff;
-        background: #1890ff;
-        text-decoration: none;
-        text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
-        box-shadow: 0 2px 0 rgb(0 0 0 / 5%);" target="_blank">
-                                Verify your email
-                            </a>
-                            <br/>
+                        <br/>
+                        <div align="center" style="font-size: 22px; color: black;">
+                            <p>Votre code est : ${emailPecCode}</p>
                         </div>
                         <div>
-                            <p> Or if your have any problems, please click on the link below (or copy it into your browser)</p>
-                            <p>http://localhost:4200/warehouse/register/step-two?idLinkVerificationEmail=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}</p>
+                            <p><b>Ce code est valable 15 minutes</b>. Si vous ne l'introduisez pas dans ce délai sur la page WareHouse System que vous venez de visiter, vous pouvez le renvoyer à partir de votre transfert.</p>
                             <br/>
-                            <span><b>Attention, this link is valid for a period of 15 minutes.</b> Beyond that, you will have to start the procedure again on the <a target="_blank" href="http://localhost:4201/warehouse/login">Warehouse System</a> website.</span>
+                            <span>Si vous recevez cet e-mail sans raison apparente, vous pouvez toujours signaler les comportements suspicieux à notre équipe d'assistance.</span>
                             <br/>
                             <p>Thank you for your confidence.</p>
                             <p>Warehouse System</p>

@@ -34,8 +34,11 @@ public class WarehouseVerifyIdentity {
     @Column(nullable = false)
     private String verifyType;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String link;
+
+    @Column(nullable = true, unique = true)
+    private String code;
 
     @Column(nullable = false)
     private LocalDateTime expiryDate;
