@@ -116,7 +116,8 @@ public class WarehouseAdminUserService {
                 adminUser,
                 Boolean.TRUE,
                 Boolean.TRUE,
-                status.getStatus()
+                status.getStatus(),
+                Boolean.FALSE
         );
         userInfoRepository.save(userInfo);
 
@@ -141,7 +142,7 @@ public class WarehouseAdminUserService {
         contactRepository.save(userContact);
 
         // Send verification email to user
-        warehouseMailUtil.warehouseVerificationEmail(adminUser.getEmail(), temporalPassword, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER);
+        warehouseMailUtil.verificationEmail(adminUser.getEmail(), temporalPassword, WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER);
         // TODO: Send the verification email to user if the secondEmail (PEC Email Address) is populated
         return new ResponseEntity(new WarehouseResponse(adminUser, WarehouseUserResponse.WAREHOUSE_USER_REGISTERED), HttpStatus.CREATED);
     }

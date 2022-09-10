@@ -31,6 +31,11 @@ public class WarehouseCommonUtil {
                 + RandomStringUtils.random(5, WarehouseUserConstants.WAREHOUSE_RANDOM_NUMBERS);
     }
 
+    public static String generateUserCode() {
+        // Format: XXXXXX
+        return RandomStringUtils.random(6, WarehouseUserConstants.WAREHOUSE_RANDOM_NUMBERS);
+    }
+
     public static String generateTemporalPassword() {
         return RandomStringUtils.random(1, WarehouseUserConstants.WAREHOUSE_RANDOM_LETTERS).toUpperCase()
                 + RandomStringUtils.random(6, WarehouseUserConstants.WAREHOUSE_RANDOM_LETTERS).toLowerCase()

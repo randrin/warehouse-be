@@ -10,10 +10,10 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_BOTH_PHONE_NUMBER = "The Phone and Landline are the same. Please, Change another one and try again.";
     public static final String WAREHOUSE_USER_LANDLINE_NUMBER_EXISTS = "User already exists with this landline number ";
     public static final String WAREHOUSE_USER_EMAIL_PEC = "User already exists with this email pec ";
-    public static final String WAREHOUSE_USER_EMAIL_PEC_VERIFICATION = "Your email pec is not verify,please check your email and provide it.";
+    public static final String WAREHOUSE_USER_EMAIL_PEC_VERIFICATION = "Your email pec is not verify, please check your email and provide it.";
     public static final String WAREHOUSE_USER_LOGGED = "User logged successfully.";
     public static final String WAREHOUSE_USER_REGISTERED = "User registered successfully.";
-    public static final String WAREHOUSE_USER_UPDATE = "User update successfully.";
+    public static final String WAREHOUSE_USER_UPDATE = "User profile updated successfully.";
     public static final String WAREHOUSE_USER_LOGOUT = "User logout successfully.";
     public static final String WAREHOUSE_USER_DELETED = "User deleted successfully.";
     public static final String WAREHOUSE_USER_FOUND = "User found successfully.";
@@ -31,6 +31,9 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_UPLOAD_PROFILE = "Upload profile file is done successfully.";
     public static final String WAREHOUSE_USER_DELETE_PROFILE = "Profile file is deleted successfully.";
     public static final String WAREHOUSE_USER_VIEW_PDF = "data view pdf";
+    public static final String WAREHOUSE_USER_CODE_SEND = "Confirmation code for complete the operation is successfully send to ";
+    public static final String WAREHOUSE_USER_CODE_OK = "User code verification is correct.";
+    public static final String WAREHOUSE_USER_CODE_KO = "User code verification is expired. Try resend the request against to complete the operation.";
 
 
 
@@ -55,6 +58,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_ERROR_SAVE_ATTACHMENT = " File contains wrong characters. Try another one.";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_ATTACHMENT = "User file not found with userID: ";
     public static final String WAREHOUSE_USER_ERROR_VIEW_PDF = "error on view pdf";
+    public static final String WAREHOUSE_USER_ERROR_CODE = "The code provided to verify your request isn't correct. Try another code.";
 
 
     // ERRORS ADMIN

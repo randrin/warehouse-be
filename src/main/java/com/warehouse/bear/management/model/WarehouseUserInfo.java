@@ -32,4 +32,5 @@ public class WarehouseUserInfo implements Serializable {
     private boolean isTemporalPassword;
     private boolean isAdminUser;
     private String status;
+    private boolean isEmailPecVerified;
 }

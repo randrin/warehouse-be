@@ -6,6 +6,7 @@ import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.payload.request.WarehouseChangePasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
+import com.warehouse.bear.management.payload.request.WarehouseVerifyCodeRequest;
 import com.warehouse.bear.management.services.WarehouseFileUserService;
 import com.warehouse.bear.management.services.WarehouseUserService;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
@@ -60,7 +61,14 @@ public class WarehouseUserController {
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_EMAIL + "/{email}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_EMAIL)
     public ResponseEntity<Object> warehouseVerificationEmail(@PathVariable String email) {
-        return warehouseMailUtil.warehouseVerificationEmail(email, "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
+        return warehouseMailUtil.verificationEmail(email, "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
+    }
+
+    @PostMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_CODE + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_CODE)
+    public ResponseEntity<Object> warehouseVerificationCode(@Valid @RequestBody WarehouseVerifyCodeRequest request,
+            @PathVariable String userId) {
+        return warehouseUserService.verificationCode(request, userId);
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE)
@@ -97,6 +105,13 @@ public class WarehouseUserController {
         return warehouseUserService.activateOrDisabledUser(userId);
     }
 
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_USER_OPERATION_TYPE + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPDATE_USER_INFO)
+    public ResponseEntity<Object> warehouseUpdateUserInfoByOperationType(
+            @PathVariable String userId, @Valid @RequestBody String operationType) {
+        return warehouseUserService.updateUserInfoByOperationType(userId, operationType);
+    }
+
     @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_USER + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_USER)
     public ResponseEntity<Object> warehouseDeleteUser(@PathVariable String userId) {
@@ -108,6 +123,13 @@ public class WarehouseUserController {
     public ResponseEntity<Object> warehouseUpdateUser(@Valid @RequestBody WarehouseUpdateUserRequest request,
                                                       @PathVariable String userId) {
         return warehouseUserService.updateUser(request, userId);
+    }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_EMAIL_PEC_USER + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPDATE_EMAIL_PEC_USER)
+    public ResponseEntity<Object> warehouseUpdateEmailPecUser(@Valid @RequestBody String emailPec,
+                                                      @PathVariable String userId) {
+        return warehouseUserService.updateEmailPecUser(emailPec, userId);
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER_INFORMATION + "/{userId}")

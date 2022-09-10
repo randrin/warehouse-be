@@ -53,6 +53,7 @@ public class WarehouseTokenService {
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
     verifyIdentity.setLink(UUID.randomUUID().toString());
+    verifyIdentity.setCode("");
 
     return verifyIdentityRepository.save(verifyIdentity);
   }
@@ -68,6 +69,23 @@ public class WarehouseTokenService {
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
     verifyIdentity.setLink(UUID.randomUUID().toString());
+    verifyIdentity.setCode("");
+
+    return verifyIdentityRepository.save(verifyIdentity);
+  }
+
+  public WarehouseVerifyIdentity createVerificationEmailPecCode(String userId, String code) {
+    // TODO: Check if the user already existed in DB with user_id, then cancel and update with the new one
+    WarehouseVerifyIdentity verifyIdentity = new WarehouseVerifyIdentity();
+
+    Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+
+    verifyIdentity.setUser(user.get());
+    verifyIdentity.setUserId(userId);
+    verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
+    verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
+    verifyIdentity.setLink("");
+    verifyIdentity.setCode(code);
 
     return verifyIdentityRepository.save(verifyIdentity);
   }

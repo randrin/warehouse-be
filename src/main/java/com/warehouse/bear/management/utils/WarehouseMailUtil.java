@@ -50,6 +50,9 @@ public class WarehouseMailUtil {
     @Autowired
     private WarehouseTokenService warehouseTokenService;
 
+    @Autowired
+    private WarehouseCommonUtil warehouseCommonUtil;
+
     public WarehouseResponse warehouseSendMail(String email, Map<String, Object> model, String verifyType) {
         WarehouseResponse response = new WarehouseResponse();
         MimeMessage message = sender.createMimeMessage();
@@ -70,7 +73,7 @@ public class WarehouseMailUtil {
                 t = config.getTemplate("verify-email-template.ftl");
             }
             if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC) {
-                helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_VERIFICATION);
+                helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_PEC_VERIFICATION + model.get("emailPecCode"));
                 t = config.getTemplate("verify-email-pec-template.ftl");
             }
             if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER) {
@@ -95,7 +98,7 @@ public class WarehouseMailUtil {
         return response;
     }
 
-    public ResponseEntity<Object> warehouseVerificationEmail(String email, String password, String verifyType) {
+    public ResponseEntity<Object> verificationEmail(String email, String password, String verifyType) {
 
         Optional<WarehouseUser> user = null;
         Map<String, Object> model = new HashMap<>();
@@ -115,7 +118,30 @@ public class WarehouseMailUtil {
                 model.put("temporalPassword", password);
                 response = warehouseSendMail(user.get().getEmail(), model, verifyType);
             }
+            return new ResponseEntity<Object>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL + email),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 
+    public ResponseEntity<Object> warehouseVerificationEmailPec(String email, String emailPec, String code, String verifyType) {
+        Optional<WarehouseUser> user = null;
+        Map<String, Object> model = new HashMap<>();
+        WarehouseResponse response = null;
+
+        try {
+            user = userRepository.findByEmail(email);
+
+            if (user.isPresent()) {
+                WarehouseVerifyIdentity verifyIdentity = warehouseTokenService
+                        .createVerificationEmailPecCode(user.get().getUserId(), code);
+                model.put("emailPecCode", code);
+                model.put("name", user.get().getUsername().toUpperCase());
+                model.put("userId", user.get().getUserId().toUpperCase());
+                response = warehouseSendMail(emailPec, model, verifyType);
+            }
             return new ResponseEntity<Object>(response, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(

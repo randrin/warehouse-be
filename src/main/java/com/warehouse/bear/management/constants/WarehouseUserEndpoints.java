@@ -25,6 +25,8 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_VERIFY_TOKEN = "/verifytoken";
     public static final String WAREHOUSE_FORGOT_PASSWORD = "/forgot/password";
     public static final String WAREHOUSE_VERIFICATION_EMAIL = "/verifyemail";
+    public static final String WAREHOUSE_VERIFICATION_CODE = "/verifycode";
+    public static final String WAREHOUSE_UPDATE_USER_OPERATION_TYPE = "/update/operation-type";
     public static final String WAREHOUSE_VERIFY_USER_LINK_TYPE = "/verify/link";
     public static final String WAREHOUSE_RESET_PASSWORD = "/reset/password";
     public static final String WAREHOUSE_CHANGE_PASSWORD = "/change/password";
@@ -34,6 +36,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
     public static final String WAREHOUSE_DELETE_USER = "/delete";
     public static final String WAREHOUSE_UPDATE_USER = "/update";
+    public static final String WAREHOUSE_UPDATE_EMAIL_PEC_USER = "/update/email-pec";
     public static final String WAREHOUSE_PDF_VIEWER = "/view_pdf";
     public static final String WAREHOUSE_USERS_EXPORTS = "/export_excel_file";
 
