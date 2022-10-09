@@ -2,6 +2,10 @@ package com.warehouse.bear.management.constants;
 
 public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_CREATED = "User created successfully.";
+    public static final String WAREHOUSE_OBJECT_EXISTING = "Object already exists with property ";
+    public static final String WAREHOUSE_OBJECT_CREATED = "Object created successfully.";
+    public static final String WAREHOUSE_OBJECT_UPDATED = "Object updated successfully.";
+    public static final String WAREHOUSE_OBJECT_DELETED = "Object deleted successfully.";
     public static final String WAREHOUSE_USER_USERNAME_EXISTS = "User already exists with username ";
     public static final String WAREHOUSE_EXISTING_USER = "User already exists with user Id:  ";
     public static final String WAREHOUSE_USER_EMAIL_EXISTS = "User already exists with email ";
@@ -43,6 +47,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_GENERIC_ERROR = "Generic Error. Something wrong/happen bad on the system. Please, try again later.";
     public static final String WAREHOUSE_USER_ERROR_LOGIN = "Bad Credentials Username/Email/UserID and (or) Password incorrect(s).";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID = "User not found with userId ";
+    public static final String WAREHOUSE_OBJECT_ERROR_NOT_FOUND = "Object not found with property ";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME = "User not found with username/email/userID ";
     public static final String WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL = "We have some problems for the verification email ";
     public static final String WAREHOUSE_ROLE_NOT_FOUND = "Role(s) not found in the system. Contact your administration.";

@@ -7,6 +7,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_API_FILES_NAME = "Warehouse Upload/Download Files API.";
     public static final String WAREHOUSE_API_USER_NAME = "Warehouse User Operations API.";
     public static final String WAREHOUSE_API_ADMIN_NAME = "Warehouse Admin Operations API.";
+    public static final String WAREHOUSE_API_HELP_NAME = "Warehouse Help Operations API.";
     public static final String WAREHOUSE_API_RESPONSE_400 = "User request isn't corrects.";
     public static final String WAREHOUSE_API_RESPONSE_401 = "User isn't authorized to perform this operation.";
     public static final String WAREHOUSE_API_RESPONSE_403 = "Forbidden user to perform this operation.";
@@ -22,6 +23,10 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_LOGOUT = "Logout to warehouse system.";
     public static final String WAREHOUSE_OPERATION_REFRESH_TOKEN = "Refresh your token to warehouse system.";
     public static final String WAREHOUSE_OPERATION_GET_ALL_USERS = "Get all users registered in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_GET_ALL_OBJECTS = "Get all objects in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_INSERT_OBJECT = "Insert object in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_DELETE_OBJECT = "Delete object in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_UPDATE_OBJECT = "Update object in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPLOAD = "File upload in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DOWNLOAD = "File download in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DELETE_FILE = "File delete in warehouse system.";

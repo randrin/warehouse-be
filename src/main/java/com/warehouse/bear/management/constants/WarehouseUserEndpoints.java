@@ -32,6 +32,10 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_CHANGE_PASSWORD = "/change/password";
     public static final String WAREHOUSE_ACTIVATE_OR_DISABLED = "/change/status";
     public static final String WAREHOUSE_ALL_USERS = "/users";
+    public static final String WAREHOUSE_ALL_HELPS = "/helps";
+    public static final String WAREHOUSE_INSERT_HELP = "/insert/help";
+    public static final String WAREHOUSE_UPDATE_HELP = "/update/help";
+    public static final String WAREHOUSE_DELETE_HELP = "/delete/help";
     public static final String WAREHOUSE_FIND_USER = "/find";
     public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
     public static final String WAREHOUSE_DELETE_USER = "/delete";
