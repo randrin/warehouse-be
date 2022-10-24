@@ -23,7 +23,7 @@
                         </div>
                         <br/>
                         <div align="center" style="font-size: 22px; color: black;">
-                            <p>Votre code est : ${emailPecCode}</p>
+                            <p>Votre code est : ${code}</p>
                         </div>
                         <div>
                             <p><b>Ce code est valable 15 minutes</b>. Si vous ne l'introduisez pas dans ce délai sur la page WareHouse System que vous venez de visiter, vous pouvez le renvoyer à partir de votre transfert.</p>

@@ -41,6 +41,7 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_DELETE_USER = "/delete";
     public static final String WAREHOUSE_UPDATE_USER = "/update";
     public static final String WAREHOUSE_UPDATE_EMAIL_PEC_USER = "/update/email-pec";
+    public static final String WAREHOUSE_SENDING_VERIFICATION_CODE = "/send/verification-code";
     public static final String WAREHOUSE_PDF_VIEWER = "/view_pdf";
     public static final String WAREHOUSE_USERS_EXPORTS = "/export_excel_file";
 

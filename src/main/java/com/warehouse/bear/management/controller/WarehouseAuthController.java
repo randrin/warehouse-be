@@ -40,7 +40,7 @@ public class WarehouseAuthController {
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_REGISTER_USER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_REGISTER)
-    public ResponseEntity<Object> warehouseRegisterStepOne(@Valid @RequestBody WarehouseRegisterRequest request,
+    public ResponseEntity<Object> warehouseRegisterStepOne(@Valid @RequestBody WarehouseRegisterStepOneRequest request,
                                                            @RequestParam(value = "step", required = true) int step) {
         return warehouseAuthService.registerUserStepOne(request);
     }

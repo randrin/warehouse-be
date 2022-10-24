@@ -64,19 +64,19 @@ public class WarehouseMailUtil {
             //helper.addAttachment("signature.png", new ClassPathResource("signature.png"));
 
             Template t = null;
-            if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD) {
+            if (verifyType.compareToIgnoreCase(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD) == 0) {
                 helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_FORGOT_PASSWORD);
                 t = config.getTemplate("reset-password-template.ftl");
             }
-            if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL) {
+            if (verifyType.compareToIgnoreCase(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL) == 0) {
                 helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_VERIFICATION);
                 t = config.getTemplate("verify-email-template.ftl");
             }
-            if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC) {
-                helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_PEC_VERIFICATION + model.get("emailPecCode"));
+            if (verifyType.compareToIgnoreCase(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC) == 0) {
+                helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_PEC_VERIFICATION + model.get("code"));
                 t = config.getTemplate("verify-email-pec-template.ftl");
             }
-            if (verifyType == WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER) {
+            if (verifyType.compareToIgnoreCase(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER) == 0) {
                 helper.setSubject(WarehouseUserConstants.WAREHOUSE_SUBJECT_EMAIL_NEW_USER);
                 t = config.getTemplate("temporal-password-template.ftl");
             }
@@ -126,7 +126,7 @@ public class WarehouseMailUtil {
         }
     }
 
-    public ResponseEntity<Object> warehouseVerificationEmailPec(String email, String emailPec, String code, String verifyType) {
+    public ResponseEntity<Object> warehouseVerificationObject(String email, String objectToVerify, String code, String verifyType) {
         Optional<WarehouseUser> user = null;
         Map<String, Object> model = new HashMap<>();
         WarehouseResponse response = null;
@@ -137,10 +137,10 @@ public class WarehouseMailUtil {
             if (user.isPresent()) {
                 WarehouseVerifyIdentity verifyIdentity = warehouseTokenService
                         .createVerificationEmailPecCode(user.get().getUserId(), code);
-                model.put("emailPecCode", code);
+                model.put("code", code);
                 model.put("name", user.get().getUsername().toUpperCase());
                 model.put("userId", user.get().getUserId().toUpperCase());
-                response = warehouseSendMail(emailPec, model, verifyType);
+                response = warehouseSendMail(objectToVerify, model, verifyType);
             }
             return new ResponseEntity<Object>(response, HttpStatus.OK);
         } catch (Exception ex) {

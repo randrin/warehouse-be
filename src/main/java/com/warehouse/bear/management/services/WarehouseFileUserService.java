@@ -10,8 +10,8 @@ import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
+import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -35,11 +35,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class WarehouseFileUserService {
-    @Autowired
-    private WarehouseImageUserRepository warehouseImageUserRepository;
 
-    @Autowired
+    private WarehouseImageUserRepository warehouseImageUserRepository;
     private WarehouseUserRepository userRepository;
 
     public ResponseEntity<Object> saveAttachment(MultipartFile file, String userId, String imageType) {

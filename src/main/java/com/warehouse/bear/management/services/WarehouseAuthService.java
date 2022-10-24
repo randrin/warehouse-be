@@ -25,7 +25,7 @@ import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseJwtUtil;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,42 +42,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class WarehouseAuthService {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private WarehouseUserDetailsService warehouseUserDetailsService;
-
-    @Autowired
     private WarehouseUserRepository userRepository;
-
-    @Autowired
     private WarehouseAddressRepository addressRepository;
-
-    @Autowired
     private WarehouseContactRepository contactRepository;
-
-    @Autowired
     private WarehouseUserInfoRepository userInfoRepository;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
     private WarehouseTokenService warehouseTokenService;
-
-    @Autowired
     private WarehouseJwtUtil warehouseJwtUtil;
-
-    @Autowired
     private WarehouseMailUtil warehouseMailUtil;
-
-    @Autowired
     private WarehouseCommonUtil warehouseCommonUtil;
 
-    public ResponseEntity<Object> registerUserStepOne(WarehouseRegisterRequest request) {
+    public ResponseEntity<Object> registerUserStepOne(WarehouseRegisterStepOneRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new WarehouseMessageResponse(

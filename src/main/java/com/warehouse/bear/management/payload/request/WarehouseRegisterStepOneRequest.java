@@ -1,36 +1,27 @@
-package com.warehouse.bear.management.model;
+package com.warehouse.bear.management.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-@Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
-public class WarehouseUser implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
-
-    private String userId;
+public class WarehouseRegisterStepOneRequest {
+//    private String fullname;
+//    private String username;
+//    private String gender;
+//    private String email;
+//    private String password;
+    private Set<String> role;
 
     @Size(max = 20)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_USERNAME_REQUIRED)
@@ -48,24 +39,8 @@ public class WarehouseUser implements Serializable {
     @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
     private String email;
 
-    @Size(max = 50)
-    @Email(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_EMAIL)
-    private String emailPec;
-
     @Size(max = 120)
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_PASSWORD_REQUIRED)
 //    @Pattern(regexp = WarehouseUserConstants.WAREHOUSE_PATTERN_PASSWORD)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<WarehouseRole> roles;
-
-    private String dateOfBirth;
-    private boolean isActive;
-    private String lastLogin;
-    private String createdAt;
 }

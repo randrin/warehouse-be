@@ -46,9 +46,9 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_USER_PASSWORD = "User password is required";
 
     // PATTERNS
-    public static final String WAREHOUSE_PATTERN_EMAIL = "^([a-zA-Z0-9_-]{4,20})@([a-zA-Z]{3,6})\\.([a-zA-Z]{2,5})$";
+    public static final String WAREHOUSE_PATTERN_EMAIL = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     public static final String WAREHOUSE_PATTERN_PHONE = "^([+]\\d{2})?\\d{10}$";
-    public static final String WAREHOUSE_PATTERN_PASSWORD = "^(?=.*\\d).{4,12}$";
+    public static final String WAREHOUSE_PATTERN_PASSWORD = "/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,30}$/";
     public static final String WAREHOUSE_PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
 
 }
