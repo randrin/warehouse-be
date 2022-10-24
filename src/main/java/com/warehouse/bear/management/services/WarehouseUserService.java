@@ -22,7 +22,7 @@ import com.warehouse.bear.management.repository.utils.WarehouseAddressRepository
 import com.warehouse.bear.management.repository.utils.WarehouseContactRepository;
 import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,36 +33,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class WarehouseUserService {
 
-    @Autowired
     private WarehouseUserRepository userRepository;
-
-    @Autowired
     private WarehouseUserInfoRepository userInfoRepository;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
     private WarehouseTokenService warehouseTokenService;
-
-    @Autowired
     private WarehouseMailUtil warehouseMailUtil;
-
-    @Autowired
     private WarehouseContactRepository contactRepository;
-
-    @Autowired
     private WarehouseAddressRepository addressRepository;
-
-    @Autowired
     private WarehouseVerifyIdentityRepository verifyIdentityRepository;
-
-    @Autowired
     private WarehouseCommonUtil warehouseCommonUtil;
-
-    @Autowired
     private WarehouseImageUserRepository imageUserRepository;
 
     public ResponseEntity<Object> resetPasswordUser(WarehouseResetPasswordRequest request) {
@@ -220,8 +202,9 @@ public class WarehouseUserService {
 
         WarehouseContact contact = null;
         WarehouseAddress address = null;
+        WarehouseUser user = null;
         try {
-            WarehouseUser user = userRepository.findByUserId(userId).get();
+            user = userRepository.findByUserId(userId).get();
             contact = contactRepository.findByUserId(userId).get();
             address = addressRepository.findByUserId(userId).get();
             if (user != null) {
@@ -232,10 +215,12 @@ public class WarehouseUserService {
                     }
                 }
 
-                if (user.getEmailPec().compareToIgnoreCase(request.getEmailPec()) != 0) {
-                    if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
-                        return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
-                                WarehouseUserResponse.WAREHOUSE_USER_EMAIL_PEC + request.getEmailPec()));
+                if (request.getEmailPec() != null) {
+                    if (user.getEmailPec().compareToIgnoreCase(request.getEmailPec()) != 0) {
+                        if (userRepository.existsByEmailPec(request.getEmailPec()) || userRepository.existsByEmail(request.getEmailPec())) {
+                            return ResponseEntity.badRequest().body(new WarehouseMessageResponse(
+                                    WarehouseUserResponse.WAREHOUSE_USER_EMAIL_PEC + request.getEmailPec()));
+                        }
                     }
                 }
 
@@ -291,7 +276,7 @@ public class WarehouseUserService {
                 contact.setLandlinePrefix(request.getContact().getLandlinePrefix());
 
                 // Before saving user and information, send the verification email to email pec if populated
-                if (!user.getEmailPec().isEmpty()) {
+                if (user.getEmailPec() != null) {
                     warehouseMailUtil.verificationEmail(user.getEmailPec(), "", WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
                 }
 
@@ -307,7 +292,7 @@ public class WarehouseUserService {
             }
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND + userId),
+                    String.format(WarehouseUserResponse.WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND, userId)),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -355,7 +340,7 @@ public class WarehouseUserService {
             Optional<WarehouseUser> user = userRepository.findByUserId(userId);
             if (user.isPresent()) {
                 if (!userRepository.existsByEmailPec(emailPec) && !userRepository.existsByEmail(emailPec)) {
-                    ResponseEntity<Object> response = warehouseMailUtil.warehouseVerificationEmailPec(
+                    ResponseEntity<Object> response = warehouseMailUtil.warehouseVerificationObject(
                             user.get().getEmail(),
                             emailPec,
                             warehouseCommonUtil.generateUserCode(),
@@ -414,6 +399,28 @@ public class WarehouseUserService {
                     userInfoRepository.save(userInfo.get());
                 }
                 return new ResponseEntity<Object>(new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_UPDATE), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                        HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> sendCodeVerification(String userId, String operationType) {
+        try {
+            Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+            if (user.isPresent()) {
+                ResponseEntity<Object> response = warehouseMailUtil.warehouseVerificationObject(
+                        user.get().getEmail(),
+                        user.get().getEmail(),
+                        warehouseCommonUtil.generateUserCode(),
+                        operationType);
+                return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CODE_SEND + user.get().getEmail()), HttpStatus.OK);
             } else {
                 return new ResponseEntity<Object>(new WarehouseMessageResponse(
                         WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),

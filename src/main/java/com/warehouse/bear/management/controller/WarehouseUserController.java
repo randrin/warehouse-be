@@ -67,7 +67,7 @@ public class WarehouseUserController {
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_VERIFICATION_CODE + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VERIFY_CODE)
     public ResponseEntity<Object> warehouseVerificationCode(@Valid @RequestBody WarehouseVerifyCodeRequest request,
-            @PathVariable String userId) {
+                                                            @PathVariable String userId) {
         return warehouseUserService.verificationCode(request, userId);
     }
 
@@ -128,8 +128,14 @@ public class WarehouseUserController {
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_EMAIL_PEC_USER + "/{userId}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_UPDATE_EMAIL_PEC_USER)
     public ResponseEntity<Object> warehouseUpdateEmailPecUser(@Valid @RequestBody String emailPec,
-                                                      @PathVariable String userId) {
+                                                              @PathVariable String userId) {
         return warehouseUserService.updateEmailPecUser(emailPec, userId);
+    }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_SENDING_VERIFICATION_CODE + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_SEND_CODE_VERIFICATION)
+    public ResponseEntity<Object> warehouseSendCodeVerification(@Valid @RequestBody String operationType, @PathVariable String userId) {
+        return warehouseUserService.sendCodeVerification(userId, operationType);
     }
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_FIND_USER_INFORMATION + "/{userId}")
@@ -137,16 +143,17 @@ public class WarehouseUserController {
     public ResponseEntity<Object> warehouseFindUserByUserId(@PathVariable String userId) {
         return warehouseUserService.findUserByUserId(userId);
     }
+
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_PDF_VIEWER)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_VIEW_PDF)
     public void warehouseGetPdfView(HttpServletResponse response) throws IOException {
         warehouseFileUserService.getPdfUserData(response);
 
     }
+
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_USERS_EXPORTS)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_EXPORT_USERS)
     public void exportToPDF(HttpServletResponse response) throws IOException, IOException {
-
         warehouseFileUserService.getExcelUsersData(response);
     }
 }

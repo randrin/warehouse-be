@@ -4,7 +4,7 @@ import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.services.impl.WarehouseUserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@AllArgsConstructor
 public class WarehouseUserDetailsService implements UserDetailsService {
 
-    @Autowired
     WarehouseUserRepository userRepository;
 
     @Override

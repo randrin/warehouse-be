@@ -28,10 +28,10 @@ public class WarehouseAddress {
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_COUNTRY_REQUIRED)
     private String country;
 
-    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_STATE_REQUIRED)
+//    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_STATE_REQUIRED)
     private String state;
 
-    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_ADDRESS_REQUIRED)
+//    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_ADDRESS_REQUIRED)
     private String addressLine;
 
     private int zipCode;

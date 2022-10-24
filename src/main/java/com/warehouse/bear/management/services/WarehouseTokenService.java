@@ -9,7 +9,7 @@ import com.warehouse.bear.management.model.WarehouseVerifyIdentity;
 import com.warehouse.bear.management.repository.WarehouseRefreshTokenRepository;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.WarehouseVerifyIdentityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,15 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class WarehouseTokenService {
 
-  @Autowired
   private WarehouseRefreshTokenRepository refreshTokenRepository;
-
-  @Autowired
   private WarehouseUserRepository userRepository;
-
-  @Autowired
   private WarehouseVerifyIdentityRepository verifyIdentityRepository;
 
   public Optional<WarehouseRefreshToken> findByToken(String token) {
@@ -84,7 +80,6 @@ public class WarehouseTokenService {
     verifyIdentity.setUserId(userId);
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
-    verifyIdentity.setLink("");
     verifyIdentity.setCode(code);
 
     return verifyIdentityRepository.save(verifyIdentity);

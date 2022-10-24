@@ -42,7 +42,7 @@ public class WarehouseUserResponse {
 
 
     // ERRORS USER
-    public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile can't be update.";
+    public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile %s can't be updated.";
     public static final String WAREHOUSE_USER_DELETE_ERROR = "Something wrong bad. User hasn't deleted successfully.";
     public static final String WAREHOUSE_USER_GENERIC_ERROR = "Generic Error. Something wrong/happen bad on the system. Please, try again later.";
     public static final String WAREHOUSE_USER_ERROR_LOGIN = "Bad Credentials Username/Email/UserID and (or) Password incorrect(s).";
