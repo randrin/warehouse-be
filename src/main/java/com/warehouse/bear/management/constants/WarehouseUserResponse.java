@@ -54,6 +54,7 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_ERROR_ALREADY_USED = " is already used, please try another one";
     public static final String WAREHOUSE_USER_ERROR_PASSWORD = "The previous old user password isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_PASSWORD_NOT_MATCH = "User old password isn't correct. Try again !!";
+    public static final String WAREHOUSE_USER_ERROR_PASSWORD_OPERATION = "The password provided to perform the operation isn't correct. Try again !!";
     public static final String WAREHOUSE_USER_ERROR_DISABLE = "Your account isn't active. Contact your administration department for more information.";
     public static final String WAREHOUSE_USER_NOT_PRESENT = "We don't have any user registered yet.";
     public static final String WAREHOUSE_USER_ERROR_TOKEN = "Your token is expired or not valid. Please try login again.";

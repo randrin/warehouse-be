@@ -2,6 +2,7 @@ package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.*;
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
@@ -425,6 +426,31 @@ public class WarehouseUserService {
                 return new ResponseEntity<Object>(new WarehouseMessageResponse(
                         WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
                         HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + userId),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> changeStatusUser(String userId, String status, String passwordUser) {
+        try {
+            Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+            if (user.get().getUserId().compareToIgnoreCase(passwordUser) == 0) {
+                Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
+                if(status.compareToIgnoreCase(WarehouseStatusEnum.DELETED.getStatus()) == 0) {
+                    userInfo.get().setDeleteDate(LocalDateTime.now().plusDays(WarehouseUserConstants.WAREHOUSE_EXPIRATION_DAYS_TO));
+                } else {
+                    userInfo.get().setDeleteDate(null);
+                }
+                userInfo.get().setStatus(status);
+                userInfoRepository.save(userInfo.get());
+                return new ResponseEntity<Object>(new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                        WarehouseUserResponse.WAREHOUSE_USER_ERROR_PASSWORD_OPERATION),
+                        HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(

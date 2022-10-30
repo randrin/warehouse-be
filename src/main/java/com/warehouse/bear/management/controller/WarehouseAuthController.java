@@ -6,7 +6,8 @@ import com.warehouse.bear.management.payload.request.*;
 import com.warehouse.bear.management.repository.WarehouseImageUserRepository;
 import com.warehouse.bear.management.services.WarehouseAuthService;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,10 @@ import javax.validation.Valid;
 @Api(value = WarehouseDocumentationConstants.WAREHOUSE_API_AUTH_NAME)
 @RequestMapping(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT)
 @CrossOrigin("*")
+@AllArgsConstructor
 public class WarehouseAuthController {
 
-    @Autowired
     private WarehouseAuthService warehouseAuthService;
-
-    @Autowired
     private WarehouseImageUserRepository warehouseImageUserRepository;
 
     @PostMapping(WarehouseUserEndpoints.WAREHOUSE_LOGIN_USER)
