@@ -2,11 +2,11 @@ package com.warehouse.bear.management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -31,4 +31,16 @@ public class WarehouseUserInfo implements Serializable {
     private boolean isAdminUser;
     private String status;
     private boolean isEmailPecVerified;
+
+    @Column(nullable = true)
+    private LocalDateTime deleteDate;
+
+    public WarehouseUserInfo(Long id, WarehouseUser user, boolean isTemporalPassword, boolean isAdminUser, String status, boolean isEmailPecVerified) {
+        this.id = id;
+        this.user = user;
+        this.isTemporalPassword = isTemporalPassword;
+        this.isAdminUser = isAdminUser;
+        this.status = status;
+        this.isEmailPecVerified = isEmailPecVerified;
+    }
 }

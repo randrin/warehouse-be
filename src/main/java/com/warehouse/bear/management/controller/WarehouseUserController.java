@@ -3,6 +3,7 @@ package com.warehouse.bear.management.controller;
 import com.warehouse.bear.management.constants.WarehouseDocumentationConstants;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
+import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.payload.request.WarehouseChangePasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseResetPasswordRequest;
 import com.warehouse.bear.management.payload.request.WarehouseUpdateUserRequest;
@@ -12,7 +13,7 @@ import com.warehouse.bear.management.services.WarehouseUserService;
 import com.warehouse.bear.management.utils.WarehouseMailUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +25,11 @@ import java.io.IOException;
 @Api(value = WarehouseDocumentationConstants.WAREHOUSE_API_USER_NAME)
 @RequestMapping(WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT)
 @CrossOrigin("*")
+@AllArgsConstructor
 public class WarehouseUserController {
 
-    @Autowired
     private WarehouseUserService warehouseUserService;
-
-
-    @Autowired
     private WarehouseFileUserService warehouseFileUserService;
-
-    @Autowired
     private WarehouseMailUtil warehouseMailUtil;
 
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DASHBOARD)
@@ -100,9 +96,17 @@ public class WarehouseUserController {
     }
 
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/{userId}")
-    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_STATUS)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_ACTIVATION)
     public ResponseEntity<Object> warehouseActivateOrDisabledUser(@PathVariable String userId) {
         return warehouseUserService.activateOrDisabledUser(userId);
+    }
+
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_CHANGE_STATUS + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_STATUS)
+    public ResponseEntity<Object> warehouseChangeStatusUser(@PathVariable String userId,
+                                                            @RequestParam(value = "status", required = true) String status,
+                                                            @RequestParam(value = "passwordUser", required = true) String passwordUser) {
+        return warehouseUserService.changeStatusUser(userId, status, passwordUser);
     }
 
     @PutMapping(WarehouseUserEndpoints.WAREHOUSE_UPDATE_USER_OPERATION_TYPE + "/{userId}")

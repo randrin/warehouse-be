@@ -6,6 +6,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_SECRET_KEY = "warehouse-be-management";
     public static final int WAREHOUSE_EXPIRATION_TOKEN = 1000 * 60 * 60 * 8;
     public static final int WAREHOUSE_EXPIRATION_LINK = 15;
+    public static final int WAREHOUSE_EXPIRATION_DAYS_TO = 90;
     public static final String WAREHOUSE_RANDOM_CHARS = "~`!@#$%^&*()-_=+[{]}\\\\|;:\\'\\\",<.>/?\"";
     public static final String WAREHOUSE_RANDOM_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static final String WAREHOUSE_RANDOM_NUMBERS = "0123456789";
