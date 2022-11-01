@@ -30,7 +30,7 @@
                         <div>
                             <p> Or if your have any problems, please contact our assistance support</p>
                             <br/>
-                            <span>Beyond that, the link to <a target="_blank" href="http://localhost:4201/warehouse/login">Warehouse System</a> website.</span>
+                            <span>Beyond that, the link to <a target="_blank" href="http://localhost:4200/warehouse/login">Warehouse System</a> website.</span>
                             <br/>
                             <p>Thank you for your confidence.</p>
                             <p>Warehouse System</p>

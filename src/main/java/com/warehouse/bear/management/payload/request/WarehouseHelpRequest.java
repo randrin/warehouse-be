@@ -23,4 +23,7 @@ public class WarehouseHelpRequest {
     private String content;
 
     private WarehouseStatusEnum status;
+
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_USER_REQUIRED)
+    private String userId;
 }

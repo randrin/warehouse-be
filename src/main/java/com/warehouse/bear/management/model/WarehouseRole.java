@@ -5,6 +5,7 @@ import com.warehouse.bear.management.enums.WarehouseRoleEnum;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "roles")
-public class WarehouseRole {
+public class WarehouseRole implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore

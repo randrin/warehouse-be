@@ -40,6 +40,14 @@ public class WarehouseHelpController {
         return helpService.updateHelp(title, request);
     }
 
+    @PutMapping(WarehouseUserEndpoints.WAREHOUSE_CHANGE_STATUS_HELP + "/{userId}")
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_CHANGE_STATUS_OBJECT)
+    public ResponseEntity<Object> warehouseChangeStatusHelp(@PathVariable String userId,
+                                                            @RequestParam(value = "title", required = true) String title,
+                                                            @RequestParam(value = "status", required = true) String status) {
+        return helpService.changeStatusHelp(userId, title, status);
+    }
+
     @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_HELP + "/{title}")
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_OBJECT)
     public ResponseEntity<Object> warehouseDeleteHelp(@PathVariable String title) {

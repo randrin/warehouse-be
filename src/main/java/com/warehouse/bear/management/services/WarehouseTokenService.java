@@ -49,7 +49,6 @@ public class WarehouseTokenService {
     verifyIdentity.setVerifyType(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_RESET_PASSWORD);
     verifyIdentity.setExpiryDate(LocalDateTime.now().plusMinutes(WarehouseUserConstants.WAREHOUSE_EXPIRATION_LINK));
     verifyIdentity.setLink(UUID.randomUUID().toString());
-    verifyIdentity.setCode("");
 
     return verifyIdentityRepository.save(verifyIdentity);
   }

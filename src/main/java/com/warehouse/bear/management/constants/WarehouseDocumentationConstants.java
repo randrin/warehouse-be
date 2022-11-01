@@ -27,6 +27,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_OPERATION_INSERT_OBJECT = "Insert object in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DELETE_OBJECT = "Delete object in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPDATE_OBJECT = "Update object in warehouse system.";
+    public static final String WAREHOUSE_OPERATION_CHANGE_STATUS_OBJECT = "Change status object in warehouse system.";
     public static final String WAREHOUSE_OPERATION_UPLOAD = "File upload in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DOWNLOAD = "File download in warehouse system.";
     public static final String WAREHOUSE_OPERATION_DELETE_FILE = "File delete in warehouse system.";
