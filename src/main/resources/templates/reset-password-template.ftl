@@ -24,7 +24,7 @@
                         <br/>To reset your password, please click on the button below
                         <br/><br/>
                         <div align="center">
-                            <a href="http://localhost:4201/warehouse/noAuth/resetPassword?idLinkResetPassword=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}"
+                            <a href="http://localhost:4200/warehouse/noAuth/resetPassword?idLinkResetPassword=${link}&amp;expirationLink=${expirationLink}&amp;verifyType=${verifyType}"
                             style="        position: relative;
         font-weight: 400;
         white-space: nowrap;

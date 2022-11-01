@@ -2,9 +2,11 @@ package com.warehouse.bear.management.model.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.warehouse.bear.management.enums.WarehouseStatusEnum;
+import com.warehouse.bear.management.model.WarehouseUser;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Builder
 @Table(name = "helps")
-public class WarehouseHelp {
+public class WarehouseHelp implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,11 @@ public class WarehouseHelp {
     private String description;
     private String content;
     private WarehouseStatusEnum status;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private WarehouseUser user;
+
     private String createdAt;
     private String updatedAt;
 }

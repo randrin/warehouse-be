@@ -27,6 +27,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER = "EMAIL_ADMIN_USER_VERIFICATION";
 
     // MODELS
+    public static final String WAREHOUSE_USER_REQUIRED = "USer is required";
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
     public static final String WAREHOUSE_GENDER_REQUIRED = "Gender is required";
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
