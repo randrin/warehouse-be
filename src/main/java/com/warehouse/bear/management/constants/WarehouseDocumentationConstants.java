@@ -8,6 +8,7 @@ public class WarehouseDocumentationConstants {
     public static final String WAREHOUSE_API_USER_NAME = "Warehouse User Operations API.";
     public static final String WAREHOUSE_API_ADMIN_NAME = "Warehouse Admin Operations API.";
     public static final String WAREHOUSE_API_HELP_NAME = "Warehouse Help Operations API.";
+    public static final String WAREHOUSE_API_GlOSSARY_NAME = "Warehouse Glossaries Operations API.";
     public static final String WAREHOUSE_API_RESPONSE_400 = "User request isn't corrects.";
     public static final String WAREHOUSE_API_RESPONSE_401 = "User isn't authorized to perform this operation.";
     public static final String WAREHOUSE_API_RESPONSE_403 = "Forbidden user to perform this operation.";

@@ -1,7 +1,6 @@
 package com.warehouse.bear.management.payload.request;
 
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
-import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +10,19 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseHelpRequest {
+public class WarehouseGlossaryRequest {
 
-    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_TITLE_REQUIRED)
-    private String title;
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_CODE_REQUIRED)
+    private String code;
 
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_DESCRIPTION_REQUIRED)
     private String description;
 
-    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_CONTENT_REQUIRED)
-    private String content;
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_LANGUAGE_REQUIRED)
+    private String language;
 
-    private WarehouseStatusEnum status;
+    @NotBlank(message = WarehouseUserConstants.WAREHOUSE_OBJECT_REQUIRED)
+    private String object;
 
     @NotBlank(message = WarehouseUserConstants.WAREHOUSE_USER_REQUIRED)
     private String userId;
