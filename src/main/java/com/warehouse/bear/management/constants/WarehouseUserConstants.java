@@ -27,7 +27,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_VERIFY_TYPE_EMAIL_ADMIN_USER = "EMAIL_ADMIN_USER_VERIFICATION";
 
     // MODELS
-    public static final String WAREHOUSE_USER_REQUIRED = "USer is required";
+    public static final String WAREHOUSE_USER_REQUIRED = "User is required";
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
     public static final String WAREHOUSE_GENDER_REQUIRED = "Gender is required";
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
@@ -40,9 +40,12 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_STATE_REQUIRED = "State is required";
     public static final String WAREHOUSE_ADDRESS_REQUIRED = "Complementary address is required";
     public static final String WAREHOUSE_CITY_REQUIRED = "City is required";
-    public static final String WAREHOUSE_HELP_TITLE = "Help title is required";
-    public static final String WAREHOUSE_HELP_DESCRIPTION = "Help description is required";
-    public static final String WAREHOUSE_HELP_CONTENT = "Help content is required";
+    public static final String WAREHOUSE_TITLE_REQUIRED = "Title is required";
+    public static final String WAREHOUSE_DESCRIPTION_REQUIRED = "Description is required";
+    public static final String WAREHOUSE_CODE_REQUIRED = "Code is required";
+    public static final String WAREHOUSE_LANGUAGE_REQUIRED = "Language is required";
+    public static final String WAREHOUSE_CONTENT_REQUIRED = "Content is required";
+    public static final String WAREHOUSE_OBJECT_REQUIRED = "Object is required";
 
     public static final String WAREHOUSE_USER_PHONE_VALID = "Please enter the valid phone";
     public static final String WAREHOUSE_USER_PASSWORD = "User password is required";

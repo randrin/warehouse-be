@@ -59,7 +59,8 @@ public class WarehouseSecurityConfiguration extends WebSecurityConfigurerAdapter
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_FORGOT_PASSWORD + "/**",
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_VERIFY_USER_LINK_TYPE + "/**",
                         WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_ACTIVATE_OR_DISABLED + "/**",
-                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_FIND_USER + "/**")
+                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_FIND_USER + "/**",
+                        WarehouseUserEndpoints.WAREHOUSE_ROOT_ENDPOINT + WarehouseUserEndpoints.WAREHOUSE_GLOSSARIES + "/**")
                 .permitAll()
                 .antMatchers(
                         "/actuator/**",

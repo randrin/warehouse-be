@@ -38,6 +38,11 @@ public class WarehouseUserEndpoints {
     public static final String WAREHOUSE_UPDATE_HELP = "/update/help";
     public static final String WAREHOUSE_CHANGE_STATUS_HELP = "/change-status/help";
     public static final String WAREHOUSE_DELETE_HELP = "/delete/help";
+    public static final String WAREHOUSE_INSERT_GLOSSARY = "/insert/glossary";
+    public static final String WAREHOUSE_GLOSSARIES = "/glossaries";
+    public static final String WAREHOUSE_GLOSSARY = "/glossary";
+    public static final String WAREHOUSE_UPDATE_GLOSSARY = "/update/glossary";
+    public static final String WAREHOUSE_DELETE_GLOSSARY = "/delete/glossary";
     public static final String WAREHOUSE_FIND_USER = "/find";
     public static final String WAREHOUSE_FIND_USER_INFORMATION = "/find/user-information";
     public static final String WAREHOUSE_DELETE_USER = "/delete";
