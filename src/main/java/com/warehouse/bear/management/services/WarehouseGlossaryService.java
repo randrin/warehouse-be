@@ -4,11 +4,13 @@ import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.glossary.WarehouseGlossary;
+import com.warehouse.bear.management.model.utils.WarehouseHelp;
 import com.warehouse.bear.management.payload.request.WarehouseGlossaryRequest;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
 import com.warehouse.bear.management.repository.WarehouseUserRepository;
 import com.warehouse.bear.management.repository.glossary.WarehouseGlossaryRepository;
+import com.warehouse.bear.management.utils.WarehouseCommonUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +34,18 @@ public class WarehouseGlossaryService {
                 List<String> message = checkIfGlossaryAlreadyExistsWithCodeAndLanguage(request);
                 if (message.get(0) == null) {
                     List<WarehouseGlossary> glossaries = request.stream().map(glossary ->
-                            new WarehouseGlossary(
-                                    0L,
-                                    glossary.getCode(),
-                                    glossary.getDescription(),
-                                    glossary.getObject(),
-                                    glossary.getLanguage(),
-                                    user.get()
-                            )).collect(Collectors.toList());
+                            new WarehouseGlossary()
+                                    .builder()
+                                    .id(0L)
+                                    .code(glossary.getCode())
+                                    .description(glossary.getDescription())
+                                    .object(glossary.getObject())
+                                    .language(glossary.getLanguage())
+                                    .user(user.get())
+                                    .createdAt(WarehouseCommonUtil.generateCurrentDateUtil())
+                                    .updatedAt(WarehouseCommonUtil.generateCurrentDateUtil())
+                                    .build()
+                    ).collect(Collectors.toList());
                     glossaryRepository.saveAll(glossaries);
                     return new ResponseEntity<Object>(new WarehouseResponse(glossaries, WarehouseUserResponse.WAREHOUSE_OBJECT_CREATED),
                             HttpStatus.OK);
@@ -82,15 +88,14 @@ public class WarehouseGlossaryService {
         }
     }
 
-    public ResponseEntity<Object> deleteGlossary(String code, String language) {
+    public ResponseEntity<Object> deleteGlossary(String code) {
         try {
-            WarehouseGlossary glossary = glossaryRepository.findByCodeAndLanguage(code, language)
-                    .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language));
-            glossaryRepository.delete(glossary);
-            return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_DELETED), HttpStatus.OK);
+            List<WarehouseGlossary> glossaries = glossaryRepository.findByCode(code);
+            glossaryRepository.deleteAll(glossaries);
+            return new ResponseEntity<Object>(new WarehouseResponse(glossaries, WarehouseUserResponse.WAREHOUSE_OBJECT_DELETED), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
-                    WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language),
+                    WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -104,6 +109,7 @@ public class WarehouseGlossaryService {
                 if (glossary.getCode().compareToIgnoreCase(request.getCode()) == 0) {
                     glossary.setDescription(request.getDescription());
                     glossary.setUser(user.get());
+                    glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                     glossaryRepository.save(glossary);
                 } else { // If the operator update the object, find all previous glossary with the same object and make the update
                     List<WarehouseGlossary> glossaries = glossaryRepository.findByCode(glossary.getCode());
@@ -111,6 +117,7 @@ public class WarehouseGlossaryService {
                         gly.setCode(request.getCode());
                         gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
                         gly.setUser(user.get());
+                        glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                         glossaryRepository.save(gly);
                     });
                 }
@@ -120,6 +127,7 @@ public class WarehouseGlossaryService {
                     gly.setObject(request.getObject());
                     gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
                     gly.setUser(user.get());
+                    glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                     glossaryRepository.save(gly);
                 });
             }
@@ -128,6 +136,17 @@ public class WarehouseGlossaryService {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language),
                     HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> getAllGlossaries() {
+        try {
+            List<WarehouseGlossary> glossaries = glossaryRepository.findAll();
+            return new ResponseEntity<Object>(glossaries, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(new WarehouseMessageResponse(
+                    WarehouseUserResponse.WAREHOUSE_USER_GENERIC_ERROR),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
