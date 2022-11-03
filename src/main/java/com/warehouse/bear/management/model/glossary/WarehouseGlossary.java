@@ -26,4 +26,7 @@ public class WarehouseGlossary {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private WarehouseUser user;
+
+    private String createdAt;
+    private String updatedAt;
 }

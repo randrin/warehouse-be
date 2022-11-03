@@ -28,6 +28,12 @@ public class WarehouseGlossaryController {
         return glossaryService.insertGlossary(request);
     }
 
+    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_ALL_GLOSSARIES)
+    @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_OBJECTS)
+    public ResponseEntity<Object> warehouseGetAllGlossaries() {
+        return glossaryService.getAllGlossaries();
+    }
+
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_GLOSSARIES)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_OBJECTS)
     public ResponseEntity<Object> warehouseGetGlossariesByObjectAndLanguage(
@@ -48,8 +54,7 @@ public class WarehouseGlossaryController {
     @DeleteMapping(WarehouseUserEndpoints.WAREHOUSE_DELETE_GLOSSARY)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_DELETE_OBJECT)
     public ResponseEntity<Object> warehouseDeleteGlossary(
-            @RequestParam(value = "code", required = true) String code,
-            @RequestParam(value = "language", required = true) String language) {
-        return glossaryService.deleteGlossary(code, language);
+            @RequestParam(value = "code", required = true) String code) {
+        return glossaryService.deleteGlossary(code);
     }
 }
