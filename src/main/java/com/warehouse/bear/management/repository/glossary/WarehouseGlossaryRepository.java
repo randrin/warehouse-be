@@ -13,6 +13,7 @@ public interface WarehouseGlossaryRepository extends JpaRepository<WarehouseGlos
     boolean existsByObject(String object);
     boolean existsByCodeAndLanguage(String code, String language);
     List<WarehouseGlossary> findByObjectAndLanguage(String object, String language);
+    List<WarehouseGlossary> findByObjectAndCode(String object, String code);
     List<WarehouseGlossary> findByObject(String object);
     List<WarehouseGlossary> findByCode(String code);
     Optional<WarehouseGlossary> findByCodeAndLanguage(String code, String language);

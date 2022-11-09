@@ -4,7 +4,6 @@ import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.exception.UserNotFoundException;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.glossary.WarehouseGlossary;
-import com.warehouse.bear.management.model.utils.WarehouseHelp;
 import com.warehouse.bear.management.payload.request.WarehouseGlossaryRequest;
 import com.warehouse.bear.management.payload.response.WarehouseMessageResponse;
 import com.warehouse.bear.management.payload.response.WarehouseResponse;
@@ -16,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,15 +31,15 @@ public class WarehouseGlossaryService {
         try {
             Optional<WarehouseUser> user = userRepository.findByUserId(request.get(0).getUserId());
             if (user != null) {
-                List<String> message = checkIfGlossaryAlreadyExistsWithCodeAndLanguage(request);
+                List<String> message = checkIfGlossaryAlreadyExistsWithCodeAndLanguageOrObject(request);
                 if (message.get(0) == null) {
                     List<WarehouseGlossary> glossaries = request.stream().map(glossary ->
                             new WarehouseGlossary()
                                     .builder()
                                     .id(0L)
-                                    .code(glossary.getCode())
+                                    .code(glossary.getCode().toUpperCase())
                                     .description(glossary.getDescription())
-                                    .object(glossary.getObject())
+                                    .object(glossary.getObject().toLowerCase())
                                     .language(glossary.getLanguage())
                                     .user(user.get())
                                     .createdAt(WarehouseCommonUtil.generateCurrentDateUtil())
@@ -50,7 +50,7 @@ public class WarehouseGlossaryService {
                     return new ResponseEntity<Object>(new WarehouseResponse(glossaries, WarehouseUserResponse.WAREHOUSE_OBJECT_CREATED),
                             HttpStatus.OK);
                 }
-                return new ResponseEntity<Object>(new WarehouseResponse(message, WarehouseUserResponse.WAREHOUSE_OBJECT_EXISTING), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<Object>(new WarehouseResponse(message, message.get(0)), HttpStatus.FOUND);
             } else {
                 return new ResponseEntity<Object>(new WarehouseMessageResponse(
                         WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + request.get(0).getUserId()),
@@ -63,10 +63,13 @@ public class WarehouseGlossaryService {
         }
     }
 
-    private List<String> checkIfGlossaryAlreadyExistsWithCodeAndLanguage(List<WarehouseGlossaryRequest> request) {
+    private List<String> checkIfGlossaryAlreadyExistsWithCodeAndLanguageOrObject(List<WarehouseGlossaryRequest> request) {
         return request.stream().map(glossary -> {
             if (glossaryRepository.existsByCodeAndLanguage(glossary.getCode(), glossary.getLanguage())) {
                 return WarehouseUserResponse.WAREHOUSE_OBJECT_EXISTING + glossary.getCode() + " - " + glossary.getLanguage();
+            }
+            if (glossaryRepository.existsByObject(glossary.getObject())) {
+                return WarehouseUserResponse.WAREHOUSE_OBJECT_EXISTING + glossary.getObject();
             }
             return null;
         }).collect(Collectors.toList());
@@ -105,33 +108,63 @@ public class WarehouseGlossaryService {
             WarehouseGlossary glossary = glossaryRepository.findByCodeAndLanguage(code, language)
                     .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language));
             Optional<WarehouseUser> user = userRepository.findByUserId(request.getUserId());
-            if (glossary.getObject().compareToIgnoreCase(request.getObject()) == 0) {
-                if (glossary.getCode().compareToIgnoreCase(request.getCode()) == 0) {
-                    glossary.setDescription(request.getDescription());
-                    glossary.setUser(user.get());
-                    glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
-                    glossaryRepository.save(glossary);
-                } else { // If the operator update the object, find all previous glossary with the same object and make the update
-                    List<WarehouseGlossary> glossaries = glossaryRepository.findByCode(glossary.getCode());
-                    glossaries.forEach(gly -> {
-                        gly.setCode(request.getCode());
+            if (glossary.getObject().compareToIgnoreCase(request.getObject()) != 0 &&
+                    glossary.getCode().compareToIgnoreCase(request.getCode()) != 0) {
+                if (!glossaryRepository.existsByCodeAndLanguage(request.getCode(), request.getLanguage()) &&
+                        !glossaryRepository.existsByObject(request.getObject())) {
+                    List<WarehouseGlossary> glossariesObject = glossaryRepository.findByObject(glossary.getObject());
+                    glossariesObject.forEach(gly -> {
+                        gly.setObject(request.getObject().toLowerCase());
+                        gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
+                        gly.setUser(user.get());
+                        glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                        glossaryRepository.save(gly);
+                    });
+                    List<WarehouseGlossary> glossariesCode = glossaryRepository.findByCode(glossary.getCode());
+                    glossariesCode.forEach(gly -> {
+                        gly.setCode(request.getCode().toUpperCase());
                         gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
                         gly.setUser(user.get());
                         glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                         glossaryRepository.save(gly);
                     });
                 }
-            } else { // If the operator update the code, find all previous glossary with the same code and make the update
-                List<WarehouseGlossary> glossaries = glossaryRepository.findByObject(glossary.getObject());
-                glossaries.forEach(gly -> {
-                    gly.setObject(request.getObject());
-                    gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
-                    gly.setUser(user.get());
+                return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_UPDATED), HttpStatus.OK);
+            } else if (glossary.getObject().compareToIgnoreCase(request.getObject()) == 0) {
+                if (glossary.getCode().compareToIgnoreCase(request.getCode()) == 0) {
+                    glossary.setDescription(request.getDescription());
+                    glossary.setUser(user.get());
                     glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
-                    glossaryRepository.save(gly);
-                });
+                    glossaryRepository.save(glossary);
+                    return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_UPDATED), HttpStatus.OK);
+                } else { // If the operator update the object, find all previous glossary with the same object and make the update
+                    if (!glossaryRepository.existsByCodeAndLanguage(request.getCode(), request.getLanguage())) {
+                        List<WarehouseGlossary> glossaries = glossaryRepository.findByCode(glossary.getCode());
+                        glossaries.forEach(gly -> {
+                            gly.setCode(request.getCode().toUpperCase());
+                            gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
+                            gly.setUser(user.get());
+                            glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                            glossaryRepository.save(gly);
+                        });
+                        return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_UPDATED), HttpStatus.OK);
+                    }
+                    return new ResponseEntity<Object>(new WarehouseResponse(request, WarehouseUserResponse.WAREHOUSE_OBJECT_EXISTING + request.getCode() + " - " + request.getLanguage()), HttpStatus.FOUND);
+                }
+            } else { // If the operator update the code, find all previous glossary with the same code and make the update
+                if (!glossaryRepository.existsByObject(request.getObject())) {
+                    List<WarehouseGlossary> glossaries = glossaryRepository.findByObject(glossary.getObject());
+                    glossaries.forEach(gly -> {
+                        gly.setObject(request.getObject().toLowerCase());
+                        gly.setDescription(gly.getLanguage().compareToIgnoreCase(language) == 0 ? request.getDescription() : gly.getDescription());
+                        gly.setUser(user.get());
+                        glossary.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                        glossaryRepository.save(gly);
+                    });
+                    return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_UPDATED), HttpStatus.OK);
+                }
+                return new ResponseEntity<Object>(new WarehouseResponse(request, WarehouseUserResponse.WAREHOUSE_OBJECT_EXISTING + request.getObject()), HttpStatus.FOUND);
             }
-            return new ResponseEntity<Object>(new WarehouseResponse(glossary, WarehouseUserResponse.WAREHOUSE_OBJECT_UPDATED), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
                     WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language),
@@ -141,7 +174,9 @@ public class WarehouseGlossaryService {
 
     public ResponseEntity<Object> getAllGlossaries() {
         try {
-            List<WarehouseGlossary> glossaries = glossaryRepository.findAll();
+            List<WarehouseGlossary> glossaries = glossaryRepository.findAll()
+                    .stream().sorted(Comparator.comparing(WarehouseGlossary::getCreatedAt).reversed())
+                    .collect(Collectors.toList());
             return new ResponseEntity<Object>(glossaries, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
