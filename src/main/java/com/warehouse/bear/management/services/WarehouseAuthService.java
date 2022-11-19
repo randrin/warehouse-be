@@ -90,7 +90,9 @@ public class WarehouseAuthService {
                 null,
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
-                WarehouseCommonUtil.generateCurrentDateUtil());
+                WarehouseCommonUtil.generateCurrentDateUtil(),
+                WarehouseCommonUtil.generateCurrentDateUtil(),
+                null);
 
         userRepository.save(user);
 
@@ -161,7 +163,9 @@ public class WarehouseAuthService {
                     address.isPresent() ? address.get() : null,
                     contact.isPresent() ? contact.get() : null,
                     downloadURl,
-                    user.get().getCreatedAt()),
+                    user.get().getCreatedAt(),
+                    user.get().getUpdatedAt(),
+                    user.get().getDeletedAt()),
                     HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(WarehouseUserResponse.WAREHOUSE_USER_ERROR_LOGIN, HttpStatus.BAD_REQUEST);

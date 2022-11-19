@@ -11,6 +11,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_RANDOM_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static final String WAREHOUSE_RANDOM_NUMBERS = "0123456789";
     public static final String WAREHOUSE_AUTHORIZATION = "Authorization";
+    public static final String WAREHOUSE_PREFIX_ORGANIZATION = "WH";
     public static final String WAREHOUSE_HEADER = "Bearer ";
     public static final String WAREHOUSE_ROLE_ADMIN = "ROLE_ADMIN";
     public static final String WAREHOUSE_ROLE_USER = "ROLE_USER";
@@ -31,6 +32,7 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_FULLNAME_REQUIRED = "Fullname is required";
     public static final String WAREHOUSE_GENDER_REQUIRED = "Gender is required";
     public static final String WAREHOUSE_USERNAME_REQUIRED = "Username is required";
+    public static final String WAREHOUSE_NAME_REQUIRED = "Name is required";
     public static final String WAREHOUSE_EMAIL_REQUIRED = "Email is required";
     public static final String WAREHOUSE_PEC_EMAIL_REQUIRED = "PEC email is required";
     public static final String WAREHOUSE_PASSWORD_REQUIRED = "Password is required";
@@ -46,6 +48,8 @@ public class WarehouseUserConstants {
     public static final String WAREHOUSE_LANGUAGE_REQUIRED = "Language is required";
     public static final String WAREHOUSE_CONTENT_REQUIRED = "Content is required";
     public static final String WAREHOUSE_OBJECT_REQUIRED = "Object is required";
+    public static final String WAREHOUSE_WEBSITE_REQUIRED = "Website is required";
+    public static final String WAREHOUSE_REFERENT_REQUIRED = "Organization referent is required";
 
     public static final String WAREHOUSE_USER_PHONE_VALID = "Please enter the valid phone";
     public static final String WAREHOUSE_USER_PASSWORD = "User password is required";

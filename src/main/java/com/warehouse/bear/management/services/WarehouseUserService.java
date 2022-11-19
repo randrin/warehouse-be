@@ -96,6 +96,7 @@ public class WarehouseUserService {
             WarehouseUser user = userRepository.findByUserId(request.getUserId()).get();
             if (bCryptPasswordEncoder.matches(request.getOldPassword(), user.getPassword())) {
                 user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+                user.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                 userRepository.save(user);
                 return new ResponseEntity<Object>(new WarehouseResponse(
                         user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_PASSWORD),
@@ -117,6 +118,7 @@ public class WarehouseUserService {
             Optional<WarehouseUser> user = userRepository.findByUserId(userId);
             if (user.isPresent()) {
                 user.get().setActive(user.get().isActive() ? Boolean.FALSE : Boolean.TRUE);
+                user.get().setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                 userRepository.save(user.get());
                 return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
             } else {
@@ -174,7 +176,9 @@ public class WarehouseUserService {
         try {
             WarehouseUser user = userRepository.findByUserId(userId)
                     .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));
-            userRepository.delete(user);
+            user.setDeletedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+            user.setActive(Boolean.FALSE);
+            userRepository.save(user);
             return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_DELETED), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Object>(new WarehouseMessageResponse(
@@ -263,6 +267,7 @@ public class WarehouseUserService {
                 user.setDateOfBirth(request.getDateOfBirth());
                 user.setRoles(roles);
                 user.setGender((request.getGender()));
+                user.setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
 
                 // Set address model
                 address.setCountry(request.getAddress().getCountry());
@@ -347,6 +352,7 @@ public class WarehouseUserService {
                             warehouseCommonUtil.generateUserCode(),
                             WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC);
                     user.get().setEmailPec(emailPec);
+                    user.get().setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                     userRepository.save(user.get());
                     return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CODE_SEND + emailPec), HttpStatus.OK);
                 } else {
@@ -397,6 +403,7 @@ public class WarehouseUserService {
             if (user.isPresent()) {
                 if (operationType.compareToIgnoreCase(WarehouseUserConstants.WAREHOUSE_VERIFY_TYPE_EMAIL_PEC) == 0) {
                     userInfo.get().setEmailPecVerified(userInfo.get().isEmailPecVerified() ? Boolean.FALSE : Boolean.TRUE);
+                    user.get().setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
                     userInfoRepository.save(userInfo.get());
                 }
                 return new ResponseEntity<Object>(new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_UPDATE), HttpStatus.OK);
@@ -445,6 +452,8 @@ public class WarehouseUserService {
                     userInfo.get().setDeleteDate(null);
                 }
                 userInfo.get().setStatus(status);
+                user.get().setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                userRepository.save(user.get());
                 userInfoRepository.save(userInfo.get());
                 return new ResponseEntity<Object>(new WarehouseResponse(userInfo, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
             } else {

@@ -20,7 +20,11 @@ public class WarehouseUserResponse {
     public static final String WAREHOUSE_USER_UPDATE = "User profile updated successfully.";
     public static final String WAREHOUSE_USER_LOGOUT = "User logout successfully.";
     public static final String WAREHOUSE_USER_DELETED = "User deleted successfully.";
+    public static final String WAREHOUSE_ORGANIZATION_DELETED = "Organization deleted successfully.";
     public static final String WAREHOUSE_USER_FOUND = "User found successfully.";
+    public static final String WAREHOUSE_ORGANIZATION_FOUND = "Organization found successfully.";
+    public static final String WAREHOUSE_ORGANIZATION_UPDATED = "Organization successfully updated.";
+    public static final String WAREHOUSE_ORGANIZATION_ASSIGNED_COLLABORATORS = "Collaborators successfully assigned to organization.";
     public static final String WAREHOUSE_USER_PASSWORD_GENERATED = "User Password generated successfully.";
     public static final String WAREHOUSE_USER_PASSWORD_CHANGED = "User Password changed successfully.";
     public static final String WAREHOUSE_USER_ACTIVATED = "User activated successfully.";
@@ -44,9 +48,11 @@ public class WarehouseUserResponse {
     // ERRORS USER
     public static final String WAREHOUSE_USER_UPDATE_PROFILE_NOT_FOUND = "User Profile %s can't be updated.";
     public static final String WAREHOUSE_USER_DELETE_ERROR = "Something wrong bad. User hasn't deleted successfully.";
+    public static final String WAREHOUSE_ORGANIZATION_DELETE_ERROR = "Something wrong bad. Organization hasn't deleted successfully.";
     public static final String WAREHOUSE_USER_GENERIC_ERROR = "Generic Error. Something wrong/happen bad on the system. Please, try again later.";
     public static final String WAREHOUSE_USER_ERROR_LOGIN = "Bad Credentials Username/Email/UserID and (or) Password incorrect(s).";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID = "User not found with userId ";
+    public static final String WAREHOUSE_ORGANIZATION_ERROR_NOT_FOUND_WITH_ID = "Organization not found with organizationId ";
     public static final String WAREHOUSE_OBJECT_ERROR_NOT_FOUND = "Object not found with property ";
     public static final String WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME = "User not found with username/email/userID ";
     public static final String WAREHOUSE_USER_ERROR_VERIFICATION_EMAIL = "We have some problems for the verification email ";

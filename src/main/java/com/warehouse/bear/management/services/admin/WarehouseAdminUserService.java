@@ -106,7 +106,9 @@ public class WarehouseAdminUserService {
                 request.getDateOfBirth(),
                 false,
                 WarehouseCommonUtil.generateCurrentDateUtil(),
-                WarehouseCommonUtil.generateCurrentDateUtil());
+                WarehouseCommonUtil.generateCurrentDateUtil(),
+                WarehouseCommonUtil.generateCurrentDateUtil(),
+                null);
         userRepository.save(adminUser);
 
         // Then save user information in user_info table

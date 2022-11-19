@@ -33,4 +33,6 @@ public class WarehouseJwtResponse {
     private WarehouseContact contact;
     private String profileUrl;
     private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
 }
