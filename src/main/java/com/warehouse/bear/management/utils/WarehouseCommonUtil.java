@@ -31,6 +31,12 @@ public class WarehouseCommonUtil {
                 + RandomStringUtils.random(5, WarehouseUserConstants.WAREHOUSE_RANDOM_NUMBERS);
     }
 
+    public static String generateOrganizationId() {
+        // Format: WHXXYYYYY
+        return WarehouseUserConstants.WAREHOUSE_PREFIX_ORGANIZATION + RandomStringUtils.random(2, WarehouseUserConstants.WAREHOUSE_RANDOM_LETTERS).toUpperCase()
+                + RandomStringUtils.random(5, WarehouseUserConstants.WAREHOUSE_RANDOM_NUMBERS);
+    }
+
     public static String generateUserCode() {
         // Format: XXXXXX
         return RandomStringUtils.random(6, WarehouseUserConstants.WAREHOUSE_RANDOM_NUMBERS);

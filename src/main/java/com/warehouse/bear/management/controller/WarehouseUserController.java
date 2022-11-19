@@ -32,16 +32,6 @@ public class WarehouseUserController {
     private WarehouseFileUserService warehouseFileUserService;
     private WarehouseMailUtil warehouseMailUtil;
 
-    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_DASHBOARD)
-    public String dashboard() {
-        return "Dashboard page";
-    }
-
-    @GetMapping(WarehouseUserEndpoints.WAREHOUSE_HOME)
-    public String home() {
-        return "Home page";
-    }
-
     @GetMapping(WarehouseUserEndpoints.WAREHOUSE_ALL_USERS)
     @ApiOperation(value = WarehouseDocumentationConstants.WAREHOUSE_OPERATION_GET_ALL_USERS)
     public ResponseEntity<Object> warehouseGetAllUsers() {

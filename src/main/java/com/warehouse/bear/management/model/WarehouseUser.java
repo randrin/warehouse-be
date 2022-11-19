@@ -68,4 +68,6 @@ public class WarehouseUser implements Serializable {
     private boolean isActive;
     private String lastLogin;
     private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
 }
