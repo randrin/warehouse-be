@@ -3,7 +3,7 @@ package com.warehouse.bear.management.services;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseStatusEnum;
-import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.exception.ObjectNotFoundException;
 import com.warehouse.bear.management.model.*;
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
 import com.warehouse.bear.management.model.utils.WarehouseContact;
@@ -175,7 +175,7 @@ public class WarehouseUserService {
     public ResponseEntity<Object> deleteUser(String userId) {
         try {
             WarehouseUser user = userRepository.findByUserId(userId)
-                    .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));
+                    .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));
             user.setDeletedAt(WarehouseCommonUtil.generateCurrentDateUtil());
             user.setActive(Boolean.FALSE);
             userRepository.save(user);

@@ -5,7 +5,7 @@ import com.warehouse.bear.management.constants.WarehouseUserEndpoints;
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.exception.TokenRefreshException;
-import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.exception.ObjectNotFoundException;
 import com.warehouse.bear.management.model.WarehouseRefreshToken;
 import com.warehouse.bear.management.model.WarehouseRole;
 import com.warehouse.bear.management.model.WarehouseUser;
@@ -235,7 +235,7 @@ public class WarehouseAuthService {
         WarehouseUserInfo userInfo = new WarehouseUserInfo();
         try {
             WarehouseUser user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UserNotFoundException(
+                    .orElseThrow(() -> new ObjectNotFoundException(
                             WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_NAME + username));
             user.setDateOfBirth(request.getDateOfBirth());
 

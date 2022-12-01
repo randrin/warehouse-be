@@ -1,7 +1,7 @@
 package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
-import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.exception.ObjectNotFoundException;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.glossary.WarehouseGlossary;
 import com.warehouse.bear.management.payload.request.WarehouseGlossaryRequest;
@@ -106,7 +106,7 @@ public class WarehouseGlossaryService {
     public ResponseEntity<Object> updateGlossary(WarehouseGlossaryRequest request, String code, String language) {
         try {
             WarehouseGlossary glossary = glossaryRepository.findByCodeAndLanguage(code, language)
-                    .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language));
+                    .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + code + " - " + language));
             Optional<WarehouseUser> user = userRepository.findByUserId(request.getUserId());
             if (glossary.getObject().compareToIgnoreCase(request.getObject()) != 0 &&
                     glossary.getCode().compareToIgnoreCase(request.getCode()) != 0) {

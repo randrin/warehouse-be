@@ -2,7 +2,7 @@ package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehouseStatusEnum;
-import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.exception.ObjectNotFoundException;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.utils.WarehouseHelp;
 import com.warehouse.bear.management.payload.request.WarehouseHelpRequest;
@@ -76,7 +76,7 @@ public class WarehouseHelpService {
     public ResponseEntity<Object> deleteHelp(String title) {
         try {
             WarehouseHelp help = helpRepository.findByTitle(title)
-                    .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + title));
+                    .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + title));
             helpRepository.delete(help);
             return new ResponseEntity<Object>(new WarehouseResponse(help, WarehouseUserResponse.WAREHOUSE_OBJECT_DELETED), HttpStatus.OK);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class WarehouseHelpService {
     public ResponseEntity<Object> updateHelp(String title, WarehouseHelpRequest request) {
         try {
             WarehouseHelp help = helpRepository.findByTitle(title)
-                    .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + title));
+                    .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_OBJECT_ERROR_NOT_FOUND + title));
             Optional<WarehouseUser> user = userRepository.findByUserId(request.getUserId());
             help.setTitle(request.getTitle());
             help.setDescription(request.getDescription());
