@@ -2,7 +2,7 @@ package com.warehouse.bear.management.services;
 
 import com.warehouse.bear.management.constants.WarehouseUserResponse;
 import com.warehouse.bear.management.enums.WarehousePackageEnum;
-import com.warehouse.bear.management.exception.UserNotFoundException;
+import com.warehouse.bear.management.exception.ObjectNotFoundException;
 import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.organization.WarehouseOrganization;
 import com.warehouse.bear.management.model.organization.WarehouseOrganizationCollaborator;
@@ -164,7 +164,7 @@ public class WarehouseOrganizationService {
             if (organization != null) {
                 collaborators.forEach(collaborator -> {
                     WarehouseUser user = userRepository.findByUserId(collaborator)
-                            .orElseThrow(() -> new UserNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + collaborator));
+                            .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + collaborator));
                     if (user != null) {
                         WarehouseOrganizationCollaborator orgCollaborator = new WarehouseOrganizationCollaborator(
                                 0L,
