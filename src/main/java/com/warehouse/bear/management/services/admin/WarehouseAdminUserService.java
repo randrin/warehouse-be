@@ -119,6 +119,7 @@ public class WarehouseAdminUserService {
                 Boolean.TRUE,
                 Boolean.TRUE,
                 status.getStatus(),
+                Boolean.FALSE,
                 Boolean.FALSE
         );
         userInfoRepository.save(userInfo);
@@ -152,7 +153,7 @@ public class WarehouseAdminUserService {
     public ResponseEntity<Object> adminChangeStatusUser(String adminId, String userId, String status) {
         try {
             Optional<WarehouseUser> admin = userRepository.findByUserId(adminId);
-            if (admin.get().isActive()) {
+            if (admin.get().isEnabled()) {
                 Optional<WarehouseUser> user = userRepository.findByUserId(userId);
                 Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
                 if (userInfo.isPresent()) {

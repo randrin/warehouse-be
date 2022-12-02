@@ -155,7 +155,7 @@ public class WarehouseAuthService {
                     userDetails.getEmail(),
                     user.get().getEmailPec(),
                     roles,
-                    user.get().isActive(),
+                    user.get().isEnabled(),
                     user.get().getLastLogin(),
                     user.get().getDateOfBirth(),
                     WarehouseUserResponse.WAREHOUSE_USER_LOGGED,
