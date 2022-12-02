@@ -116,9 +116,12 @@ public class WarehouseUserService {
     public ResponseEntity<Object> activateOrDisabledUser(String userId) {
         try {
             Optional<WarehouseUser> user = userRepository.findByUserId(userId);
+            Optional<WarehouseUserInfo> userInfo = userInfoRepository.findByUser(user.get());
             if (user.isPresent()) {
-                user.get().setActive(user.get().isActive() ? Boolean.FALSE : Boolean.TRUE);
+                user.get().setEnabled(user.get().isEnabled() ? Boolean.FALSE : Boolean.TRUE);
+                userInfo.get().setEmailVerified(Boolean.TRUE);
                 user.get().setUpdatedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                userInfoRepository.save(userInfo.get());
                 userRepository.save(user.get());
                 return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_CHANGE_STATUS), HttpStatus.OK);
             } else {
@@ -177,7 +180,7 @@ public class WarehouseUserService {
             WarehouseUser user = userRepository.findByUserId(userId)
                     .orElseThrow(() -> new ObjectNotFoundException(WarehouseUserResponse.WAREHOUSE_USER_ERROR_NOT_FOUND_WITH_ID + userId));
             user.setDeletedAt(WarehouseCommonUtil.generateCurrentDateUtil());
-            user.setActive(Boolean.FALSE);
+            user.setEnabled(Boolean.FALSE);
             userRepository.save(user);
             return new ResponseEntity<Object>(new WarehouseResponse(user, WarehouseUserResponse.WAREHOUSE_USER_DELETED), HttpStatus.OK);
         } catch (Exception e) {
@@ -325,7 +328,7 @@ public class WarehouseUserService {
                             user.getEmail(),
                             user.getEmailPec(),
                             user.getRoles(),
-                            user.isActive(),
+                            user.isEnabled(),
                             user.getLastLogin(),
                             user.getDateOfBirth(),
                             user.getCreatedAt(),

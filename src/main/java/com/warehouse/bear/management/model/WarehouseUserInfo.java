@@ -30,17 +30,20 @@ public class WarehouseUserInfo implements Serializable {
     private boolean isTemporalPassword;
     private boolean isAdminUser;
     private String status;
+    private boolean isEmailVerified;
     private boolean isEmailPecVerified;
 
     @Column(nullable = true)
     private LocalDateTime deleteDate;
 
-    public WarehouseUserInfo(Long id, WarehouseUser user, boolean isTemporalPassword, boolean isAdminUser, String status, boolean isEmailPecVerified) {
+    public WarehouseUserInfo(Long id, WarehouseUser user, boolean isTemporalPassword, boolean isAdminUser, String status,
+                             boolean isEmailVerified, boolean isEmailPecVerified) {
         this.id = id;
         this.user = user;
         this.isTemporalPassword = isTemporalPassword;
         this.isAdminUser = isAdminUser;
         this.status = status;
+        this.isEmailVerified = isEmailVerified;
         this.isEmailPecVerified = isEmailPecVerified;
     }
 }

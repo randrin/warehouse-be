@@ -24,7 +24,7 @@ public class WarehouseJwtResponse {
     private String email;
     private String emailPec;
     private List<String> roles;
-    private boolean isActive;
+    private boolean enabled;
     private String lastLogin;
     private String dateOfBirth;
     private String message;

@@ -65,7 +65,7 @@ public class WarehouseUser implements Serializable {
     private Set<WarehouseRole> roles;
 
     private String dateOfBirth;
-    private boolean isActive;
+    private boolean isEnabled;
     private String lastLogin;
     private String createdAt;
     private String updatedAt;
