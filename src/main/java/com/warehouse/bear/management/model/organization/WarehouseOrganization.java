@@ -41,5 +41,6 @@ public class WarehouseOrganization implements Serializable {
     private String endPackage;
     private String createdAt;
     private String updatedAt;
+    private String deletedAt;
 
 }
