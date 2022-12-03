@@ -109,7 +109,8 @@ public class WarehouseOrganizationService {
         try {
             WarehouseOrganization organization = organizationRepository.findByOrganizationId(organizationId);
             if (organization != null) {
-                organizationRepository.delete(organization);
+                organization.setDeletedAt(WarehouseCommonUtil.generateCurrentDateUtil());
+                organizationRepository.save(organization);
                 return new ResponseEntity<Object>(new WarehouseResponse(organization,
                         WarehouseUserResponse.WAREHOUSE_ORGANIZATION_DELETED), HttpStatus.OK);
             }
