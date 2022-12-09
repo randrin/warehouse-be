@@ -24,6 +24,7 @@ public class WarehouseHelp implements Serializable {
 
     private String title;
     private String description;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private WarehouseStatusEnum status;
 
