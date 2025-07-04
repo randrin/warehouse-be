@@ -1,15 +1,13 @@
 package com.warehouse.bear.management.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data

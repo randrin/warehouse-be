@@ -3,7 +3,7 @@ package com.warehouse.bear.management.model.organization;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data

@@ -1,10 +1,8 @@
 package com.warehouse.bear.management.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 @Data

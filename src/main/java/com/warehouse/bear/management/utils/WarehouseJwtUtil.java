@@ -32,7 +32,7 @@ public class WarehouseJwtUtil {
 
     // For retrieving any information from token we will need the secret key
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(WarehouseUserConstants.WAREHOUSE_SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(WarehouseUserConstants.WAREHOUSE_SECRET_KEY).build().parseSignedClaims(token).getBody();
     }
 
     // Check if the token has expired

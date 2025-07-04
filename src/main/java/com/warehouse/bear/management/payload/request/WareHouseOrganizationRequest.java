@@ -2,14 +2,12 @@ package com.warehouse.bear.management.payload.request;
 
 import com.warehouse.bear.management.constants.WarehouseUserConstants;
 import com.warehouse.bear.management.enums.WarehousePackageEnum;
-import com.warehouse.bear.management.model.WarehouseUser;
 import com.warehouse.bear.management.model.utils.WarehouseAddress;
 import com.warehouse.bear.management.model.utils.WarehouseContact;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor

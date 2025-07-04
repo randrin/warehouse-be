@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class UserServiceExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @Override
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult bindingResult = ex.getBindingResult();

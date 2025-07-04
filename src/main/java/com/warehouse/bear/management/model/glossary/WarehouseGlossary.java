@@ -3,7 +3,7 @@ package com.warehouse.bear.management.model.glossary;
 import com.warehouse.bear.management.model.WarehouseUser;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @AllArgsConstructor

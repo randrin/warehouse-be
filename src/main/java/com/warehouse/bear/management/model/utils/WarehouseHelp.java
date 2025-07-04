@@ -5,7 +5,7 @@ import com.warehouse.bear.management.enums.WarehouseStatusEnum;
 import com.warehouse.bear.management.model.WarehouseUser;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
