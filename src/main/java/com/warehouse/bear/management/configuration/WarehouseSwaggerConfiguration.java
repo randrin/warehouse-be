@@ -10,11 +10,13 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class WarehouseSwaggerConfiguration {
 
     @Bean
+    @Primary
     public OpenAPI warehouseOpenAPI() {
         return new OpenAPI()
                 // 1. Informazioni API

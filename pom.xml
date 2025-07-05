@@ -94,13 +94,20 @@
             <version>2.4.0</version>
         </dependency>
 
-        <!-- Database -->
+        <!-- Database mySql-->
+<!--        <dependency>-->
+<!--            <groupId>com.mysql</groupId>-->
+<!--            <artifactId>mysql-connector-j</artifactId>-->
+<!--            <version>8.1.0</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+        <!-- Database microsoft server-->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.1.0</version>
-            <scope>runtime</scope>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.6.1.jre11</version>
         </dependency>
+
 
         <!-- Lombok -->
         <dependency>

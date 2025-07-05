@@ -15,16 +15,16 @@ spring:
           starttls:
             enable: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/warehouse_management?useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: France84.
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=warehouse_management;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: sa
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.SQLServerDialect
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.SQLServerDialect
 
